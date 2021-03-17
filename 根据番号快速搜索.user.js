@@ -89,7 +89,6 @@
                 }
                 
                 var otherInfo = document.createElement('avdivs');
-                otherInfo.style.color = "red";
                 otherInfo.innerHTML=addOtherInfo();
                 odiv.appendChild(otherInfo);
                 
@@ -156,7 +155,6 @@
                 // console.log(avInfo);
                 // console.log("------------------");
                 var otherInfo = document.createElement('avdivs');
-                otherInfo.style.color = "red";
                 otherInfo.innerHTML = addOtherInfo()
                 document.querySelector(".av-float").appendChild(otherInfo);
             }

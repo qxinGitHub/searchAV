@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.1.1
+// @version      0.2.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -22,9 +22,6 @@
     var localInfo = {};
 
     var allHTML = document.querySelector("body");
-    // var avReg = /[a-z|A-Z]{2,5}-\d{2,5}/gi;
-    // var allAV = allHTML.outerHTML.match(avReg);
-    // console.log(allAV)
     
     // 最基础的番号
     findAndReplaceDOMText(allHTML, {
@@ -40,7 +37,6 @@
     });
 
     function createPattenr(id){
-        // var linkJavbus = "https://www.javbus.com/search/" + id;
         var linkJavbusPage = "https://www.javbus.com/" + id;
         var linkJavbus = "https://www.javbus.com/uncensored/search/" + id;
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
@@ -140,7 +136,6 @@
                 var other = htmlDoc.querySelectorAll(".header");
                 for(var i=0;i<other.length;i++){
                     if(other[i].innerHTML=="發行日期:"){
-                        console.log(other[i].parentNode)
                         avInfo.date = other[i].parentNode.innerText
                     }
                     if(other[i].innerHTML=="系列:"){

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.1
+// @version      0.1.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -61,14 +61,11 @@
             if(document.querySelector(".av-float")){
                 console.log("已存在");
             }else{
-                var offsetleft = e.target.offsetLeft;
-                var offsetheight = e.target.offsetHeight + e.target.offsetTop;
-
-                var odiv = createPattenr(e.target.dataset.av)
-
+                var oPosition = e.target.getBoundingClientRect()
+                var odiv = createPattenr(e.target.dataset.av)    
                 e.target.appendChild(odiv);
-                odiv.style.left = offsetleft + "px";
-                odiv.style.top = offsetheight + "px";
+                odiv.style.left = oPosition.x + "px";
+                odiv.style.top = oPosition.y + oPosition.height + "px";
             }
         }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv"){
             console.log("class : avfloat");
@@ -87,7 +84,7 @@
     }
 
     GM_addStyle(".av-float{" +
-                "position: absolute;" +
+                "position: fixed;" +
                 "display: block;" +
                 "background:rgba(255,255,255,.3);" +
                 "backdrop-filter: blur(5px);" +

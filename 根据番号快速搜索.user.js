@@ -6,13 +6,20 @@
 // @author       iqxin
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/423347-findandreplacedomtext-v-0-4-0/code/findAndReplaceDOMText%20v%20040.js?version=911450
+// @connect     *
 // @grant       GM_addStyle
+// @grant       GM_getValue
+// @grant       GM_setValue
+// @grant       GM_xmlhttpRequest
 // @grant       GM_setClipboard
 
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+    var avInfo = {};
+    var localInfo = {};
 
     var allHTML = document.querySelector("body");
     // var avReg = /[a-z|A-Z]{2,5}-\d{2,5}/gi;
@@ -28,7 +35,6 @@
             odiv.style.color = "green";
             odiv.dataset.av = portion.text;        
             odiv.innerHTML = portion.text;
-            // console.log("替换完成");
             return odiv;
         }
     });
@@ -58,6 +64,7 @@
     document.onmouseover = function(e){
         if(e.target.className=="avclass"){
             // console.log(e.target.dataset.av);
+            var avid = e.target.dataset.av;
             if(document.querySelector(".av-float")){
                 console.log("已存在");
             }else{
@@ -66,15 +73,114 @@
                 e.target.appendChild(odiv);
                 odiv.style.left = oPosition.x + "px";
                 odiv.style.top = oPosition.y + oPosition.height + "px";
+                
+                avInfo = {};
+                localInfo = GM_getValue("avInfo");
+                if(!localInfo){
+                    GM_setValue("avInfo",{});
+                    localInfo = {};
+                }
+                if(localInfo[avid]){
+                    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！")
+                    avInfo = localInfo[avid];
+                } else{
+                    console.log("从网络获取");
+                    getInfo(e.target.dataset.av);
+                }
+                
+                var otherInfo = document.createElement('avdivs');
+                otherInfo.style.color = "red";
+                otherInfo.innerHTML=addOtherInfo();
+                odiv.appendChild(otherInfo);
+                
             }
         }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv"){
-            console.log("class : avfloat");
+            console.log("这是一条没有意义的消息");
         }else{
             var odiv = document.querySelector(".av-float")
             if(odiv){
                 odiv.parentNode.removeChild(odiv)
             }
         }
+    }
+
+    
+    function getInfo(avID){
+        GM_xmlhttpRequest({
+            method: 'get',
+            url: 'https://www.javbus.com/' + avID,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: "",
+            onload: function (data) {
+
+                var parser=new DOMParser();
+                var htmlDoc=parser.parseFromString(data.responseText, "text/html");
+                
+                // 番号
+                avInfo.id = avID;
+                // 标题
+                avInfo.title = htmlDoc.title.replace(avID,"").replace(" - JavBus","");
+                // 获取演员名字
+                var starNameList = htmlDoc.querySelectorAll(".star-name");
+                var starName = [];
+                for(var i=0;i<starNameList.length;i++){
+                    starName.push(starNameList[i].querySelector("a").innerHTML);
+                }
+                avInfo.starName = starName;
+                // 获取标签
+                var tagList = htmlDoc.querySelectorAll("input[name='gr_sel']");
+                var tags = [];
+                for(var i=0;i<tagList.length;i++){
+                    tags.push(tagList[i].nextSibling.innerHTML);
+                }
+                avInfo.tags = tags;
+
+                // 其他
+                var other = htmlDoc.querySelectorAll(".header");
+                for(var i=0;i<other.length;i++){
+                    if(other[i].innerHTML=="發行日期:"){
+                        console.log(other[i].parentNode)
+                        avInfo.date = other[i].parentNode.innerText
+                    }
+                    if(other[i].innerHTML=="系列:"){
+                        avInfo.series = other[i].parentNode.innerText
+                    }
+                }
+
+                localInfo[avID] = avInfo;
+                GM_setValue("avInfo",localInfo);
+
+                // console.log("获取到的所有信息: ");
+                // console.log(avInfo);
+                // console.log("------------------");
+                var otherInfo = document.createElement('avdivs');
+                otherInfo.style.color = "red";
+                otherInfo.innerHTML = addOtherInfo()
+                document.querySelector(".av-float").appendChild(otherInfo);
+            }
+        });
+    }
+    
+    function addOtherInfo(){
+        var str = "";
+        if(avInfo.starName && avInfo.starName.length>0){
+            str += "<avdiv class='av-floatdiv'>演员: " + avInfo.starName + "</avdiv>"
+        }
+        if(avInfo.title){
+            str += "<avdiv class='av-floatdiv'>标题: " + avInfo.title + "</avdiv>"
+        }
+        if(avInfo.tags && avInfo.tags.length>0){
+            str += "<avdiv class='av-floatdiv'>标签: " + avInfo.tags + "</avdiv>"
+        }
+        if(avInfo.series){
+            str += "<avdiv class='av-floatdiv'>" + avInfo.series + "</avdiv>"
+        }
+        if(avInfo.date){
+            str += "<avdiv class='av-floatdiv'>" + avInfo.date + "</avdiv>"
+        }
+        return str;
     }
 
     document.onclick=function(e){
@@ -84,12 +190,12 @@
     }
 
     GM_addStyle(".av-float{" +
-                "position: fixed;" +
-                "display: block;" +
-                "background:rgba(255,255,255,.3);" +
-                "backdrop-filter: blur(5px);" +
-                "padding:6px;" +
-                "margin-top: -2px; " +
+                    "position: fixed;" +
+                    "display: block;" +
+                    "background:rgba(255,255,255,.3);" +
+                    "backdrop-filter: blur(5px);" +
+                    "padding:6px;" +
+                    "margin-top: -2px; " +
                 "}" +
                 "avdiv{" +
                     "display:block;" +

@@ -31,17 +31,16 @@ H4610
 有时简介会被重复两次  
 当番号处于换行时,搜索菜单会显示在第二行 
 
-
+例图:  
 ![例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)
   
-  动图  
-
-version: 0.1.1  
+## 以下为各版本的区别  
+ > version: 0.1.1  
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.1.1.gif)  
-version: 0.2.0  
+ > version: 0.2.0  
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.2.0.gif)  
-version: 0.3.0  
-![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.2.0.gif)  
+ > version: 0.3.0  
+![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)  
   
 ## 更新历史
  > v0.3.0 2021-03-19

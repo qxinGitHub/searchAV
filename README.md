@@ -13,9 +13,9 @@
 4. 虽然使用的是谷歌翻译,但是翻译的很差。不懂日语,纯粹从翻译结果的可读性来看,相较于有道和百度, 它的表现是最烂的。
 5. 关于番号:
 只能识别 字母-数字 的番号,  
-带日期的不识别 : Carib-020913-xxx  
+带日期的不识别 : 3-xxx  
 3d的不识别 : SM3D2DBD-xx,  
-fc2不识别 : FC2-PPV-1234567,  
+fc2不识别 : FC2-67,  
 一本道的不识别 : 031721-xxx  
 C0930番号不识别 : C0930-pla xxxx  
 MuraMura番号不识别 : muramura 031721_xxx  
@@ -23,10 +23,10 @@ Jukujo-Club番号识别错误 : Jukujo-Club-xxxx
 Mesubutaメス豚 番号不识别 : mesubuta 131122_732_xx  
 AV9898 AV-酒吧番号 : AV9898-xxxx  
 G-Queen言番号 : G-Queen-xxx  
-pacopacomama : pacopacomama-031721  
+pacopacomama : pacopac1  
 Gachinco : gachixxx-HD  
-10musume 识别错误 : 10musume-发行日期_01 ，如10musume-010414_01  
-1000giri : 1000giri+发行日期，如 1000giri-130906  
+10musume 识别错误 : 10musume-发行日期_01 ，如10m4_01  
+1000giri : 1000giri+发行日期，如 10006  
 H0930  
 H4610  
 以上学习知识参考网址 https://www.unvone.com/55618.html

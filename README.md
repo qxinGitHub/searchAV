@@ -36,11 +36,16 @@ H4610
   
   动图  
 
-![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav1.gif)
-
-![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav6.gif)
-
+version: 0.1.1  
+![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.1.1.gif)  
+version: 0.2.0  
+![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.2.0.gif)  
+version: 0.3.0  
+![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.2.0.gif)  
+  
 ## 更新历史
+ > v0.3.0 2021-03-19
+  - 增加: 翻译标题功能
  > v0.2.0 2021-03-17
   - 增加: 增加相关简介,第一次浏览时从javbus获取, 再次浏览时从本地获取
  > v0.1.1 2021-03-17

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.2.0
+// @version      0.3.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -18,12 +18,17 @@
 (function() {
     'use strict';
 
-    var avInfo = {};
-    var localInfo = {};
+    var avInfo = {};  // 临时存储相关信息
+    var localInfo = {}; // 从本地获取到的番号信息
+    var Trans = {       // 临时存储翻译的相关信息
+        id:"",
+        transText:"",
+        trans:[]
+    }
 
     var allHTML = document.querySelector("body");
     
-    // 最基础的番号
+    // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
         find:/[a-z|A-Z]{2,5}-\d{2,5}/gi,
         replace: function(portion) {
@@ -57,6 +62,13 @@
         return ofloat;
     }
 
+    // 点击番号复制
+    document.onclick=function(e){
+        if(e.target.dataset.av){
+            GM_setClipboard(e.target.dataset.av)
+        }
+    }
+    // 鼠标划过显示信息
     document.onmouseover = function(e){
         if(e.target.className=="avclass"){
             // console.log(e.target.dataset.av);
@@ -131,7 +143,6 @@
                     tags.push(tagList[i].nextSibling.innerHTML);
                 }
                 avInfo.tags = tags;
-
                 // 其他
                 var other = htmlDoc.querySelectorAll(".header");
                 for(var i=0;i<other.length;i++){
@@ -143,6 +154,12 @@
                     }
                 }
 
+                // 标题翻译
+                Trans.id = avID;
+                Trans.transText=avInfo.title;
+                googleTrans();
+
+                // 存储
                 localInfo[avID] = avInfo;
                 GM_setValue("avInfo",localInfo);
 
@@ -161,8 +178,10 @@
         if(avInfo.starName && avInfo.starName.length>0){
             str += "<avdiv class='av-floatdiv'>演员: " + avInfo.starName + "</avdiv>"
         }
-        if(avInfo.title){
-            str += "<avdiv class='av-floatdiv'>标题: " + avInfo.title + "</avdiv>"
+        if(avInfo.titleTrans){
+            str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
+        }else if(avInfo.title){
+            str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
         }
         if(avInfo.tags && avInfo.tags.length>0){
             str += "<avdiv class='av-floatdiv'>标签: " + avInfo.tags + "</avdiv>"
@@ -176,10 +195,42 @@
         return str;
     }
 
-    document.onclick=function(e){
-        if(e.target.dataset.av){
-            GM_setClipboard(e.target.dataset.av)
-        }
+    // 翻译函数取自于作者 Johnny Li 的脚本 “网页翻译助手” version:1.2.9, https://greasyfork.org/zh-CN/scripts/389784 许可协议MIT
+    // 作者 Johnny Li 
+    // 脚本 “网页翻译助手” 
+    // version:1.2.9, 
+    // https://greasyfork.org/zh-CN/scripts/389784 
+    // 许可协议 MIT
+    function googleTrans() {
+        var h_url = "";
+        var googleTransApi = "https://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&sl=auto&tl=zh-CN&hl=zh-CN";
+        h_url = googleTransApi + "&q=" + encodeURIComponent(Trans.transText);
+
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: h_url,
+            onload: function (r) {
+                setTimeout(function () {
+                    var data = JSON.parse(r.responseText);
+                    var trans = [];
+                    for (var i = 0; i < data.sentences.length; i++) {
+                        var getransCont = data.sentences[i];
+                        trans.push(getransCont.trans);
+                    }
+                    Trans.trans = trans;
+                    console.log("翻译结果:");
+                    console.log(trans);
+
+                    localInfo[Trans.id].titleTrans = trans;
+                    GM_setValue("avInfo",localInfo);
+                    document.querySelector("#searchAVMenuTitle").innerHTML = "标题(译): " + trans;
+
+                }, 300);
+            },
+            onerror: function (e) {
+                console.error(e);
+            }
+        });
     }
 
     GM_addStyle(".av-float{" +

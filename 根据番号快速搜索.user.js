@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.3.1
+// @version      0.4.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -31,7 +31,7 @@
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
         // find:/[a-z|A-Z]{2,5}-\d{2,5}/gi,
-        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,5}(?!(\w|\d))/gi,
+        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,5}(?!(\w|\d|-))/gi,
         replace: function(portion) {
             var odiv = document.createElement('avdivs');
             odiv.classList.add("avclass");
@@ -163,6 +163,8 @@
                         avInfo.series = other[i].parentNode.innerText
                     }
                 }
+                // 封面
+                var image = htmlDoc.querySelector(".bigImage img");
 
                 // 标题翻译
                 Trans.id = avID;
@@ -178,6 +180,7 @@
                 // console.log("------------------");
                 var otherInfo = document.createElement('avdivs');
                 otherInfo.innerHTML = addOtherInfo()
+                otherInfo.appendChild(image);
                 document.querySelector(".av-float").appendChild(otherInfo);
             }
         });

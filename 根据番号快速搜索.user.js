@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.3.0
+// @version      0.3.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -27,16 +27,25 @@
     }
 
     var allHTML = document.querySelector("body");
-    
+
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
-        find:/[a-z|A-Z]{2,5}-\d{2,5}/gi,
+        // find:/[a-z|A-Z]{2,5}-\d{2,5}/gi,
+        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,5}(?!(\w|\d))/gi,
         replace: function(portion) {
             var odiv = document.createElement('avdivs');
             odiv.classList.add("avclass");
             odiv.style.color = "green";
-            odiv.dataset.av = portion.text;        
-            odiv.innerHTML = portion.text;
+            // console.log(portion);
+            var otext = portion.text;
+            var otemp = otext.indexOf("-")
+            if(otemp<0){
+                var oindex = otext.search(/\d/);
+                otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+            }
+
+            odiv.dataset.av = otext;        
+            odiv.innerHTML = otext;
             return odiv;
         }
     });
@@ -89,7 +98,7 @@
                     localInfo = {};
                 }
                 if(localInfo[avid]){
-                    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！")
+                    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
                     avInfo = localInfo[avid];
                 } else{
                     console.log("从网络获取");
@@ -102,7 +111,8 @@
                 
             }
         }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv"){
-            console.log("这是一条没有意义的消息");
+            // console.log("这是一条没有意义的消息");
+            ;
         }else{
             var odiv = document.querySelector(".av-float")
             if(odiv){

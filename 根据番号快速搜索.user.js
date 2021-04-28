@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.0
+// @version      0.4.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -39,9 +39,13 @@
             // console.log(portion);
             var otext = portion.text;
             var otemp = otext.indexOf("-")
-            if(otemp<0){
+            var notTop = otext.search(/top/i)   // 排除 网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
+            if(otemp<0 && notTop<0){
                 var oindex = otext.search(/\d/);
                 otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+            }
+            if(otemp<0 && notTop>-1){
+                return otext
             }
 
             odiv.dataset.av = otext;        

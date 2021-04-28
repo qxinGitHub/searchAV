@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.1
+// @version      0.4.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -18,6 +18,7 @@
 (function() {
     'use strict';
 
+    var timer;
     var avInfo = {};  // 临时存储相关信息
     var localInfo = {}; // 从本地获取到的番号信息
     var Trans = {       // 临时存储翻译的相关信息
@@ -84,10 +85,14 @@
     // 鼠标划过显示信息
     document.onmouseover = function(e){
         if(e.target.className=="avclass"){
-            // console.log(e.target.dataset.av);
             var avid = e.target.dataset.av;
+
             if(document.querySelector(".av-float")){
                 console.log("已存在");
+                timer = setTimeout(() => {
+                    console.log("停留超过2s, 重新加载图片");
+                    getInfo(avid,true);
+                }, 2000);
             }else{
                 var oPosition = e.target.getBoundingClientRect()
                 var odiv = createPattenr(e.target.dataset.av)    
@@ -105,7 +110,7 @@
                     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
                     avInfo = localInfo[avid];
                 } else{
-                    console.log("从网络获取");
+                    console.log("需要从网络获取");
                     getInfo(e.target.dataset.av);
                 }
                 
@@ -114,7 +119,7 @@
                 odiv.appendChild(otherInfo);
                 
             }
-        }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv"){
+        }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv" || e.target.nodeName =="IMG"){
             // console.log("这是一条没有意义的消息");
             ;
         }else{
@@ -122,11 +127,12 @@
             if(odiv){
                 odiv.parentNode.removeChild(odiv)
             }
+            clearTimeout(timer);
         }
     }
 
     
-    function getInfo(avID){
+    function getInfo(avID,oReload){
         GM_xmlhttpRequest({
             method: 'get',
             url: 'https://www.javbus.com/' + avID,
@@ -178,7 +184,14 @@
                 // 存储
                 localInfo[avID] = avInfo;
                 GM_setValue("avInfo",localInfo);
-
+                
+                if(oReload){
+                    console.log("图片加载完成");
+                    var otherInfo = document.createElement('avdivs');
+                    otherInfo.appendChild(image);
+                    document.querySelector(".av-float").appendChild(otherInfo);
+                    return;
+                }
                 // console.log("获取到的所有信息: ");
                 // console.log(avInfo);
                 // console.log("------------------");

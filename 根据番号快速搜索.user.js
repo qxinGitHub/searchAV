@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.2
+// @version      0.4.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -89,10 +89,6 @@
 
             if(document.querySelector(".av-float")){
                 console.log("已存在");
-                timer = setTimeout(() => {
-                    console.log("停留超过2s, 重新加载图片");
-                    getInfo(avid,true);
-                }, 2000);
             }else{
                 var oPosition = e.target.getBoundingClientRect()
                 var odiv = createPattenr(e.target.dataset.av)    
@@ -109,6 +105,10 @@
                 if(localInfo[avid]){
                     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
                     avInfo = localInfo[avid];
+                    timer = setTimeout(() => {
+                        console.log("停留超过1.5s, 重新加载图片");
+                        getInfo(avid,true);
+                    }, 1500);
                 } else{
                     console.log("需要从网络获取");
                     getInfo(e.target.dataset.av);

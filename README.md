@@ -32,11 +32,8 @@ H0930
 H4610  
 以上学习知识参考网址 https://www.unvone.com/55618.html
 
-
-例图:  
-![例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)
   
-## 以下为各版本的区别  
+<!-- ## 以下为各版本的区别  
  > version: 0.1.1  
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.1.1.gif)  
 
@@ -44,7 +41,7 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.2.0.gif)  
 
  > version: 0.3.0  增加标题翻译
-![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)  
+![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
  > v0.4.3 2021-04-28
@@ -68,3 +65,7 @@ H4610
   - 修复:显示位置错误
  > v0.1 2021-03-16
   - hello world 
+
+
+例图:  
+![v0.1 例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)

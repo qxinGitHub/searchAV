@@ -30,7 +30,7 @@ Gachinco : gachixxx-HD
 1000giri : 1000giri+发行日期，如 1000giri-130906  
 H0930  
 H4610  
-以上学习知识参考网址 https://www.unvone.com/55618.html
+以上番号知识参考网址 https://www.unvone.com/55618.html
 
   
 <!-- ## 以下为各版本的区别  
@@ -67,5 +67,5 @@ H4610
   - hello world 
 
 
-例图:  
-![v0.1 例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)
+图片仅为版本v0.1.x:  
+![例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.5
+// @version      0.4.6
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -42,7 +42,7 @@
             var otemp = otext.indexOf("-")
             var oOnlyText = otext.replace(/[^a-zA-Z]/gi,"");
             var notTop = otext.search(/top/i)   // 排除 网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-            var notCovid = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|html|css|aptx|rx|mh|bmw|sn|au|cc|cctv|df|qbz|qsz|ak)$/i)   // 排除 covid19
+            var notCovid = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|html|css|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|df|qbz|qsz|ak)$/i)   // 排除 covid19
             //  和番号重名的没有排除: scp
             // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
             // 特殊的:covid|html|css|aptx|rx|mh|bmw

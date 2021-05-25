@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.4.7 2021-05-25
+  - 修复: 排除cat、hao
  > v0.4.6 2021-05-06
   - 修复: 排除shp
  > v0.4.5 2021-05-06

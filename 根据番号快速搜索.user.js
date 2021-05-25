@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.6
+// @version      0.4.7
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -39,25 +39,29 @@
             odiv.style.color = "green";
             // console.log(portion);
             var otext = portion.text;
-            var otemp = otext.indexOf("-")
-            var oOnlyText = otext.replace(/[^a-zA-Z]/gi,"");
-            var notTop = otext.search(/top/i)   // 排除 网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-            var notCovid = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|html|css|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|df|qbz|qsz|ak)$/i)   // 排除 covid19
-            //  和番号重名的没有排除: scp
+            var otemp = otext.indexOf("-"); // 如果没有,返回-1
+            var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
+            // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
+            var oSpecial = otext.search(/cat/i)   
+            // 排除所有包含在此的关键词 :  例: covid-19 win10
+            var oExclude = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|df|qbz|qsz|ak)$/i)  
+            //  和番号重名的没有排除: 
             // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
-            // 特殊的:covid|html|css|aptx|rx|mh|bmw
+            // 特殊的:covid|aptx|rx|mh|bmw
             // 名称:snh|bej|gnz|ckg|akb
             // 显卡:gp|gt|gts|gtx
             // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
-            if(otemp<0 && notTop>-1){
+            if(oExclude>-1){
                 return otext;
             }
-            if(notCovid>-1){
-                return otext;
-            }
-            if(otemp<0 && notTop<0){
-                var oindex = otext.search(/\d/);
-                otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+
+            if(otemp<0){    // 没有横杠
+                if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
+                    return otext;
+                }else if(oSpecial<0){   // 未匹配到特殊的单词, 将其视为番号, 添加横杠
+                    var oindex = otext.search(/\d/);
+                    otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+                }
             }
             
             odiv.dataset.av = otext;        

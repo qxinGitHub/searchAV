@@ -1,12 +1,17 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.7
+// @version      0.4.8
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/423347-findandreplacedomtext-v-0-4-0/code/findAndReplaceDOMText%20v%20040.js?version=911450
 // @connect     *
+// @exclude	    *://www.52pojie.cn/*
+// @exclude	    *://meta.appinn.net/*
+// @exclude	    *://v2ex.com/*
+// @exclude	    *://greasyfork.org/*
+// @exclude	    *://bilibili.com/*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -41,6 +46,7 @@
             var otext = portion.text;
             var otemp = otext.indexOf("-"); // 如果没有,返回-1
             var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
+            var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
             // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
             var oSpecial = otext.search(/cat/i)   
             // 排除所有包含在此的关键词 :  例: covid-19 win10
@@ -58,9 +64,11 @@
             if(otemp<0){    // 没有横杠
                 if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
                     return otext;
-                }else if(oSpecial<0){   // 未匹配到特殊的单词, 将其视为番号, 添加横杠
+                }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
                     var oindex = otext.search(/\d/);
                     otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+                } else {    // 数字的个数可能是两个也可能是四个,不是番号的可能性更大些,直接返回。
+                    return otext;
                 }
             }
             

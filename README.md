@@ -44,6 +44,9 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.4.9 2021-06-01
+  <!-- - 修复: 之前的版本更新导致依旧将covid等关键词识别为番号 -->
+  - 修复: 将关键词后的数字识别为番号的问题
  > v0.4.8 2021-05-31
   - 改进: 自动识别番号的时候,排除两位和四位数字,只识别三位数字
   - 改进: 默认排除一些网站,主要是用户名的问题,在这些网站上将不会生效: 52pojie.cn、appinn.net、v2ex.com、greasyfork.org、bilibili.com

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.8
+// @version      0.4.9
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -36,19 +36,22 @@
 
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
-        // find:/[a-z|A-Z]{2,5}-\d{2,5}/gi,
-        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,5}(?!(\w|\d|-))/gi,
+        // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
+        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi,
         replace: function(portion) {
             var odiv = document.createElement('avdivs');
             odiv.classList.add("avclass");
             odiv.style.color = "green";
             // console.log(portion);
             var otext = portion.text;
+
+            if(otext.length<4) return otext;
+
             var otemp = otext.indexOf("-"); // 如果没有,返回-1
             var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
             var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
             // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-            var oSpecial = otext.search(/cat/i)   
+            var oSpecial = oOnlyText.search(/cat/i)   
             // 排除所有包含在此的关键词 :  例: covid-19 win10
             var oExclude = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|df|qbz|qsz|ak)$/i)  
             //  和番号重名的没有排除: 
@@ -57,6 +60,12 @@
             // 名称:snh|bej|gnz|ckg|akb
             // 显卡:gp|gt|gts|gtx
             // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
+            // console.log("完整: " + otext);
+            // console.log("英文: " + oOnlyText);
+            // console.log("数字: " + oOnlyNum);
+            // console.log("是否有横杠: " + otemp);
+            // console.log("是否特殊: " + oSpecial);
+            // console.log("是否排除: " + oExclude);
             if(oExclude>-1){
                 return otext;
             }
@@ -67,7 +76,7 @@
                 }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
                     var oindex = otext.search(/\d/);
                     otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
-                } else {    // 数字的个数可能是两个也可能是四个,不是番号的可能性更大些,直接返回。
+                } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
                     return otext;
                 }
             }

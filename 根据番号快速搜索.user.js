@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.4.9
+// @version      0.5.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -207,6 +207,19 @@
                 }
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
+                var imgSrc = image.src;
+                var imgNum = imgSrc.search(/(imgs|pics)/i);
+                imgSrc = imgSrc.slice(imgNum);
+                image.src = "https://www.javbus.com/" + imgSrc;
+
+                // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
+                // 名称: 显示防盗链图片 for Inoreader
+                // 作者: maboloshi
+                var meta = document.createElement('meta');
+                meta.name = "referrer";
+                meta.content = "no-referrer";
+                document.getElementsByTagName('head')[0].appendChild(meta);
+                
 
                 // 标题翻译
                 Trans.id = avID;

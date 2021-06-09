@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.5.0
+// @version      0.5.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -37,7 +37,7 @@
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
         // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
-        find:/(?<!\w)[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi,
+        find:/(?<!(\w|-))[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi,
         replace: function(portion) {
             var odiv = document.createElement('avdivs');
             odiv.classList.add("avclass");

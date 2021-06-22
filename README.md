@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.5.4 2021-06-23
+  - 修复: 将手表型号识别为番号的问题: gbx-100
  > v0.5.3 2021-06-18
   - 修复: 将英特尔ax网卡识别为番号的问题: ax200
  > v0.5.2 2021-06-15

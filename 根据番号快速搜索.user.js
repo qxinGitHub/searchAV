@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.5.4
+// @version      0.5.5
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -12,6 +12,7 @@
 // @exclude	    *://v2ex.com/*
 // @exclude	    *://greasyfork.org/*
 // @exclude	    *://bilibili.com/*
+// @exclude	    *://www.douyin.com/*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -34,10 +35,25 @@
 
     var allHTML = document.querySelector("body");
 
+    // 对于一些网站,可能需要第二种正则来匹配
+    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi;
+    var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;
+    var webList = [
+        // https://xslist.org/zh/model/69636.html
+        /^https?:\/\/xslist\.org\//,
+    ]
+    var webListTag = webList.some(function hashUrl(element, index, array){
+            return ~window.location.href.search(element);
+        });
+    if(webListTag){
+        oregExp = oregExp2;
+    }
+    console.log("使用的正则: " + oregExp);
+
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
         // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
-        find:/(?<!(\w|-))[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi,
+        find:oregExp,
         replace: function(portion) {
             var odiv = document.createElement('avdivs');
             odiv.classList.add("avclass");
@@ -60,6 +76,7 @@
             // 名称:snh|bej|gnz|ckg|akb
             // 显卡:gp|gt|gts|gtx
             // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
+            // console.log(portion);
             // console.log("完整: " + otext);
             // console.log("英文: " + oOnlyText);
             // console.log("数字: " + oOnlyNum);

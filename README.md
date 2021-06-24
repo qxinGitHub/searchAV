@@ -44,6 +44,9 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.5.5
+  - 改进: 排除抖音
+  - 修复: xslist网站不识别的问题
  > v0.5.4 2021-06-23
   - 修复: 将手表型号识别为番号的问题: gbx-100
  > v0.5.3 2021-06-18

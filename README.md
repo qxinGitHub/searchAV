@@ -44,7 +44,9 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
- > v0.5.5
+ > v0.5.6 2021-06-27
+  - 修复: 将nas型号识别为番号的问题: ds-220
+ > v0.5.5 2021-06-24
   - 改进: 排除抖音
   - 修复: xslist网站不识别的问题
  > v0.5.4 2021-06-23

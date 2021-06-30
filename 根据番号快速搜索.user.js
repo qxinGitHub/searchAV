@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.5.6
+// @version      0.6.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -168,7 +168,7 @@
                 odiv.appendChild(otherInfo);
                 
             }
-        }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv" || e.target.nodeName =="IMG"){
+        }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv" || e.target.nodeName == "avdiv" ||e.target.nodeName =="IMG"){
             // console.log("这是一条没有意义的消息");
             ;
         }else{
@@ -182,6 +182,8 @@
 
     
     function getInfo(avID,oReload){
+        // console.log("函数:getInfo(avID,oReload)");
+
         GM_xmlhttpRequest({
             method: 'get',
             url: 'https://www.javbus.com/' + avID,
@@ -264,11 +266,18 @@
             }
         });
     }
-    
+
     function addOtherInfo(){
+        // console.log("函数: addOtherInfo()");
+        // console.log(avInfo.starName);
+        var actors = ""
         var str = "";
         if(avInfo.starName && avInfo.starName.length>0){
-            str += "<avdiv class='av-floatdiv'>演员: " + avInfo.starName + "</avdiv>"
+            for(var i=0;i<avInfo.starName.length;i++){
+                actors += "<a class='av-floatdiv' target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
+            }
+            actors = actors.slice(0,actors.length-2);
+            str += "<avdiv class='av-floatdiv'>演员: " + actors + "</avdiv>"
         }
         if(avInfo.titleTrans){
             str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
@@ -318,6 +327,31 @@
                     document.querySelector("#searchAVMenuTitle").innerHTML = "标题(译): " + trans;
 
                 }, 300);
+            },
+            onerror: function (e) {
+                console.error(e);
+            }
+        });
+    }
+
+    function getActorInfo(acterName){
+        console.log("函数: getActorInfo(acterName");
+        // https://xslist.org/search?query=%E3%81%95%E3%81%A4%E3%81%8D%E8%8A%BD%E8%A1%A3&lg=zh
+        var actor_url = 'https://xslist.org/search?query=' + acterName + "&lg=zh";
+        console.log(actor_url);
+        GM_xmlhttpRequest({
+            method: 'GET',
+            url: actor_url,
+            onload: function (data) {
+                setTimeout(function () {
+                    console.log("这是获取到的演员信息");
+                    console.log(data.responseXML);
+                    var parser=new DOMParser();
+                    var htmlDoc=parser.parseFromString(data.responseText, "text/html");
+                    var avActorLink = htmlDoc.querySelector("a");
+                    console.log(avActorLink);
+                }, 300);
+
             },
             onerror: function (e) {
                 console.error(e);

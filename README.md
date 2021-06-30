@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.6.0 2021-06-30
+  - 增加:根据建议给演员增加了链接(半成品)
  > v0.5.6 2021-06-27
   - 修复: 将nas型号识别为番号的问题: ds-220
  > v0.5.5 2021-06-24

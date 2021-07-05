@@ -67,7 +67,7 @@
             var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
             var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
             // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-            var oSpecial = oOnlyText.search(/cat/i)   
+            var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
             // 排除所有包含在此的关键词 :  例: covid-19 win10
             var oExclude = oOnlyText.search(/^(dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|ds|df|qbz|qsz|ak)$/i)  
             //  和番号重名的没有排除: 

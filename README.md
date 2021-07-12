@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.6.1 2021-07-12
+  - 修复: 将cpu识别成番号的问题 cpu100%
  > v0.6.0 2021-06-30
   - 增加: 根据建议给演员增加了链接(半成品)
  > v0.5.6 2021-06-27

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.6.2
+// @version      0.6.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -108,7 +108,7 @@
         var linkJavbusPage = "https://www.javbus.com/" + id;
         var linkJavbus = "https://www.javbus.com/uncensored/search/" + id;
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
-        var linkbtsow = "https://btsow.cam/search/" +id;
+        var linkbtsow = "https://btsow.com/search/" +id;
 
         var aPattern = "<avdiv class='av-floatdiv'>" +
             "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +

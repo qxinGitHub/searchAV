@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.6.3 2021-07-24
+  - 修复: btsow 的网址 调整为 btsow.com 
  > v0.6.2 2021-07-24
   - 修复: 将error识别成番号的问题 error522
  > v0.6.1 2021-07-12

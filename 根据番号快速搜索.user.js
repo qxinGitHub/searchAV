@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.6.3
+// @version      0.7.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -141,7 +141,7 @@
             }else{
                 var oPosition = e.target.getBoundingClientRect()
                 var odiv = createPattenr(e.target.dataset.av)    
-                e.target.appendChild(odiv);
+                document.body.appendChild(odiv);
                 odiv.style.left = oPosition.x + "px";
                 odiv.style.top = oPosition.y + oPosition.height + "px";
                 
@@ -157,6 +157,7 @@
                     timer = setTimeout(() => {
                         console.log("停留超过1.5s, 重新加载图片");
                         getInfo(avid,true);
+                        settingPostion();  //重置位置
                     }, 1500);
                 } else{
                     console.log("需要从网络获取");
@@ -166,6 +167,9 @@
                 var otherInfo = document.createElement('avdivs');
                 otherInfo.innerHTML=addOtherInfo();
                 odiv.appendChild(otherInfo);
+
+                
+                settingPostion();  //重置位置
                 
             }
         }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv" || e.target.nodeName == "avdiv" ||e.target.nodeName =="IMG"){
@@ -175,11 +179,26 @@
             var odiv = document.querySelector(".av-float")
             if(odiv){
                 odiv.parentNode.removeChild(odiv)
+                // console.log("移除");
             }
             clearTimeout(timer);
         }
     }
 
+    // 调整距离底部的距离,以防越界
+    function settingPostion(){
+        var odiv = document.querySelector(".av-float");
+
+        var oClient = odiv.getBoundingClientRect()
+        var oTop = oClient.top;
+        var oHeight = oClient.height;
+        var winHeight = document.documentElement.clientHeight;
+        if(oTop + oHeight > winHeight){
+            console.log("越界");
+            odiv.style.top = "unset";
+            odiv.style.bottom = 0;
+        }
+    }
     
     function getInfo(avID,oReload){
         // console.log("函数:getInfo(avID,oReload)");
@@ -254,6 +273,7 @@
                     var otherInfo = document.createElement('avdivs');
                     otherInfo.appendChild(image);
                     document.querySelector(".av-float").appendChild(otherInfo);
+                    settingPostion();  //重置位置
                     return;
                 }
                 // console.log("获取到的所有信息: ");
@@ -263,6 +283,8 @@
                 otherInfo.innerHTML = addOtherInfo()
                 otherInfo.appendChild(image);
                 document.querySelector(".av-float").appendChild(otherInfo);
+
+                settingPostion();  //重置位置
             }
         });
     }
@@ -362,13 +384,19 @@
     GM_addStyle(".av-float{" +
                     "position: fixed;" +
                     "display: block;" +
-                    "background:rgba(255,255,255,.3);" +
+                    "background:rgba(255,255,255,.8);" +
                     "backdrop-filter: blur(5px);" +
+                    "border:1px solid #fff;" +
                     "padding:6px;" +
                     "margin-top: -2px; " +
+                    "z-index: 99999; " +
+                    "font-size: 14px;" +
                 "}" +
                 "avdiv{" +
                     "display:block;" +
+                "}" +
+                ".av-float img{" +
+                    "max-width: 100%;" +
                 "}" +
     "");
 

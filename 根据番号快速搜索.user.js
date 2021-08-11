@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.7.0
+// @version      0.7.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -48,7 +48,7 @@
     if(webListTag){
         oregExp = oregExp2;
     }
-    console.log("使用的正则: " + oregExp);
+    // console.log("使用的正则: " + oregExp);
 
     // 查找番号, 匹配最基础的番号
     findAndReplaceDOMText(allHTML, {
@@ -106,7 +106,7 @@
 
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
-        var linkJavbus = "https://www.javbus.com/uncensored/search/" + id;
+        var linkJavbus = "https://www.javbus.com/search/" + id;
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
         var linkbtsow = "https://btsow.com/search/" +id;
 
@@ -188,13 +188,13 @@
     // 调整距离底部的距离,以防越界
     function settingPostion(){
         var odiv = document.querySelector(".av-float");
-
+        if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
         var oTop = oClient.top;
         var oHeight = oClient.height;
         var winHeight = document.documentElement.clientHeight;
         if(oTop + oHeight > winHeight){
-            console.log("越界");
+            // console.log("越界");
             odiv.style.top = "unset";
             odiv.style.bottom = 0;
         }
@@ -274,6 +274,14 @@
                     otherInfo.appendChild(image);
                     document.querySelector(".av-float").appendChild(otherInfo);
                     settingPostion();  //重置位置
+
+                    // 会出现第一次依旧越界的情况, 已浏览过的番号在重新加载图片的情况下
+                        // 每秒检查5次, 5s后停止检查
+                    const interval = setInterval(settingPostion,200);
+                    setTimeout(() => { 
+                        clearInterval(interval)
+                    }, 2000)
+
                     return;
                 }
                 // console.log("获取到的所有信息: ");
@@ -341,8 +349,8 @@
                         trans.push(getransCont.trans);
                     }
                     Trans.trans = trans;
-                    console.log("翻译结果:");
-                    console.log(trans);
+                    // console.log("翻译结果:");
+                    // console.log(trans);
 
                     localInfo[Trans.id].titleTrans = trans;
                     GM_setValue("avInfo",localInfo);

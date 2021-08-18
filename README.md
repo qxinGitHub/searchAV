@@ -44,9 +44,11 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.7.2 2021-08-18
+  - 修复: 将AES识别成番号的问题 例:AES-256
  > v0.7.1 2021-08-11
   - 修复: javbus链接错误
-  - 修复: 图片在页面底部看不到的问题
+  - 修复: 图片在页面底部看不到的问题(仅限于已浏览过的番号, 第一次重新加载图片的情况)
  > v0.7.0 2021-08-10
   - 修复: 经常被遮挡的问题
   - 修复: 当番号在页面底部会导致无法查看和操作的问题, 感谢[jywyf](https://greasyfork.org/zh-CN/scripts/423350/discussions/93317)老哥一直源源不断的建议

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.7.2
+// @version      0.7.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -18,6 +18,7 @@
 // @grant       GM_setValue
 // @grant       GM_xmlhttpRequest
 // @grant       GM_setClipboard
+// @run-at      document-end
 
 // ==/UserScript==
 
@@ -41,6 +42,7 @@
     var webList = [
         // https://xslist.org/zh/model/69636.html
         /^https?:\/\/xslist\.org\//,
+        /^https?:\/\/192\.168\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)/,
     ]
     var webListTag = webList.some(function hashUrl(element, index, array){
             return ~window.location.href.search(element);
@@ -51,58 +53,64 @@
     // console.log("使用的正则: " + oregExp);
 
     // 查找番号, 匹配最基础的番号
-    findAndReplaceDOMText(allHTML, {
-        // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
-        find:oregExp,
-        replace: function(portion) {
-            var odiv = document.createElement('avdivs');
-            odiv.classList.add("avclass");
-            odiv.style.color = "green";
-            // console.log(portion);
-            var otext = portion.text;
-
-            if(otext.length<4) return otext;
-
-            var otemp = otext.indexOf("-"); // 如果没有,返回-1
-            var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
-            var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
-            // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-            var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
-            // 排除所有包含在此的关键词 :  例: covid-19 win10
-            var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|ds|error|df|qbz|qsz|ak)$/i)  
-            //  和番号重名的没有排除: 
-            // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
-            // 特殊的:covid|aptx|rx|mh|bmw
-            // 名称:snh|bej|gnz|ckg|akb
-            // 显卡:gp|gt|gts|gtx
-            // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
-            // console.log(portion);
-            // console.log("完整: " + otext);
-            // console.log("英文: " + oOnlyText);
-            // console.log("数字: " + oOnlyNum);
-            // console.log("是否有横杠: " + otemp);
-            // console.log("是否特殊: " + oSpecial);
-            // console.log("是否排除: " + oExclude);
-            if(oExclude>-1){
-                return otext;
-            }
-
-            if(otemp<0){    // 没有横杠
-                if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
-                    return otext;
-                }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
-                    var oindex = otext.search(/\d/);
-                    otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
-                } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+    function findAndReplaceDOMTextFun(){
+        console.log(allHTML);
+        findAndReplaceDOMText(allHTML, {
+            // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
+            find:oregExp,
+            replace: function(portion) {
+                var odiv = document.createElement('avdivs');
+                odiv.classList.add("avclass");
+                odiv.style.color = "green";
+                // console.log(portion);
+                var otext = portion.text;
+    
+                if(otext.length<4) return otext;
+    
+                var otemp = otext.indexOf("-"); // 如果没有,返回-1
+                var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
+                var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
+                // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
+                var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
+                // 排除所有包含在此的关键词 :  例: covid-19 win10
+                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|ds|error|df|qbz|qsz|ak)$/i)  
+                //  和番号重名的没有排除: 
+                // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
+                // 特殊的:covid|aptx|rx|mh|bmw
+                // 名称:snh|bej|gnz|ckg|akb
+                // 显卡:gp|gt|gts|gtx
+                // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
+                console.log(portion);
+                // console.log("完整: " + otext);
+                // console.log("英文: " + oOnlyText);
+                // console.log("数字: " + oOnlyNum);
+                // console.log("是否有横杠: " + otemp);
+                // console.log("是否特殊: " + oSpecial);
+                // console.log("是否排除: " + oExclude);
+                if(oExclude>-1){
                     return otext;
                 }
+    
+                if(otemp<0){    // 没有横杠
+                    if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
+                        return otext;
+                    }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
+                        var oindex = otext.search(/\d/);
+                        otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+                    } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+                        return otext;
+                    }
+                }
+                
+                odiv.dataset.av = otext;        
+                odiv.innerHTML = otext;
+                return odiv;
             }
-            
-            odiv.dataset.av = otext;        
-            odiv.innerHTML = otext;
-            return odiv;
-        }
-    });
+        });
+    }
+    findAndReplaceDOMTextFun();
+    var findFun = setInterval(findAndReplaceDOMTextFun,1000);
+
 
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
@@ -276,7 +284,7 @@
                     settingPostion();  //重置位置
 
                     // 会出现第一次依旧越界的情况, 已浏览过的番号在重新加载图片的情况下
-                        // 每秒检查5次, 5s后停止检查
+                        // 每秒检查5次, 2s后停止检查
                     const interval = setInterval(settingPostion,200);
                     setTimeout(() => { 
                         clearInterval(interval)
@@ -392,9 +400,11 @@
     GM_addStyle(".av-float{" +
                     "position: fixed;" +
                     "display: block;" +
+                    "color: #000;" +
                     "background:rgba(255,255,255,.8);" +
                     "backdrop-filter: blur(5px);" +
                     "border:1px solid #fff;" +
+                    "border-radius: 4px;" +
                     "padding:6px;" +
                     "margin-top: -2px; " +
                     "z-index: 99999; " +
@@ -405,6 +415,10 @@
                 "}" +
                 ".av-float img{" +
                     "max-width: 100%;" +
+                "}" +
+                ".av-float a:link," +
+                ".av-float a:visited{" +
+                    "color: #000" +
                 "}" +
     "");
 

@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.7.4 2021-09-04
+  - 修复: 将hp识别成番号的问题 例:hp-450
  > v0.7.3 2021-08-20
   - 修复: 网页延迟载入时,无法识别的问题
   - 修复: 将nc识别成番号的问题 例:NC-17

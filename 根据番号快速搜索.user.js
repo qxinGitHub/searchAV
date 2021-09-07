@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.7.4
+// @version      0.7.5
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -13,6 +13,10 @@
 // @exclude	    *://greasyfork.org/*
 // @exclude	    *://bilibili.com/*
 // @exclude	    *://www.douyin.com/*
+// @exclude	    *.1688.com/*
+// @exclude	    *.taobao.com/*
+// @exclude	    *.jd.com/*
+// @exclude	    *.smzdm.com/*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue

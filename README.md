@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.7.7 2021-09-26
+  - 改进: 排除知乎
  > v0.7.6 2021-09-16
   - 修复: v2ex的网址不全
  > v0.7.5 2021-09-07

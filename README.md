@@ -44,6 +44,8 @@ H4610
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ## 更新历史
+ > v0.7.9 2021-11-05
+  - 改进: 排除显卡型号和帧率 例: xfx588, fps150
  > v0.7.8 2021-10-30
   - 改进: 排除手机镜头型号 例: imx586
  > v0.7.7 2021-09-26

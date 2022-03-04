@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.7.9
+// @version      0.8.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -13,12 +13,14 @@
 // @exclude	    *://www.v2ex.com/*
 // @exclude	    *://greasyfork.org/*
 // @exclude	    *://bilibili.com/*
+// @exclude	    *://www.bilibili.com/*
 // @exclude	    *://www.douyin.com/*
 // @exclude	    *.1688.com/*
 // @exclude	    *.taobao.com/*
 // @exclude	    *.jd.com/*
 // @exclude	    *.smzdm.com/*
 // @exclude	    *.zhihu.com/*
+// @exclude	    *.qq.com/*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -67,7 +69,9 @@
             replace: function(portion) {
                 var odiv = document.createElement('avdivs');
                 odiv.classList.add("avclass");
-                odiv.style.color = "green";
+                odiv.style.textDecoration = "underline green";
+                // odiv.style.textDecorationColor = "green";
+                
                 // console.log(portion);
                 var otext = portion.text;
     
@@ -86,7 +90,7 @@
                 // 名称:snh|bej|gnz|ckg|akb
                 // 显卡:gp|gt|gts|gtx
                 // 真理:df|qbz|qsz|ak  例:太多,没有进行排除 https://zhidao.baidu.com/question/2051972899944030547.html?qbl=relate_question_0&word=%CE%E4%C6%F7%BC%F2%B3%C6
-                console.log(portion);
+                // console.log(portion);
                 // console.log("完整: " + otext);
                 // console.log("英文: " + oOnlyText);
                 // console.log("数字: " + oOnlyNum);
@@ -115,27 +119,27 @@
         });
     }
     findAndReplaceDOMTextFun();
-    var findFun = setInterval(findAndReplaceDOMTextFun,1000);
 
+    // 下面这行会导致无限循环,无限嵌套
+    // var findFun = setInterval(findAndReplaceDOMTextFun,1000);
+    // setTimeout(findAndReplaceDOMTextFun,1500);
 
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
+        var linkJavdb = "https://javdb.com/search?q=" + id + "&f=all";
         var linkJavbus = "https://www.javbus.com/search/" + id;
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
         var linkbtsow = "https://btsow.com/search/" +id;
 
-        var aPattern = "<avdiv class='av-floatdiv'>" +
-            "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +
-            "</avdiv><avdiv class='av-floatdiv'>" +
-            "<a href='" + linkJavbus +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 搜索</a>" +
-            "</avdiv><avdiv class='av-floatdiv'>" +
-            "<a href='" + linkJavLib +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>javLib 搜索</a>" +
-            "</avdiv><avdiv class='av-floatdiv'>" +
-            "<a href='" + linkbtsow +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>btsow 搜索</a>" +
-            "</avdiv>";
+        var aPattern = "<avdiv class='av-floatdiv savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
+                        "<avdiv class='av-floatdiv savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
+                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavdb +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javDB 搜索</a>" + "</avdiv> "+
+                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>javLib 搜索</a>" +"</avdiv>" +
+                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkbtsow +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>btsow 搜索</a>" + "</avdiv>";
         var ofloat = document.createElement("avdiv")
         ofloat.classList.add("av-float");
         ofloat.innerHTML=aPattern;
+        ofloat.addEventListener("mouseleave",mouseleave)
         return ofloat;
     }
 
@@ -153,11 +157,16 @@
             if(document.querySelector(".av-float")){
                 console.log("已存在");
             }else{
-                var oPosition = e.target.getBoundingClientRect()
+                // var oPosition = e.target.getBoundingClientRect()
                 var odiv = createPattenr(e.target.dataset.av)    
                 document.body.appendChild(odiv);
-                odiv.style.left = oPosition.x + "px";
-                odiv.style.top = oPosition.y + oPosition.height + "px";
+                // odiv.style.left = oPosition.x + "px";
+                // odiv.style.top = oPosition.y + oPosition.height + "px";
+
+                var divClientRect = odiv.getBoundingClientRect()
+                var divWidth = divClientRect.right - divClientRect.left;
+                odiv.style.left = e.pageX - divWidth/2 + "px";
+                odiv.style.top = e.pageY + "px";
                 
                 avInfo = {};
                 localInfo = GM_getValue("avInfo");
@@ -186,17 +195,66 @@
                 settingPostion();  //重置位置
                 
             }
-        }else if(e.target.className=="av-float" || e.target.className=="avclass"|| e.target.className=="av-floatdiv" || e.target.nodeName == "avdiv" ||e.target.nodeName =="IMG"){
-            // console.log("这是一条没有意义的消息");
-            ;
-        }else{
+        }
+    }
+
+    function mouseleave(){
+        console.log("lll");
             var odiv = document.querySelector(".av-float")
             if(odiv){
                 odiv.parentNode.removeChild(odiv)
-                // console.log("移除");
+                console.log("移除");
             }
             clearTimeout(timer);
-        }
+    }
+    // 鼠标选中弹出菜单
+    document.onmouseup = function(e){
+        console.log(e);
+        var selectText = window.getSelection().toString().trim();
+        console.log("-------测试选中内容");
+        console.log(selectText);
+        // if (selectText.length>10) return; //如果过长,退出
+        var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,4}/i);
+        if(!oav) return;  //如果没搜索到,退出
+        console.log("匹配后的结果");
+        console.log(oav[0]);
+        
+
+        var avid = oav[0]  
+
+            var odiv = createPattenr(avid)    
+            document.body.appendChild(odiv);
+
+            var divClientRect = odiv.getBoundingClientRect()
+            var divWidth = divClientRect.right - divClientRect.left;
+            odiv.style.left = e.pageX - divWidth/2 + "px";
+            odiv.style.top = e.pageY + "px";
+            
+            avInfo = {};
+            localInfo = GM_getValue("avInfo");
+            if(!localInfo){
+                GM_setValue("avInfo",{});
+                localInfo = {};
+            }
+            if(localInfo[avid]){
+                console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
+                avInfo = localInfo[avid];
+                timer = setTimeout(() => {
+                    console.log("停留超过1.5s, 重新加载图片");
+                    getInfo(avid,true);
+                    settingPostion();  //重置位置
+                }, 1500);
+            } else{
+                console.log("需要从网络获取");
+                getInfo(avid);
+            }
+            
+            var otherInfo = document.createElement('avdivs');
+            otherInfo.innerHTML=addOtherInfo();
+            odiv.appendChild(otherInfo);
+
+            settingPostion();  //重置位置
+        
     }
 
     // 调整距离底部的距离,以防越界
@@ -207,10 +265,15 @@
         var oTop = oClient.top;
         var oHeight = oClient.height;
         var winHeight = document.documentElement.clientHeight;
-        if(oTop + oHeight > winHeight){
+        if(oTop + oHeight > winHeight){ //超越了底边
             // console.log("越界");
+            odiv.style.position = "fixed";
             odiv.style.top = "unset";
             odiv.style.bottom = 0;
+        }
+        if(oClient.x<0){   //左边
+            odiv.style.position = "fixed";
+            odiv.style.left = 0;
         }
     }
     
@@ -263,6 +326,7 @@
                 var imgNum = imgSrc.search(/(imgs|pics)/i);
                 imgSrc = imgSrc.slice(imgNum);
                 image.src = "https://www.javbus.com/" + imgSrc;
+                image.removeAttribute("title"); //鼠标经过的时候会触发离开事件,所以删掉
 
                 // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
                 // 名称: 显示防盗链图片 for Inoreader
@@ -281,12 +345,13 @@
                 // 存储
                 localInfo[avID] = avInfo;
                 GM_setValue("avInfo",localInfo);
-                
+                if(!document.querySelector(".av-float")){return};
                 if(oReload){
                     console.log("图片加载完成");
                     var otherInfo = document.createElement('avdivs');
                     otherInfo.appendChild(image);
                     document.querySelector(".av-float").appendChild(otherInfo);
+
                     settingPostion();  //重置位置
 
                     // 会出现第一次依旧越界的情况, 已浏览过的番号在重新加载图片的情况下
@@ -321,7 +386,7 @@
                 actors += "<a class='av-floatdiv' target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
             }
             actors = actors.slice(0,actors.length-2);
-            str += "<avdiv class='av-floatdiv'>演员: " + actors + "</avdiv>"
+            str += "<avdiv class='av-floatdiv' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
         }
         if(avInfo.titleTrans){
             str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
@@ -368,7 +433,9 @@
 
                     localInfo[Trans.id].titleTrans = trans;
                     GM_setValue("avInfo",localInfo);
-                    document.querySelector("#searchAVMenuTitle").innerHTML = "标题(译): " + trans;
+                    if(document.querySelector("#searchAVMenuTitle")){
+                        document.querySelector("#searchAVMenuTitle").innerHTML = "标题(译): " + trans;
+                    }
 
                 }, 300);
             },
@@ -404,7 +471,7 @@
     }
 
     GM_addStyle(".av-float{" +
-                    "position: fixed;" +
+                    "position: absolute;" +
                     "display: block;" +
                     "color: #000;" +
                     "background:rgba(255,255,255,.8);" +
@@ -415,8 +482,20 @@
                     "margin-top: -2px; " +
                     "z-index: 99999; " +
                     "font-size: 14px;" +
+                    "max-width:666px;" +
+                    "box-shadow: 6px 6px 6px #ccc;" +
+                    "transition:0.5s;" +
                 "}" +
-                "avdiv{" +
+                ".savlink{" +
+                    "margin: 0px 10px 0px 5px;" +
+                    "border-radius: 4px;" +
+                    "padding: 3px;" +
+                    "background: aliceblue;" +
+                "}" +
+                ".savlink a{" +
+                    "text-decoration:none;" +
+                "}" +
+                "avdivs avdiv{" +
                     "display:block;" +
                 "}" +
                 ".av-float img{" +

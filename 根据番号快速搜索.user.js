@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.8.0
+// @version      0.8.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -157,16 +157,17 @@
             if(document.querySelector(".av-float")){
                 console.log("已存在");
             }else{
-                // var oPosition = e.target.getBoundingClientRect()
+                var oPosition = e.target.getBoundingClientRect()
                 var odiv = createPattenr(e.target.dataset.av)    
                 document.body.appendChild(odiv);
-                // odiv.style.left = oPosition.x + "px";
-                // odiv.style.top = oPosition.y + oPosition.height + "px";
+                odiv.style.left = oPosition.x + "px";
+                odiv.style.top = oPosition.y + oPosition.height + "px";
 
-                var divClientRect = odiv.getBoundingClientRect()
-                var divWidth = divClientRect.right - divClientRect.left;
-                odiv.style.left = e.pageX - divWidth/2 + "px";
-                odiv.style.top = e.pageY + "px";
+                odiv.style.position = "fixed";
+                // var divClientRect = odiv.getBoundingClientRect()
+                // var divWidth = divClientRect.right - divClientRect.left;
+                // odiv.style.left = e.pageX - divWidth/2 + "px";
+                // odiv.style.top = e.pageY + "px";
                 
                 avInfo = {};
                 localInfo = GM_getValue("avInfo");
@@ -209,15 +210,18 @@
     }
     // 鼠标选中弹出菜单
     document.onmouseup = function(e){
-        console.log(e);
+        // console.log(e);
         var selectText = window.getSelection().toString().trim();
-        console.log("-------测试选中内容");
-        console.log(selectText);
-        // if (selectText.length>10) return; //如果过长,退出
+        // console.log("-------测试选中内容");
+        // console.log(selectText);
+        if (selectText.length>20) return; //如果过长,退出
         var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,4}/i);
         if(!oav) return;  //如果没搜索到,退出
-        console.log("匹配后的结果");
-        console.log(oav[0]);
+        if(document.querySelector(".av-float")) return; //如果已经存在菜单, 退出
+
+
+        // console.log("匹配后的结果");
+        // console.log(oav[0]);
         
 
         var avid = oav[0]  
@@ -229,7 +233,8 @@
             var divWidth = divClientRect.right - divClientRect.left;
             odiv.style.left = e.pageX - divWidth/2 + "px";
             odiv.style.top = e.pageY + "px";
-            
+            odiv.style.position = "absolute";
+
             avInfo = {};
             localInfo = GM_getValue("avInfo");
             if(!localInfo){
@@ -471,7 +476,7 @@
     }
 
     GM_addStyle(".av-float{" +
-                    "position: absolute;" +
+                    // "position: absolute;" +
                     "display: block;" +
                     "color: #000;" +
                     "background:rgba(255,255,255,.8);" +

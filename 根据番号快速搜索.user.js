@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.8.1
+// @version      0.8.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -71,6 +71,9 @@
                 odiv.classList.add("avclass");
                 odiv.style.textDecoration = "underline green";
                 // odiv.style.textDecorationColor = "green";
+
+                odiv.addEventListener("mouseenter",avmouseenter);
+                odiv.addEventListener("mouseleave",avmmouseleave);
                 
                 // console.log(portion);
                 var otext = portion.text;
@@ -139,7 +142,7 @@
         var ofloat = document.createElement("avdiv")
         ofloat.classList.add("av-float");
         ofloat.innerHTML=aPattern;
-        ofloat.addEventListener("mouseleave",mouseleave)
+        // ofloat.addEventListener("mouseleave",mouseleave)
         return ofloat;
     }
 
@@ -149,80 +152,78 @@
             GM_setClipboard(e.target.dataset.av)
         }
     }
-    // 鼠标划过显示信息
-    document.onmouseover = function(e){
-        if(e.target.className=="avclass"){
-            var avid = e.target.dataset.av;
 
-            if(document.querySelector(".av-float")){
-                console.log("已存在");
-            }else{
-                var oPosition = e.target.getBoundingClientRect()
-                var odiv = createPattenr(e.target.dataset.av)    
-                document.body.appendChild(odiv);
-                odiv.style.left = oPosition.x + "px";
-                odiv.style.top = oPosition.y + oPosition.height + "px";
-
-                odiv.style.position = "fixed";
-                // var divClientRect = odiv.getBoundingClientRect()
-                // var divWidth = divClientRect.right - divClientRect.left;
-                // odiv.style.left = e.pageX - divWidth/2 + "px";
-                // odiv.style.top = e.pageY + "px";
-                
-                avInfo = {};
-                localInfo = GM_getValue("avInfo");
-                if(!localInfo){
-                    GM_setValue("avInfo",{});
-                    localInfo = {};
-                }
-                if(localInfo[avid]){
-                    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
-                    avInfo = localInfo[avid];
-                    timer = setTimeout(() => {
-                        console.log("停留超过1.5s, 重新加载图片");
-                        getInfo(avid,true);
-                        settingPostion();  //重置位置
-                    }, 1500);
-                } else{
-                    console.log("需要从网络获取");
-                    getInfo(e.target.dataset.av);
-                }
-                
-                var otherInfo = document.createElement('avdivs');
-                otherInfo.innerHTML=addOtherInfo();
-                odiv.appendChild(otherInfo);
-
-                
-                settingPostion();  //重置位置
-                
+    // 鼠标滑过 增加菜单
+    function avmouseenter(e){
+        var avid = e.target.dataset.av;
+        // if(document.querySelector(".av-float")){
+        var avdiv = document.querySelector(".av-float")
+        if(avdiv){
+            if(avdiv){
+                avdiv.parentNode.removeChild(avdiv)
             }
         }
+        // }else{
+            var oPosition = e.target.getBoundingClientRect()
+            var odiv = createPattenr(e.target.dataset.av);
+            e.target.appendChild(odiv);
+            // document.body.appendChild(odiv);
+            odiv.style.left = oPosition.x + "px";
+            odiv.style.top = oPosition.y + oPosition.height + "px";
+
+            odiv.style.position = "fixed";
+            // var divClientRect = odiv.getBoundingClientRect()
+            // var divWidth = divClientRect.right - divClientRect.left;
+            // odiv.style.left = e.pageX - divWidth/2 + "px";
+            // odiv.style.top = e.pageY + "px";
+            
+            avInfo = {};
+            localInfo = GM_getValue("avInfo");
+            if(!localInfo){
+                GM_setValue("avInfo",{});
+                localInfo = {};
+            }
+            if(localInfo[avid]){
+                console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
+                avInfo = localInfo[avid];
+                timer = setTimeout(() => {
+                    // console.log("停留超过0.5s, 重新加载图片");
+                    getInfo(avid,true);
+                    settingPostion();  //重置位置
+                }, 500);
+            } else{
+                // console.log("需要从网络获取");
+                getInfo(e.target.dataset.av);
+            }
+            
+            var otherInfo = document.createElement('avdivs');
+            otherInfo.innerHTML=addOtherInfo();
+            odiv.appendChild(otherInfo);
+ 
+            settingPostion();  //重置位置
+            
+        // }
+    }
+    // 鼠标划出  移除菜单
+    function avmmouseleave(e){
+        var odiv = document.querySelector(".av-float");
+        if(odiv){
+            odiv.parentNode.removeChild(odiv);
+            // console.log("移除");
+        }
+        clearTimeout(timer);
     }
 
-    function mouseleave(){
-        console.log("lll");
-            var odiv = document.querySelector(".av-float")
-            if(odiv){
-                odiv.parentNode.removeChild(odiv)
-                console.log("移除");
-            }
-            clearTimeout(timer);
-    }
+
     // 鼠标选中弹出菜单
     document.onmouseup = function(e){
         // console.log(e);
         var selectText = window.getSelection().toString().trim();
-        // console.log("-------测试选中内容");
-        // console.log(selectText);
-        if (selectText.length>20) return; //如果过长,退出
+
+        if (selectText.length>10) return; //如果过长,退出
         var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,4}/i);
         if(!oav) return;  //如果没搜索到,退出
         if(document.querySelector(".av-float")) return; //如果已经存在菜单, 退出
-
-
-        // console.log("匹配后的结果");
-        // console.log(oav[0]);
-        
 
         var avid = oav[0]  
 
@@ -248,7 +249,7 @@
                     console.log("停留超过1.5s, 重新加载图片");
                     getInfo(avid,true);
                     settingPostion();  //重置位置
-                }, 1500);
+                }, 500);
             } else{
                 console.log("需要从网络获取");
                 getInfo(avid);
@@ -327,11 +328,24 @@
                 }
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
+                if(!image){
+                    // 删掉具体的javbus页面
+                    var linkJavbusPage = document.querySelector(".linkJavbusPage");
+                    if(linkJavbusPage){
+                        linkJavbusPage.parentNode.removeChild(linkJavbusPage);
+                    }
+                    // var linkJavbus = document.querySelector(".linkJavbus");
+                    // if(linkJavbus){
+                    //     linkJavbus.parentNode.removeChild(linkJavbus);
+                    // }
+                    return;
+                }
                 var imgSrc = image.src;
                 var imgNum = imgSrc.search(/(imgs|pics)/i);
                 imgSrc = imgSrc.slice(imgNum);
                 image.src = "https://www.javbus.com/" + imgSrc;
                 image.removeAttribute("title"); //鼠标经过的时候会触发离开事件,所以删掉
+                image.classList.add("avimg");
 
                 // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
                 // 名称: 显示防盗链图片 for Inoreader
@@ -351,8 +365,10 @@
                 localInfo[avID] = avInfo;
                 GM_setValue("avInfo",localInfo);
                 if(!document.querySelector(".av-float")){return};
+                // 判断是否重复加载图片
+                if(document.querySelector(".avimg")){return};
                 if(oReload){
-                    console.log("图片加载完成");
+                    // console.log("图片加载完成");
                     var otherInfo = document.createElement('avdivs');
                     otherInfo.appendChild(image);
                     document.querySelector(".av-float").appendChild(otherInfo);
@@ -496,6 +512,7 @@
                     "border-radius: 4px;" +
                     "padding: 3px;" +
                     "background: aliceblue;" +
+                    "display: initial;" +
                 "}" +
                 ".savlink a{" +
                     "text-decoration:none;" +

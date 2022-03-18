@@ -227,8 +227,9 @@
 
         var avid = oav[0]  
 
-            var odiv = createPattenr(avid)    
+            var odiv = createPattenr(avid);
             document.body.appendChild(odiv);
+            odiv.addEventListener("mouseleave",avmmouseleave);
 
             var divClientRect = odiv.getBoundingClientRect()
             var divWidth = divClientRect.right - divClientRect.left;

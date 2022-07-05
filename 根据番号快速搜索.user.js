@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.8.3
+// @version      0.8.4
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -45,7 +45,7 @@
     var allHTML = document.querySelector("body");
 
     // 对于一些网站,可能需要第二种正则来匹配
-    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}-?\d{2,4}(?!(\w|\d|-))/gi;
+    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,4}(?!(\w|\d|-))/gi;
     var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;
     var webList = [
         // https://xslist.org/zh/model/69636.html
@@ -62,7 +62,7 @@
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
-        console.log(allHTML);
+        // console.log(allHTML);
         findAndReplaceDOMText(allHTML, {
             // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
             find:oregExp,
@@ -84,7 +84,7 @@
                 var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
                 // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-                var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
+                // var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
                 // 排除所有包含在此的关键词 :  例: covid-19 win10
                 var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|imx|xfs|fps|ds|error|hp|df|qbz|qsz|ak)$/i)  
                 //  和番号重名的没有排除: 
@@ -105,12 +105,15 @@
                 }
     
                 if(otemp<0){    // 没有横杠
-                    if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
-                        return otext;
-                    }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
-                        var oindex = otext.search(/\d/);
-                        otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
-                    } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+                    // if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
+                    //     return otext;
+                    // }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
+                    //     // var oindex = otext.search(/\d/);
+                    //     otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+                    // } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+                    //     return otext;
+                    // }
+                    if(oOnlyNum.length!=3){
                         return otext;
                     }
                 }
@@ -122,6 +125,16 @@
         });
     }
     findAndReplaceDOMTextFun();
+
+    // 增加中间的横杠
+    function addHyphen(otext){
+        otext = otext.replace(/\s+/g,"")
+        if(otext.indexOf("-")<0){
+            var oindex = otext.search(/\d/);
+            otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+        }
+        return otext;
+    }
 
     // 下面这行会导致无限循环,无限嵌套
     // var findFun = setInterval(findAndReplaceDOMTextFun,1000);
@@ -148,14 +161,17 @@
 
     // 点击番号复制
     document.onclick=function(e){
-        if(e.target.dataset.av){
-            GM_setClipboard(e.target.dataset.av)
+        var avid = e.target.dataset.av
+        if(avid){
+            avid = addHyphen(avid)
+            GM_setClipboard(avid)
         }
     }
 
     // 鼠标滑过 增加菜单
     function avmouseenter(e){
         var avid = e.target.dataset.av;
+        avid = addHyphen(avid);
         // if(document.querySelector(".av-float")){
         var avdiv = document.querySelector(".av-float")
         if(avdiv){
@@ -193,13 +209,15 @@
                 }, 500);
             } else{
                 // console.log("需要从网络获取");
-                getInfo(e.target.dataset.av);
+                getInfo(avid);
             }
             
             var otherInfo = document.createElement('avdivs');
             otherInfo.innerHTML=addOtherInfo();
             odiv.appendChild(otherInfo);
- 
+            
+            odiv.parentNode.title = "";
+            odiv.parentNode.parentNode.title = "";
             settingPostion();  //重置位置
             
         // }
@@ -218,15 +236,15 @@
     // 鼠标选中弹出菜单
     document.onmouseup = function(e){
         // console.log(e);
-        var selectText = window.getSelection().toString().trim();
-
-        if (selectText.length>10) return; //如果过长,退出
-        var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,4}/i);
+        var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
+        if (selectText.length>15) return; //如果过长,退出
+        var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,5}/i);
         if(!oav) return;  //如果没搜索到,退出
         if(document.querySelector(".av-float")) return; //如果已经存在菜单, 退出
-
+        
         var avid = oav[0]  
-
+        
+            avid = addHyphen(avid);
             var odiv = createPattenr(avid);
             document.body.appendChild(odiv);
             odiv.addEventListener("mouseleave",avmmouseleave);
@@ -270,22 +288,28 @@
         if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
         var oTop = oClient.top;
-        var oHeight = oClient.height;
-        var winHeight = document.documentElement.clientHeight;
-        if(oTop + oHeight > winHeight){ //超越了底边
+        var oHeight = oClient.height; //自身高度
+        // var oWidth = oClient.Width; // 自身宽度
+        var winHeight = document.documentElement.clientHeight; //可视窗口高度
+        var winWidth = document.documentElement.clientWidth; //可视窗口宽度
+        if(oTop + oHeight > winHeight){ // 越出了屏幕底边
             // console.log("越界");
             odiv.style.position = "fixed";
             odiv.style.top = "unset";
             odiv.style.bottom = 0;
-        }
-        if(oClient.x<0){   //左边
+        }else if(oClient.x<0){   //左边
             odiv.style.position = "fixed";
             odiv.style.left = 0;
+        }else if(winWidth-oClient.x<600){  // 越出了屏幕右边
+            odiv.style.position = "fixed";
+            odiv.style.right = 0;
+            odiv.style.left = "";
         }
     }
     
     function getInfo(avID,oReload){
         // console.log("函数:getInfo(avID,oReload)");
+        console.log("从网络获取图片中");
 
         GM_xmlhttpRequest({
             method: 'get',
@@ -320,7 +344,7 @@
                 // 其他
                 var other = htmlDoc.querySelectorAll(".header");
                 for(var i=0;i<other.length;i++){
-                    if(other[i].innerHTML=="發行日期:"){
+                    if(other[i].innerHTML=="发行日期:"){
                         avInfo.date = other[i].parentNode.innerText
                     }
                     if(other[i].innerHTML=="系列:"){
@@ -330,15 +354,13 @@
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
                 if(!image){
-                    // 删掉具体的javbus页面
+                    // 禁用 “javbus页面” 的搜索
                     var linkJavbusPage = document.querySelector(".linkJavbusPage");
                     if(linkJavbusPage){
-                        linkJavbusPage.parentNode.removeChild(linkJavbusPage);
+                        // linkJavbusPage.parentNode.removeChild(linkJavbusPage);
+                        linkJavbusPage.classList.add("savdisabled");
+                        document.querySelector(".linkJavbusPage a").style.color = "#000";
                     }
-                    // var linkJavbus = document.querySelector(".linkJavbus");
-                    // if(linkJavbus){
-                    //     linkJavbus.parentNode.removeChild(linkJavbus);
-                    // }
                     return;
                 }
                 var imgSrc = image.src;
@@ -394,6 +416,9 @@
                 document.querySelector(".av-float").appendChild(otherInfo);
 
                 settingPostion();  //重置位置
+                setTimeout(() => { 
+                    settingPostion();
+                }, 500)
             }
         });
     }
@@ -495,6 +520,7 @@
     GM_addStyle(".av-float{" +
                     // "position: absolute;" +
                     "display: block;" +
+                    "text-align: left;" +
                     "color: #000;" +
                     "background:rgba(255,255,255,.8);" +
                     "backdrop-filter: blur(5px);" +
@@ -509,24 +535,31 @@
                     "transition:0.5s;" +
                 "}" +
                 ".savlink{" +
-                    "margin: 0px 10px 0px 5px;" +
+                    "margin: 4px 10px 4px 5px;" +
                     "border-radius: 4px;" +
                     "padding: 3px;" +
                     "background: aliceblue;" +
-                    "display: initial;" +
+                    "display: inline-block;" +
                 "}" +
                 ".savlink a{" +
                     "text-decoration:none;" +
                 "}" +
                 "avdivs avdiv{" +
                     "display:block;" +
+                    "margin-bottom: 5px;" +
                 "}" +
-                ".av-float img{" +
+                "avdivs .av-float img{" +
+                    "height: 100%;" +
                     "max-width: 100%;" +
                 "}" +
                 ".av-float a:link," +
                 ".av-float a:visited{" +
                     "color: #000" +
+                "}" +
+                ".savdisabled a{" +
+                    "pointer-events:none;" +
+                    "text-decoration: line-through;" +
+                    "color: #000; " +
                 "}" +
     "");
 

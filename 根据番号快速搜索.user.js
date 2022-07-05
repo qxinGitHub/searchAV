@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.8.4
+// @version      0.9.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @match        *://**/*
@@ -24,6 +24,7 @@
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
+// @grant       GM_deleteValue
 // @grant       GM_xmlhttpRequest
 // @grant       GM_setClipboard
 // @run-at      document-end
@@ -42,11 +43,25 @@
         trans:[]
     }
 
+    // 获取网页
     var allHTML = document.querySelector("body");
 
+    // 删掉以前保存的信息 v0.8.5 2022-07-05
+    if(GM_getValue("avInfo")) {
+        GM_deleteValue("avInfo")
+    }
+    
+    // 取出本地的信息 
+    localInfo = GM_getValue("avInfo2");
+    if(!localInfo){
+        GM_setValue("avInfo2",{});
+        localInfo = {};
+    }
+    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
+
     // 对于一些网站,可能需要第二种正则来匹配
-    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,4}(?!(\w|\d|-))/gi;
-    var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;
+    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,4}(?!(\w|\d|-))/gi;  // 可以避免很多误报
+    var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;     //更容易将字符串识别成番号, 误报比较严重
     var webList = [
         // https://xslist.org/zh/model/69636.html
         /^https?:\/\/xslist\.org\//,
@@ -58,7 +73,8 @@
     if(webListTag){
         oregExp = oregExp2;
     }
-    // console.log("使用的正则: " + oregExp);
+
+    findAndReplaceDOMTextFun();
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
@@ -67,24 +83,18 @@
             // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
             find:oregExp,
             replace: function(portion) {
+                var otext = portion.text;
+                if(otext.length<4) return otext;
+
                 var odiv = document.createElement('avdivs');
                 odiv.classList.add("avclass");
                 odiv.style.textDecoration = "underline green";
-                // odiv.style.textDecorationColor = "green";
-
                 odiv.addEventListener("mouseenter",avmouseenter);
                 odiv.addEventListener("mouseleave",avmmouseleave);
-                
-                // console.log(portion);
-                var otext = portion.text;
-    
-                if(otext.length<4) return otext;
     
                 var otemp = otext.indexOf("-"); // 如果没有,返回-1
                 var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
-                // 此类关键词不会自动添加横杠横杠, ;网站的排行旁,类似 top10 这种,带来的副作用就是遇到真正的top番号,如果没有中间的横杠无法识别。
-                // var oSpecial = oOnlyText.search(/cat/i)    // 弃用, 和下面的效果一样
                 // 排除所有包含在此的关键词 :  例: covid-19 win10
                 var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|imx|xfs|fps|ds|error|hp|df|qbz|qsz|ak)$/i)  
                 //  和番号重名的没有排除: 
@@ -104,18 +114,14 @@
                     return otext;
                 }
     
-                if(otemp<0){    // 没有横杠
-                    // if(oSpecial>-1){  // 匹配到 特殊的单词, 直接返回
-                    //     return otext;
-                    // }else if(oOnlyNum.length==3 && oSpecial<0){   // 未匹配到特殊的单词,并且数字的个数为3 将其视为番号, 添加横杠
-                    //     // var oindex = otext.search(/\d/);
-                    //     otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
-                    // } else {    // 如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
-                    //     return otext;
-                    // }
-                    if(oOnlyNum.length!=3){
-                        return otext;
-                    }
+                if(otemp<0 && oOnlyNum.length!=3){    // 没有横杠的情况,如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+                    return otext;
+                }
+
+                // 浏览过的番号更改下划线为虚线
+                var avid = addHyphen(otext)
+                if(localInfo[avid]){
+                    odiv.style.textDecoration = "underline dotted green";
                 }
                 
                 odiv.dataset.av = otext;        
@@ -124,22 +130,18 @@
             }
         });
     }
-    findAndReplaceDOMTextFun();
 
-    // 增加中间的横杠
+    // 增加番号中间的横杠
     function addHyphen(otext){
         otext = otext.replace(/\s+/g,"")
         if(otext.indexOf("-")<0){
             var oindex = otext.search(/\d/);
             otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
         }
-        return otext;
+        return otext.toUpperCase();
     }
 
-    // 下面这行会导致无限循环,无限嵌套
-    // var findFun = setInterval(findAndReplaceDOMTextFun,1000);
-    // setTimeout(findAndReplaceDOMTextFun,1500);
-
+    // 创建搜索基本菜单
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
         var linkJavdb = "https://javdb.com/search?q=" + id + "&f=all";
@@ -147,7 +149,7 @@
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
         var linkbtsow = "https://btsow.com/search/" +id;
 
-        var aPattern = "<avdiv class='av-floatdiv savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
+        var aPattern =  "<avdiv class='av-floatdiv savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
                         "<avdiv class='av-floatdiv savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
                         "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavdb +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javDB 搜索</a>" + "</avdiv> "+
                         "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>javLib 搜索</a>" +"</avdiv>" +
@@ -155,7 +157,6 @@
         var ofloat = document.createElement("avdiv")
         ofloat.classList.add("av-float");
         ofloat.innerHTML=aPattern;
-        // ofloat.addEventListener("mouseleave",mouseleave)
         return ofloat;
     }
 
@@ -168,118 +169,92 @@
         }
     }
 
-    // 鼠标滑过 增加菜单
+    // 鼠标滑过 显示菜单
     function avmouseenter(e){
         var avid = e.target.dataset.av;
+        e.target.style.textDecoration = "underline dotted green";
         avid = addHyphen(avid);
-        // if(document.querySelector(".av-float")){
         var avdiv = document.querySelector(".av-float")
         if(avdiv){
-            if(avdiv){
-                avdiv.parentNode.removeChild(avdiv)
-            }
+            avdiv.parentNode.removeChild(avdiv)
         }
-        // }else{
-            var oPosition = e.target.getBoundingClientRect()
-            var odiv = createPattenr(e.target.dataset.av);
-            e.target.appendChild(odiv);
-            // document.body.appendChild(odiv);
-            odiv.style.left = oPosition.x + "px";
-            odiv.style.top = oPosition.y + oPosition.height + "px";
-
-            odiv.style.position = "fixed";
-            // var divClientRect = odiv.getBoundingClientRect()
-            // var divWidth = divClientRect.right - divClientRect.left;
-            // odiv.style.left = e.pageX - divWidth/2 + "px";
-            // odiv.style.top = e.pageY + "px";
-            
-            avInfo = {};
-            localInfo = GM_getValue("avInfo");
-            if(!localInfo){
-                GM_setValue("avInfo",{});
-                localInfo = {};
-            }
-            if(localInfo[avid]){
-                console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
-                avInfo = localInfo[avid];
-                timer = setTimeout(() => {
-                    // console.log("停留超过0.5s, 重新加载图片");
-                    getInfo(avid,true);
-                    settingPostion();  //重置位置
-                }, 500);
-            } else{
-                // console.log("需要从网络获取");
+        var oPosition = e.target.getBoundingClientRect()
+        var odiv = createPattenr(e.target.dataset.av);
+        e.target.appendChild(odiv);
+        odiv.style.left = oPosition.x + "px";
+        odiv.style.top = oPosition.y + oPosition.height + "px";
+        odiv.style.position = "fixed";
+        
+        if(localInfo[avid]){
+            avInfo = localInfo[avid];
+            timer = setTimeout(() => {  // console.log("停留超过0.5s, 重新加载图片");
                 getInfo(avid);
-            }
-            
-            var otherInfo = document.createElement('avdivs');
-            otherInfo.innerHTML=addOtherInfo();
-            odiv.appendChild(otherInfo);
-            
-            odiv.parentNode.title = "";
-            odiv.parentNode.parentNode.title = "";
-            settingPostion();  //重置位置
-            
-        // }
-    }
-    // 鼠标划出  移除菜单
-    function avmmouseleave(e){
-        var odiv = document.querySelector(".av-float");
-        if(odiv){
-            odiv.parentNode.removeChild(odiv);
-            // console.log("移除");
+                // settingPostion();  //重置位置
+            }, 500);
+        } else{
+            getInfo(avid,true);
         }
-        clearTimeout(timer);
+        
+        var otherInfo = document.createElement('avdivs');
+        otherInfo.innerHTML=addOtherInfo();
+        odiv.appendChild(otherInfo);
+        
+        odiv.parentNode.title = "";
+        odiv.parentNode.parentNode.title = "";
+        settingPostion();  //重置位置
     }
 
-
-    // 鼠标选中弹出菜单
+    // 鼠标选中 显示菜单
     document.onmouseup = function(e){
-        // console.log(e);
         var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
-        if (selectText.length>15) return; //如果过长,退出
+        if (selectText.length>12) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
+        selectText = selectText.replace(/[^a-zA-Z0-9]/g,"");  //去掉一些莫名其妙的符号。网友分享的番号总是各种各样
         var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,5}/i);
         if(!oav) return;  //如果没搜索到,退出
         if(document.querySelector(".av-float")) return; //如果已经存在菜单, 退出
         
         var avid = oav[0]  
         
-            avid = addHyphen(avid);
-            var odiv = createPattenr(avid);
-            document.body.appendChild(odiv);
-            odiv.addEventListener("mouseleave",avmmouseleave);
+        avid = addHyphen(avid);
+        var odiv = createPattenr(avid);
+        document.body.appendChild(odiv);
+        odiv.addEventListener("mouseleave",avmmouseleave);
 
-            var divClientRect = odiv.getBoundingClientRect()
-            var divWidth = divClientRect.right - divClientRect.left;
-            odiv.style.left = e.pageX - divWidth/2 + "px";
-            odiv.style.top = e.pageY + "px";
-            odiv.style.position = "absolute";
+        var divClientRect = odiv.getBoundingClientRect()
+        var divWidth = divClientRect.right - divClientRect.left;
+        odiv.style.left = e.pageX - divWidth/2 + "px";
+        odiv.style.top = e.pageY + "px";
+        odiv.style.position = "absolute";
 
+        if(localInfo[avid]){
             avInfo = {};
-            localInfo = GM_getValue("avInfo");
-            if(!localInfo){
-                GM_setValue("avInfo",{});
-                localInfo = {};
-            }
-            if(localInfo[avid]){
-                console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
-                avInfo = localInfo[avid];
-                timer = setTimeout(() => {
-                    console.log("停留超过1.5s, 重新加载图片");
-                    getInfo(avid,true);
-                    settingPostion();  //重置位置
-                }, 500);
-            } else{
-                console.log("需要从网络获取");
+            avInfo = localInfo[avid];
+            timer = setTimeout(() => {
+                // console.log("停留超过1.5s, 重新加载图片");
                 getInfo(avid);
-            }
-            
-            var otherInfo = document.createElement('avdivs');
-            otherInfo.innerHTML=addOtherInfo();
-            odiv.appendChild(otherInfo);
-
-            settingPostion();  //重置位置
+                // settingPostion();  //重置位置
+            }, 500);
+        } else{
+            console.log("需要从网络获取, ");
+            getInfo(avid,true);
+        }
         
+        var otherInfo = document.createElement('avdivs');
+        otherInfo.innerHTML=addOtherInfo();
+        odiv.appendChild(otherInfo);
+
+        settingPostion();  //重置位置
+    }
+
+    // 鼠标离开  移除菜单
+    function avmmouseleave(e){
+        var odiv = document.querySelector(".av-float");
+        if(odiv){
+            odiv.parentNode.removeChild(odiv);
+            // console.log("移除");
+        }
+        avInfo = {};
+        clearTimeout(timer);
     }
 
     // 调整距离底部的距离,以防越界
@@ -307,10 +282,9 @@
         }
     }
     
+    // 获取番号相关的信息, 添加图片,调用其他函数添加信息
     function getInfo(avID,oReload){
-        // console.log("函数:getInfo(avID,oReload)");
-        console.log("从网络获取图片中");
-
+        // console.log("从网络获取图片中");
         GM_xmlhttpRequest({
             method: 'get',
             url: 'https://www.javbus.com/' + avID,
@@ -319,10 +293,8 @@
             },
             data: "",
             onload: function (data) {
-
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
-                
                 // 番号
                 avInfo.id = avID;
                 // 标题
@@ -341,10 +313,10 @@
                     tags.push(tagList[i].nextSibling.innerHTML);
                 }
                 avInfo.tags = tags;
-                // 其他
+                // 其他: 发行日期和系列  此处的“发行日期”必须是繁体, 因为是匹配的具体的字。
                 var other = htmlDoc.querySelectorAll(".header");
                 for(var i=0;i<other.length;i++){
-                    if(other[i].innerHTML=="发行日期:"){
+                    if(other[i].innerHTML=="發行日期:"){
                         avInfo.date = other[i].parentNode.innerText
                     }
                     if(other[i].innerHTML=="系列:"){
@@ -354,12 +326,11 @@
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
                 if(!image){
-                    // 禁用 “javbus页面” 的搜索
+                    // 如果javbus网站没找到具体的番号, 就禁用 “javbus页面” 的搜索
                     var linkJavbusPage = document.querySelector(".linkJavbusPage");
                     if(linkJavbusPage){
-                        // linkJavbusPage.parentNode.removeChild(linkJavbusPage);
                         linkJavbusPage.classList.add("savdisabled");
-                        document.querySelector(".linkJavbusPage a").style.color = "#000";
+                        document.querySelector(".linkJavbusPage a").style.color = "#666";
                     }
                     return;
                 }
@@ -367,7 +338,7 @@
                 var imgNum = imgSrc.search(/(imgs|pics)/i);
                 imgSrc = imgSrc.slice(imgNum);
                 image.src = "https://www.javbus.com/" + imgSrc;
-                image.removeAttribute("title"); //鼠标经过的时候会触发离开事件,所以删掉
+                image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                 image.classList.add("avimg");
 
                 // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
@@ -378,35 +349,26 @@
                 meta.content = "no-referrer";
                 document.getElementsByTagName('head')[0].appendChild(meta);
                 
-
                 // 标题翻译
-                Trans.id = avID;
-                Trans.transText=avInfo.title;
-                googleTrans();
+                if(!avInfo.titleTrans){ // 如果本地存在翻译, 就不再重复翻译
+                    console.log("开始翻译标题");
+                    Trans.id = avID;
+                    Trans.transText=avInfo.title;
+                    googleTrans();
+                }
 
                 // 存储
-                localInfo[avID] = avInfo;
-                GM_setValue("avInfo",localInfo);
+                localInfo[avID] = {}
+                localInfo[avID].titleTrans = avInfo.titleTrans;
+                localInfo[avID].starName = avInfo.starName;
+                if(oReload){
+                    GM_setValue("avInfo2",localInfo);
+                }
+
                 if(!document.querySelector(".av-float")){return};
                 // 判断是否重复加载图片
                 if(document.querySelector(".avimg")){return};
-                if(oReload){
-                    // console.log("图片加载完成");
-                    var otherInfo = document.createElement('avdivs');
-                    otherInfo.appendChild(image);
-                    document.querySelector(".av-float").appendChild(otherInfo);
 
-                    settingPostion();  //重置位置
-
-                    // 会出现第一次依旧越界的情况, 已浏览过的番号在重新加载图片的情况下
-                        // 每秒检查5次, 2s后停止检查
-                    const interval = setInterval(settingPostion,200);
-                    setTimeout(() => { 
-                        clearInterval(interval)
-                    }, 2000)
-
-                    return;
-                }
                 // console.log("获取到的所有信息: ");
                 // console.log(avInfo);
                 // console.log("------------------");
@@ -415,30 +377,33 @@
                 otherInfo.appendChild(image);
                 document.querySelector(".av-float").appendChild(otherInfo);
 
-                settingPostion();  //重置位置
+                // 每200毫秒检查1次, 2s后停止检查
+                const interval = setInterval(settingPostion,200);
                 setTimeout(() => { 
-                    settingPostion();
-                }, 500)
+                    clearInterval(interval)
+                }, 2000)
             }
         });
     }
 
+    // 在菜单中添加番号相关的信息
     function addOtherInfo(){
-        // console.log("函数: addOtherInfo()");
-        // console.log(avInfo.starName);
+        var tempActors = document.querySelector(".sav-actors"); //判断之前是否已经添加了演员
         var actors = ""
-        var str = "";
-        if(avInfo.starName && avInfo.starName.length>0){
-            for(var i=0;i<avInfo.starName.length;i++){
-                actors += "<a class='av-floatdiv' target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
+        var str = "<avinfo class='avinfo'>";
+        if(!tempActors){    //判断之前是否已经添加了演员
+            if(avInfo.starName && avInfo.starName.length>0){
+                for(var i=0;i<avInfo.starName.length;i++){
+                    actors += "<a class='av-floatdiv' target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
+                }
+                actors = actors.slice(0,actors.length-2);
+                str += "<avdiv class='av-floatdiv sav-actors' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
             }
-            actors = actors.slice(0,actors.length-2);
-            str += "<avdiv class='av-floatdiv' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
-        }
-        if(avInfo.titleTrans){
-            str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
-        }else if(avInfo.title){
-            str += "<avdiv class='av-floatdiv' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
+            if(avInfo.titleTrans){
+                str += "<avdiv class='av-floatdiv sav-title' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
+            }else if(avInfo.title){
+                str += "<avdiv class='av-floatdiv sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
+            }
         }
         if(avInfo.tags && avInfo.tags.length>0){
             str += "<avdiv class='av-floatdiv'>标签: " + avInfo.tags + "</avdiv>"
@@ -449,6 +414,7 @@
         if(avInfo.date){
             str += "<avdiv class='av-floatdiv'>" + avInfo.date + "</avdiv>"
         }
+        str += "</avinfo>"
         return str;
     }
 
@@ -476,14 +442,13 @@
                     }
                     Trans.trans = trans;
                     // console.log("翻译结果:");
-                    // console.log(trans);
+                    // console.log(trans[0]);
 
-                    localInfo[Trans.id].titleTrans = trans;
-                    GM_setValue("avInfo",localInfo);
+                    localInfo[Trans.id].titleTrans = trans[0];
+                    GM_setValue("avInfo2",localInfo);
                     if(document.querySelector("#searchAVMenuTitle")){
                         document.querySelector("#searchAVMenuTitle").innerHTML = "标题(译): " + trans;
                     }
-
                 }, 300);
             },
             onerror: function (e) {
@@ -492,6 +457,7 @@
         });
     }
 
+    // 获取演员的相关信息 未用到
     function getActorInfo(acterName){
         console.log("函数: getActorInfo(acterName");
         // https://xslist.org/search?query=%E3%81%95%E3%81%A4%E3%81%8D%E8%8A%BD%E8%A1%A3&lg=zh
@@ -518,7 +484,6 @@
     }
 
     GM_addStyle(".av-float{" +
-                    // "position: absolute;" +
                     "display: block;" +
                     "text-align: left;" +
                     "color: #000;" +
@@ -540,6 +505,7 @@
                     "padding: 3px;" +
                     "background: aliceblue;" +
                     "display: inline-block;" +
+                    "border: 1px solid #eee;" +
                 "}" +
                 ".savlink a{" +
                     "text-decoration:none;" +

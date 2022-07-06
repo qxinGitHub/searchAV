@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.9.0
+// @version      0.9.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
+// @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/423347-findandreplacedomtext-v-0-4-0/code/findAndReplaceDOMText%20v%20040.js?version=911450
 // @connect     *
@@ -34,9 +35,10 @@
 (function() {
     'use strict';
 
-    var timer;
-    var avInfo = {};  // 临时存储相关信息
-    var localInfo = {}; // 从本地获取到的番号信息
+    var timerGetInfo;   // 延时获取信息
+    var timerMouseLeave;    // 鼠标进入菜单时的定时器, 超时不进入, 菜单消失
+    var avInfo = {};    // 临时存储相关信息
+    var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在, 存储信息时使用
     var Trans = {       // 临时存储翻译的相关信息
         id:"",
         transText:"",
@@ -86,17 +88,18 @@
                 var otext = portion.text;
                 if(otext.length<4) return otext;
 
-                var odiv = document.createElement('avdivs');
-                odiv.classList.add("avclass");
+                var odiv = document.createElement('avdiv');
+                odiv.classList.add("sav-id");
                 odiv.style.textDecoration = "underline green";
-                odiv.addEventListener("mouseenter",avmouseenter);
-                odiv.addEventListener("mouseleave",avmmouseleave);
+                odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
+                odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
+                odiv.addEventListener("click",savIDClick);  // 点击番号复制
     
                 var otemp = otext.indexOf("-"); // 如果没有,返回-1
                 var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
                 // 排除所有包含在此的关键词 :  例: covid-19 win10
-                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|imx|xfs|fps|ds|error|hp|df|qbz|qsz|ak)$/i)  
+                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|imx|xfx|fps|ds|error|hp|df|qbz|qsz|ak|jav|javdb)$/i)  
                 //  和番号重名的没有排除: 
                 // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
                 // 特殊的:covid|aptx|rx|mh|bmw
@@ -110,15 +113,15 @@
                 // console.log("是否有横杠: " + otemp);
                 // console.log("是否特殊: " + oSpecial);
                 // console.log("是否排除: " + oExclude);
-                if(oExclude>-1){
+
+                if(oExclude>-1){    // 包含关键词的情况下, 跳过
                     return otext;
                 }
-    
-                if(otemp<0 && oOnlyNum.length!=3){    // 没有横杠的情况,如果数字的个数是2个或者4个,不是番号的可能性更大些,直接返回。
+                if(otemp<0 && oOnlyNum.length!=3){    // 没有横杠的情况,如果数字的个数是2个或者4个,不是番号的可能性更大些,选择跳过。
                     return otext;
                 }
 
-                // 浏览过的番号更改下划线为虚线
+                // 浏览过的番号下划线改为虚线
                 var avid = addHyphen(otext)
                 if(localInfo[avid]){
                     odiv.style.textDecoration = "underline dotted green";
@@ -131,16 +134,6 @@
         });
     }
 
-    // 增加番号中间的横杠
-    function addHyphen(otext){
-        otext = otext.replace(/\s+/g,"")
-        if(otext.indexOf("-")<0){
-            var oindex = otext.search(/\d/);
-            otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
-        }
-        return otext.toUpperCase();
-    }
-
     // 创建搜索基本菜单
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
@@ -149,19 +142,21 @@
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
         var linkbtsow = "https://btsow.com/search/" +id;
 
-        var aPattern =  "<avdiv class='av-floatdiv savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
-                        "<avdiv class='av-floatdiv savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
-                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavdb +"' target='_blank' class='av-floatdiv' style='color:#459df5;'>javDB 搜索</a>" + "</avdiv> "+
-                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>javLib 搜索</a>" +"</avdiv>" +
-                        "<avdiv class='av-floatdiv savlink'>" + "<a href='" + linkbtsow +" 'target='_blank' class='av-floatdiv' style='color:#459df5;'>btsow 搜索</a>" + "</avdiv>";
+        var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
+                        "<avdiv class='savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
+                        "<avdiv class='savlink'>" + "<a href='" + linkJavdb +"' target='_blank' style='color:#459df5;'>javDB 搜索</a>" + "</avdiv> "+
+                        "<avdiv class='savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' style='color:#459df5;'>javLib 搜索</a>" +"</avdiv>" +
+                        "<avdiv class='savlink'>" + "<a href='" + linkbtsow +" 'target='_blank' style='color:#459df5;'>btsow 搜索</a>" + "</avdiv>";
         var ofloat = document.createElement("avdiv")
-        ofloat.classList.add("av-float");
+        ofloat.classList.add("sav-menu");
+        ofloat.addEventListener("mouseenter",savMenuMouseEnter)
+        ofloat.addEventListener("mouseleave",savMenuMouseLeave)
         ofloat.innerHTML=aPattern;
         return ofloat;
     }
 
     // 点击番号复制
-    document.onclick=function(e){
+    function savIDClick(e){
         var avid = e.target.dataset.av
         if(avid){
             avid = addHyphen(avid)
@@ -169,56 +164,86 @@
         }
     }
 
+    // 鼠标进入文章中番号
+    function savIDMouseEnter(e){ 
+        avInfo = {};
+        clearTimeout(timerMouseLeave);   
+        avmouseenter(e);
+    }
+    // 鼠标离开文章中番号
+    function savIDMouseLeave(e){    
+        timerMouseLeave = setTimeout(function(){
+            savMenuMouseLeave();
+        },300)
+    }
+    // 鼠标进入菜单
+    function savMenuMouseEnter(e){    
+        clearTimeout(timerMouseLeave);
+    }
+    // 鼠标离开菜单
+    function savMenuMouseLeave(e){    
+        var odiv = document.querySelector(".sav-menu");
+        if(odiv){
+            odiv.parentNode.removeChild(odiv);
+            // console.log("移除");
+        }
+        avInfo = {};
+        clearTimeout(timerGetInfo);
+    }
+
     // 鼠标滑过 显示菜单
     function avmouseenter(e){
         var avid = e.target.dataset.av;
         e.target.style.textDecoration = "underline dotted green";
         avid = addHyphen(avid);
-        var avdiv = document.querySelector(".av-float")
+        var avdiv = document.querySelector(".sav-menu")
         if(avdiv){
             avdiv.parentNode.removeChild(avdiv)
         }
         var oPosition = e.target.getBoundingClientRect()
         var odiv = createPattenr(e.target.dataset.av);
-        e.target.appendChild(odiv);
+        // e.target.appendChild(odiv);
+        document.body.appendChild(odiv);
         odiv.style.left = oPosition.x + "px";
         odiv.style.top = oPosition.y + oPosition.height + "px";
         odiv.style.position = "fixed";
         
         if(localInfo[avid]){
             avInfo = localInfo[avid];
-            timer = setTimeout(() => {  // console.log("停留超过0.5s, 重新加载图片");
+            timerGetInfo = setTimeout(() => {  
                 getInfo(avid);
-                // settingPostion();  //重置位置
             }, 500);
         } else{
-            getInfo(avid,true);
+            timerGetInfo = setTimeout(() => {
+                getInfo(avid,true);
+                // getInfo(avid);
+            }, 300);
         }
         
-        var otherInfo = document.createElement('avdivs');
+        var otherInfo = document.createElement('avdivsInfo');
         otherInfo.innerHTML=addOtherInfo();
         odiv.appendChild(otherInfo);
         
-        odiv.parentNode.title = "";
-        odiv.parentNode.parentNode.title = "";
+        e.target.parentNode.title = "";
+        e.target.parentNode.parentNode.title = "";
         settingPostion();  //重置位置
     }
 
     // 鼠标选中 显示菜单
     document.onmouseup = function(e){
+        if(document.querySelector(".sav-menu")) return; //如果已经存在菜单, 退出
+
         var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
         if (selectText.length>12) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
         selectText = selectText.replace(/[^a-zA-Z0-9]/g,"");  //去掉一些莫名其妙的符号。网友分享的番号总是各种各样
         var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,5}/i);
         if(!oav) return;  //如果没搜索到,退出
-        if(document.querySelector(".av-float")) return; //如果已经存在菜单, 退出
         
         var avid = oav[0]  
-        
         avid = addHyphen(avid);
         var odiv = createPattenr(avid);
         document.body.appendChild(odiv);
-        odiv.addEventListener("mouseleave",avmmouseleave);
+        odiv.addEventListener("mouseleave",savMenuMouseLeave);
 
         var divClientRect = odiv.getBoundingClientRect()
         var divWidth = divClientRect.right - divClientRect.left;
@@ -229,44 +254,33 @@
         if(localInfo[avid]){
             avInfo = {};
             avInfo = localInfo[avid];
-            timer = setTimeout(() => {
-                // console.log("停留超过1.5s, 重新加载图片");
+            timerGetInfo = setTimeout(() => {
                 getInfo(avid);
-                // settingPostion();  //重置位置
             }, 500);
         } else{
-            console.log("需要从网络获取, ");
-            getInfo(avid,true);
+            timerGetInfo = setTimeout(() => {
+                // getInfo(avid);
+                getInfo(avid,true);
+            }, 300);
         }
         
-        var otherInfo = document.createElement('avdivs');
+        var otherInfo = document.createElement('avdivsInfo');
         otherInfo.innerHTML=addOtherInfo();
         odiv.appendChild(otherInfo);
 
         settingPostion();  //重置位置
     }
 
-    // 鼠标离开  移除菜单
-    function avmmouseleave(e){
-        var odiv = document.querySelector(".av-float");
-        if(odiv){
-            odiv.parentNode.removeChild(odiv);
-            // console.log("移除");
-        }
-        avInfo = {};
-        clearTimeout(timer);
-    }
-
     // 调整距离底部的距离,以防越界
     function settingPostion(){
-        var odiv = document.querySelector(".av-float");
+        var odiv = document.querySelector(".sav-menu");
         if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
         var oTop = oClient.top;
-        var oHeight = oClient.height; //自身高度
-        // var oWidth = oClient.Width; // 自身宽度
-        var winHeight = document.documentElement.clientHeight; //可视窗口高度
-        var winWidth = document.documentElement.clientWidth; //可视窗口宽度
+        var oHeight = oClient.height;   //自身高度
+        // var oWidth = oClient.Width;  // 自身宽度
+        var winHeight = document.documentElement.clientHeight;  //可视窗口高度
+        var winWidth = document.documentElement.clientWidth;    //可视窗口宽度
         if(oTop + oHeight > winHeight){ // 越出了屏幕底边
             // console.log("越界");
             odiv.style.position = "fixed";
@@ -293,8 +307,18 @@
             },
             data: "",
             onload: function (data) {
+                // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
+                // 名称: 显示防盗链图片 for Inoreader
+                // 作者: maboloshi
+                var meta = document.createElement('meta');
+                meta.name = "referrer";
+                meta.content = "no-referrer";
+                document.getElementsByTagName('head')[0].appendChild(meta);
+
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
+                console.log("data.status:");
+                console.log(data.status);
                 // 番号
                 avInfo.id = avID;
                 // 标题
@@ -317,7 +341,7 @@
                 var other = htmlDoc.querySelectorAll(".header");
                 for(var i=0;i<other.length;i++){
                     if(other[i].innerHTML=="發行日期:"){
-                        avInfo.date = other[i].parentNode.innerText
+                        avInfo.date = other[i].parentNode.innerText.replace("發行日期","发行日期");
                     }
                     if(other[i].innerHTML=="系列:"){
                         avInfo.series = other[i].parentNode.innerText
@@ -332,25 +356,19 @@
                         linkJavbusPage.classList.add("savdisabled");
                         document.querySelector(".linkJavbusPage a").style.color = "#666";
                     }
-                    return;
+                }else{
+                    var imgSrc = image.src;
+                    var imgNum = imgSrc.search(/(imgs|pics)/i);
+                    imgSrc = imgSrc.slice(imgNum);
+                    image.src = "https://www.javbus.com/" + imgSrc;
+                    image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
+                    image.classList.add("avimg");
                 }
-                var imgSrc = image.src;
-                var imgNum = imgSrc.search(/(imgs|pics)/i);
-                imgSrc = imgSrc.slice(imgNum);
-                image.src = "https://www.javbus.com/" + imgSrc;
-                image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
-                image.classList.add("avimg");
-
-                // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
-                // 名称: 显示防盗链图片 for Inoreader
-                // 作者: maboloshi
-                var meta = document.createElement('meta');
-                meta.name = "referrer";
-                meta.content = "no-referrer";
-                document.getElementsByTagName('head')[0].appendChild(meta);
                 
                 // 标题翻译
-                if(!avInfo.titleTrans){ // 如果本地存在翻译, 就不再重复翻译
+                if(data.status==404){
+                    avInfo.titleTrans = "没有找到相关页面";
+                }else if(!avInfo.titleTrans){   // 如果本地存在翻译, 就不再重复翻译
                     console.log("开始翻译标题");
                     Trans.id = avID;
                     Trans.transText=avInfo.title;
@@ -365,17 +383,17 @@
                     GM_setValue("avInfo2",localInfo);
                 }
 
-                if(!document.querySelector(".av-float")){return};
+                if(!document.querySelector(".sav-menu")){return};
                 // 判断是否重复加载图片
                 if(document.querySelector(".avimg")){return};
 
                 // console.log("获取到的所有信息: ");
                 // console.log(avInfo);
                 // console.log("------------------");
-                var otherInfo = document.createElement('avdivs');
+                var otherInfo = document.createElement('avdivsInfo');
                 otherInfo.innerHTML = addOtherInfo()
-                otherInfo.appendChild(image);
-                document.querySelector(".av-float").appendChild(otherInfo);
+                if(image){otherInfo.appendChild(image);};
+                document.querySelector(".sav-menu").appendChild(otherInfo);
 
                 // 每200毫秒检查1次, 2s后停止检查
                 const interval = setInterval(settingPostion,200);
@@ -388,34 +406,44 @@
 
     // 在菜单中添加番号相关的信息
     function addOtherInfo(){
-        var tempActors = document.querySelector(".sav-actors"); //判断之前是否已经添加了演员
+        var tempTitle = document.querySelector(".sav-title"); //判断之前是否已经添加了标题
         var actors = ""
-        var str = "<avinfo class='avinfo'>";
-        if(!tempActors){    //判断之前是否已经添加了演员
+        var str = "";
+        if(!tempTitle){    //判断之前是否已经添加了标题
             if(avInfo.starName && avInfo.starName.length>0){
                 for(var i=0;i<avInfo.starName.length;i++){
-                    actors += "<a class='av-floatdiv' target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
+                    actors += "<a target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
                 }
                 actors = actors.slice(0,actors.length-2);
-                str += "<avdiv class='av-floatdiv sav-actors' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
+                str += "<avdiv class='sav-actors' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
             }
             if(avInfo.titleTrans){
-                str += "<avdiv class='av-floatdiv sav-title' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
+                str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
             }else if(avInfo.title){
-                str += "<avdiv class='av-floatdiv sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
+                str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
             }
         }
         if(avInfo.tags && avInfo.tags.length>0){
-            str += "<avdiv class='av-floatdiv'>标签: " + avInfo.tags + "</avdiv>"
+            str += "<avdiv>标签: " + avInfo.tags + "</avdiv>"
         }
         if(avInfo.series){
-            str += "<avdiv class='av-floatdiv'>" + avInfo.series + "</avdiv>"
+            str += "<avdiv>" + avInfo.series + "</avdiv>"
         }
         if(avInfo.date){
-            str += "<avdiv class='av-floatdiv'>" + avInfo.date + "</avdiv>"
+            str += "<avdiv>" + avInfo.date + "</avdiv>"
         }
-        str += "</avinfo>"
+        str += ""
         return str;
+    }
+
+    // 增加番号中间的横杠
+    function addHyphen(otext){
+        otext = otext.replace(/\s+/g,"")
+        if(otext.indexOf("-")<0){
+            var oindex = otext.search(/\d/);
+            otext = otext.slice(0,oindex) + "-" + otext.slice(oindex)
+        }
+        return otext.toUpperCase();
     }
 
     // 翻译函数取自于作者 Johnny Li 的脚本 “网页翻译助手” version:1.2.9, https://greasyfork.org/zh-CN/scripts/389784 许可协议MIT
@@ -483,7 +511,8 @@
         });
     }
 
-    GM_addStyle(".av-float{" +
+    GM_addStyle("" +
+                ".sav-menu{" +
                     "display: block;" +
                     "text-align: left;" +
                     "color: #000;" +
@@ -510,16 +539,16 @@
                 ".savlink a{" +
                     "text-decoration:none;" +
                 "}" +
-                "avdivs avdiv{" +
+                "avdivsinfo avdiv{" +
                     "display:block;" +
                     "margin-bottom: 5px;" +
                 "}" +
-                "avdivs .av-float img{" +
+                "avdiv.sav-menu img{" +
                     "height: 100%;" +
                     "max-width: 100%;" +
                 "}" +
-                ".av-float a:link," +
-                ".av-float a:visited{" +
+                ".sav-menu a:link," +
+                ".sav-menu a:visited{" +
                     "color: #000" +
                 "}" +
                 ".savdisabled a{" +

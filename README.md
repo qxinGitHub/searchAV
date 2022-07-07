@@ -30,6 +30,14 @@
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
 ### 更新历史
+ <!-- > v0.9.3 2022-07-06
+  - 改动: 信息从javbus转移到从freejavbt获取,下面的两处改动都是由此引起。这个网站的番号更全, 同一个番号, 演员也更全。稳定方面还不清楚
+  - 改动: 1.添加 freejavbt 网站。
+  - 改动: 2.演员链接从xslist.org转移到freejavbt获取 -->
+ > v0.9.3 2022-07-07
+  - 修复: “标题翻译”的保存不完整, 再次浏览番号的时候, 标题只剩开头的问题
+  - 修复: 没有横杠的情况下, 能正常显示番号信息, 却跳转失败的问题
+  - 近期还会更新
  > v0.9.2 2022-07-06
   - 改进: [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) 从 0.4.0 提升到 0.4.6 。提高了识别率, 解决了一些div前后有数字无法识别的问题
   - 界面: “javbus页面”和“javbus搜索”合并到一起, 有具体页面就具体页面打开, 没有则替换成javbus的搜索

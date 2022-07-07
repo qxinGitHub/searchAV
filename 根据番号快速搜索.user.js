@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.9.1
+// @version      0.9.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
+// @license      MIT
 // @match        *://**/*
-// @require     https://greasyfork.org/scripts/423347-findandreplacedomtext-v-0-4-0/code/findAndReplaceDOMText%20v%20040.js?version=911450
+// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1067927
 // @connect     *
 // @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
@@ -84,6 +85,12 @@
         findAndReplaceDOMText(allHTML, {
             // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
             find:oregExp,
+            // preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
+            // forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
+            forceContext: function(el) {
+                // 自定义隔断上下文, 如果前后文字在不同的<a>、<div>中, 判定为两段文字,不再合并判断。
+                return el.matches('a,div');
+              },
             replace: function(portion) {
                 var otext = portion.text;
                 if(otext.length<4) return otext;
@@ -137,15 +144,15 @@
     // 创建搜索基本菜单
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
-        var linkJavdb = "https://javdb.com/search?q=" + id + "&f=all";
         var linkJavbus = "https://www.javbus.com/search/" + id;
+        var linkJavdb = "https://javdb.com/search?q=" + id + "&f=all";
         var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
         var linkbtsow = "https://btsow.com/search/" +id;
 
-        var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>javbus 页面</a>" +"</avdiv>" +
-                        "<avdiv class='savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
-                        "<avdiv class='savlink'>" + "<a href='" + linkJavdb +"' target='_blank' style='color:#459df5;'>javDB 搜索</a>" + "</avdiv> "+
-                        "<avdiv class='savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' style='color:#459df5;'>javLib 搜索</a>" +"</avdiv>" +
+        var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>JavBus 页面</a>" +"</avdiv>" +
+                        // "<avdiv class='savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
+                        "<avdiv class='savlink'>" + "<a href='" + linkJavdb +"' target='_blank' style='color:#459df5;'>JavDB 搜索</a>" + "</avdiv> "+
+                        "<avdiv class='savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' style='color:#459df5;'>JavLib 搜索</a>" +"</avdiv>" +
                         "<avdiv class='savlink'>" + "<a href='" + linkbtsow +" 'target='_blank' style='color:#459df5;'>btsow 搜索</a>" + "</avdiv>";
         var ofloat = document.createElement("avdiv")
         ofloat.classList.add("sav-menu");
@@ -317,8 +324,8 @@
 
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
-                console.log("data.status:");
-                console.log(data.status);
+                // console.log("data.status:");
+                // console.log(data.status);
                 // 番号
                 avInfo.id = avID;
                 // 标题
@@ -349,12 +356,11 @@
                 }
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
-                if(!image){
-                    // 如果javbus网站没找到具体的番号, 就禁用 “javbus页面” 的搜索
-                    var linkJavbusPage = document.querySelector(".linkJavbusPage");
-                    if(linkJavbusPage){
-                        linkJavbusPage.classList.add("savdisabled");
-                        document.querySelector(".linkJavbusPage a").style.color = "#666";
+                if(!image){ // 图片加载失败就判定网页404, 将具体的番号页面替换为搜索
+                    var linkJavbusPageLink = document.querySelector(".linkJavbusPage a");
+                    if(linkJavbusPageLink){
+                        linkJavbusPageLink.href = "https://www.javbus.com/search/" + avID;
+                        linkJavbusPageLink.innerHTML = "JavBus 搜索";
                     }
                 }else{
                     var imgSrc = image.src;
@@ -446,9 +452,8 @@
         return otext.toUpperCase();
     }
 
-    // 翻译函数取自于作者 Johnny Li 的脚本 “网页翻译助手” version:1.2.9, https://greasyfork.org/zh-CN/scripts/389784 许可协议MIT
-    // 作者 Johnny Li 
     // 脚本 “网页翻译助手” 
+    // 作者 Johnny Li 
     // version:1.2.9, 
     // https://greasyfork.org/zh-CN/scripts/389784 
     // 许可协议 MIT

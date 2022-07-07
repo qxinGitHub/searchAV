@@ -1,39 +1,22 @@
 # 根据番号快速搜索
-在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
+- 在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
 
 #### 功能
-在网页标注所有番号,显示绿色下划线,浏览过的显示虚线  
-鼠标滑过可以激活搜索菜单  
-点击番号可以直接复制  
-对于不识别的番号, 可以鼠标选择番号, 会进行搜索, 类似于滑词搜索
-后续: 应该会跟进fc2
+- 在网页标注所有番号,显示绿色下划线,浏览过的显示虚线  
+- 鼠标滑过可以激活搜索菜单  
+- 点击番号可以直接复制  
+- 对于不识别的番号, 可以鼠标选择番号, 会进行搜索, 类似于滑词搜索  
 
 #### 不足
-1. 才疏学浅,知道的网站就几个,但有番号的网站千千万,,所以默认是对所有网站开启的 
-2. ~~有时简介会被重复两次(甚至三次)~~
-3. 当番号处于换行时,搜索菜单会显示在第二行 
-4. 带链接番号会识别错误
-5. 偶尔会出现javbus拒绝访问的情况, 带来的后果就是无法获取到该番号的相关信息
-5. 虽然使用的是谷歌翻译,但是翻译的很差。不懂日语,纯粹从翻译结果的可读性来看,相较于有道和百度, 它的表现是最烂的。
-6. 关于番号:
-只能识别 字母-数字 的番号,  
-带日期的不识别 : Carib-020913-xxx,  
-3d的不识别 : SM3D2DBD-xx,  
-fc2不识别 : FC2-PPV-1234567,  
-一本道的不识别 : 031721-xxx  
-C0930番号不识别 : C0930-pla xxxx  
-MuraMura番号不识别 : muramura 031721_xxx  
-Jukujo-Club番号识别错误 : Jukujo-Club-xxxx  
-Mesubutaメス豚 番号不识别 : mesubuta 131122_732_xx  
-AV9898 AV-酒吧番号 : AV9898-xxxx  
-G-Queen言番号 : G-Queen-xxx  
-pacopacomama : pacopacomama-031721  
-Gachinco : gachixxx-HD  
-10musume 识别错误 : 10musume-发行日期_01 ，如10musume-010414_01  
-1000giri : 1000giri+发行日期，如 1000giri-130906  
-H0930  
-H4610  
-以上番号知识参考网址 https://www.unvone.com/55618.html 该网页已经疑似被作者删除
+1. 才疏学浅,知道的网站就几个,但有番号的网站千千万,,所以默认是对所有网站开启的  
+9. 论坛中的用户名是字母加数字的情况下会被识别成番号
+8. 番号中将字母或数字单独添加html标签的, 识别错误
+7. 偶尔会出现javbus拒绝访问的情况, 带来的后果就是无法获取到该番号的相关信息
+5. 虽然用的谷歌翻译,但效果并不好。不懂日语,纯粹从翻译结果的可读性来看,相较于有道和百度, 它的表现最差
+6. 关于番号:只能识别 字母-数字 的番号, 其他类型不识别或者识别错误。  
+2. ~~有时简介会被重复两次(甚至三次)~~ 标题还是会偶尔重复
+3. ~~当番号处于换行时,搜索菜单会显示在第二行~~ 图片加载完成后, 0.3s内鼠标划过去就可以
+4. ~~带链接番号会识别错误~~ 例:javdb详情页的番号,&lt;a&gt;abc&lt;/a&gt;-123 , 现在不再识别,略过。
 
   
 <!-- ## 以下为各版本的区别  
@@ -46,16 +29,20 @@ H4610
  > version: 0.3.0  增加标题翻译
 ![动图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav0.3.0.gif)   -->
   
-## 更新历史
+### 更新历史
+ > v0.9.2 2022-07-06
+  - 改进: [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) 从 0.4.0 提升到 0.4.6 。提高了识别率, 解决了一些div前后有数字无法识别的问题
+  - 界面: “javbus页面”和“javbus搜索”合并到一起, 有具体页面就具体页面打开, 没有则替换成javbus的搜索
+  - 改动: 番号中带有链接(abc-123), 例如仅仅abc是链接,而外面数字不是的情况下, 现在不再识别, 直接跳过。例: javdb的详情页。
+  - 改动: 增加 @license      MIT
  > v0.9.1 2022-07-06
   - 修复: 排除显卡型号 例: xfx588 (之前写错了)
   - 修复: 排除网站地址jav、javdb
   - 修复: 获取不到演员的情况下, 标题会重复出现的问题(还是会偶尔重现, 但是几率小很多)
   - 修复: 搜索不到页面时, 无法将番号保存到本地的问题
-  - 修复: 快速番号, 也会被保存到本地的问题
+  - 修复: 快速滑过番号, 也会被保存到本地的问题
   - 改进: 菜单的插入方式改回了最开始的状态, 直接插入到body页面
   - 界面: 增加了图标, 颜色为Ph黄
-
  > v0.9.0 2022-07-05
   - 修复: 部分标题中存在番号的问题
   - 修复: 滑词:一般番号(字母+数字)的情况, 如果字母和数字中间有其他的标点,现在也能滑词识别
@@ -185,5 +172,12 @@ H4610
   - hello world 
 
 
-图片仅为版本v0.1.x:  
-![例图](https://github.com/qxinGitHub/searchAV/blob/main/img/searchav.png)
+####演示图片的版本 v0.1.x:  
+![例图](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/searchav.png)
+
+
+####开源声明
+- [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
+- [ “网页翻译助手” ](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
+- [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
+- 还有各种搜索后随手复制的

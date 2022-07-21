@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.9.3
+// @version      0.10.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -29,6 +29,7 @@
 // @grant       GM_deleteValue
 // @grant       GM_xmlhttpRequest
 // @grant       GM_setClipboard
+// @grant       GM_registerMenuCommand
 // @run-at      document-end
 
 // ==/UserScript==
@@ -39,7 +40,7 @@
     var timerGetInfo;   // 延时获取信息
     var timerMouseLeave;    // 鼠标进入菜单时的定时器, 超时不进入, 菜单消失
     var avInfo = {};    // 临时存储相关信息
-    var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在, 存储信息时使用
+    var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在和存储信息时使用
     var Trans = {       // 临时存储翻译的相关信息
         id:"",
         transText:"",
@@ -61,6 +62,22 @@
         localInfo = {};
     }
     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
+    
+    // 自定义搜索列表
+    var savList = GM_getValue("_setting");
+    if(!savList){
+        savList = {
+            "version":1,
+            "list":[
+                ["FreeJav 搜索","https://freejavbt.com/%s"],
+                ["JavLib 搜索","http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=%s"],
+                ["JavDB 搜索","https://javdb.com/search?q=%s&f=all"],
+                ["Jable 在线","https://jable.tv/search/%s/"],
+                ["btsow 下载","https://btsow.com/search/%s"]
+            ]
+        }
+        GM_setValue("_setting",savList);
+    }
 
     // 对于一些网站,可能需要第二种正则来匹配
     var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,4}(?!(\w|\d|-))/gi;  // 可以避免很多误报
@@ -77,7 +94,8 @@
         oregExp = oregExp2;
     }
 
-    findAndReplaceDOMTextFun();
+    findAndReplaceDOMTextFun();     // 查找普通番号
+    findAndReplaceDOMTextFunFC2();  // 查找fc2番号 (无菜单,点击后会跳转到javdb进行搜索)
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
@@ -141,19 +159,34 @@
         });
     }
 
+    // 查找番号, 匹配fc2,  只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
+    function findAndReplaceDOMTextFunFC2(){
+                findAndReplaceDOMText(allHTML, {
+                    find:/FC2[^\d]*(\d+)/gi,
+                    preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
+                    forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
+                    replace: function(portion) {
+                        var otext = portion.text;
+                        var odiv = document.createElement('a');
+                        odiv.style.textDecoration = "underline green";
+                        odiv.href = 'https://javdb.com/search?q=' + otext + '&f=all';
+                        odiv.target = "_blank";      
+                        odiv.innerHTML = otext;
+                        return odiv;
+                    }
+                });
+    }
+
     // 创建搜索基本菜单
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
-        var linkJavbus = "https://www.javbus.com/search/" + id;
-        var linkJavdb = "https://javdb.com/search?q=" + id + "&f=all";
-        var linkJavLib = "http://www.javlibrary.com/cn/vl_searchbyid.php?keyword=" + id;
-        var linkbtsow = "https://btsow.com/search/" +id;
-
-        var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>JavBus 页面</a>" +"</avdiv>" +
-                        // "<avdiv class='savlink linkJavbus'>" + "<a href='" + linkJavbus +"' target='_blank' style='color:#459df5;'>javbus 搜索</a>" + "</avdiv>"+
-                        "<avdiv class='savlink'>" + "<a href='" + linkJavdb +"' target='_blank' style='color:#459df5;'>JavDB 搜索</a>" + "</avdiv> "+
-                        "<avdiv class='savlink'>" + "<a href='" + linkJavLib +" 'target='_blank' style='color:#459df5;'>JavLib 搜索</a>" +"</avdiv>" +
-                        "<avdiv class='savlink'>" + "<a href='" + linkbtsow +" 'target='_blank' style='color:#459df5;'>btsow 搜索</a>" + "</avdiv>";
+        var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>JavBus 页面</a>" +"</avdiv>" ;
+        if(savList){
+            var savListItem = savList.list;
+            for(let i=0; i<savListItem.length;i++){
+                aPattern += "<avdiv class='savlink'>" + "<a href='" + savListItem[i][1].replace("%s", id) +" 'target='_blank' style='color:#459df5;'>" + savListItem[i][0] + "</a>" + "</avdiv>"
+            }
+        }
         var ofloat = document.createElement("avdiv")
         ofloat.classList.add("sav-menu");
         ofloat.addEventListener("mouseenter",savMenuMouseEnter)
@@ -320,6 +353,12 @@
                 meta.content = "no-referrer";
                 document.getElementsByTagName('head')[0].appendChild(meta);
 
+                // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
+                if(data.status==404 && avID.length - avID.indexOf("-") ==3){
+                    getInfo(avID.replace("-","-0"));
+                    return
+                }
+
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
                 // console.log("data.status:");
@@ -416,10 +455,10 @@
         if(!tempTitle){    //判断之前是否已经添加了标题
             if(avInfo.starName && avInfo.starName.length>0){
                 for(var i=0;i<avInfo.starName.length;i++){
-                    actors += "<a target='_blank' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
+                    actors += "<a target='_blank' style='text-decoration:underline' title='' href='https://xslist.org/search?query=" + avInfo.starName[i] + "&lg=zh'>"+ avInfo.starName[i] + "</a>, ";
                 }
                 actors = actors.slice(0,actors.length-2);
-                str += "<avdiv class='sav-actors' style='text-decoration:underline'>演员: " + actors + "</avdiv>"
+                str += "<avdiv class='sav-actors'>演员: " + actors + "</avdiv>"
             }
             if(avInfo.titleTrans){
                 str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题(译): " + avInfo.titleTrans + "</avdiv>"
@@ -487,6 +526,57 @@
             }
         });
     }
+
+    // 菜单
+    // 菜单编辑
+    function savBoxEdit(){
+        var editbox = document.createElement("div");
+        editbox.id = "sav-editCodeBox";
+        editbox.style.cssText = "position:fixed;" +
+        "top:50%;left:50%;" +
+        "transform:translate(-50%,-50%);" +
+        "background:#ccc;" +
+        "border-radius:4px;" +
+        "padding:10px 20px;" ;
+        var innerH = " "+
+        "<p>搜索词用 %s 代替 <br>修改时注意中英文标点符号 <br>格式是 JSON ,注意有无逗号 </p>" +
+        "<textarea wrap='off' cols='66' rows='20' style='overflow:auto;border-radius:4px;'>" + JSON.stringify( GM_getValue("_setting"),false,4) + "</textarea>" +
+        "<br>" +
+        "<p>老司机共浏览了" + Object.keys(localInfo).length + "个番号！</p>" +
+        "<button id='savHistory' >清空浏览历史</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='editBoxCloase' >关闭</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='editBoxSave' >保存</button>" +
+        "";
+        editbox.innerHTML = innerH;
+        editbox.querySelector("#savHistory").addEventListener("click",clearHistory)
+        editbox.querySelector("#editBoxCloase").addEventListener("click",savBoxClose)
+        editbox.querySelector("#editBoxSave").addEventListener("click",savBoxSave)
+        document.body.appendChild(editbox);
+    }
+    // 菜单保存
+    function savBoxSave(){
+        var codevalue = document.querySelector("#sav-editCodeBox textarea").value;
+        if(codevalue){
+            GM_setValue("_setting",JSON.parse(codevalue));
+            setTimeout(function(){
+                window.location.reload();
+            },300);
+        }
+    }
+    // 关闭菜单
+    function savBoxClose(){
+        var box = document.querySelector("#sav-editCodeBox");
+        if(box){
+            box.parentNode.removeChild(box);
+        }
+    }
+    function clearHistory(){
+        GM_setValue("avInfo2",{});
+        localInfo = {}
+        savBoxClose()
+    }
+    GM_registerMenuCommand("自定义搜索", savBoxEdit)
+
 
     // 获取演员的相关信息 未用到
     function getActorInfo(acterName){

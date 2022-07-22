@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.0
+// @version      0.10.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -64,6 +64,7 @@
     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
     
     // 自定义搜索列表
+        // 如果是想自定义搜索列表, 去设置里改, 不要改动此处
     var savList = GM_getValue("_setting");
     if(!savList){
         savList = {
@@ -80,7 +81,7 @@
     }
 
     // 对于一些网站,可能需要第二种正则来匹配
-    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,4}(?!(\w|\d|-))/gi;  // 可以避免很多误报
+    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,5}(?!(\w|\d|-))/gi;  // 可以避免很多误报
     var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;     //更容易将字符串识别成番号, 误报比较严重
     var webList = [
         // https://xslist.org/zh/model/69636.html
@@ -95,7 +96,7 @@
     }
 
     findAndReplaceDOMTextFun();     // 查找普通番号
-    findAndReplaceDOMTextFunFC2();  // 查找fc2番号 (无菜单,点击后会跳转到javdb进行搜索)
+    findAndReplaceDOMTextFunFC2();  // 查找fc2等番号 (无菜单,点击后会跳转到javdb进行搜索)
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
@@ -124,7 +125,7 @@
                 var oOnlyText = otext.replace(/[^a-zA-Z]/gi,""); //番号中的英文
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
                 // 排除所有包含在此的关键词 :  例: covid-19 win10
-                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ax|gbx|aes|nc|imx|xfx|fps|ds|error|hp|df|qbz|qsz|ak|jav|javdb)$/i)  
+                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ILCE|ax|gbx|aes|nc|imx|xfx|fps|ds|error|hp|df|qbz|qsz|ak|jav|javdb)$/i)  
                 //  和番号重名的没有排除: 
                 // 操作系统:dos|win|os|osx|lumia|miui|flyme|emui
                 // 特殊的:covid|aptx|rx|mh|bmw
@@ -159,16 +160,18 @@
         });
     }
 
-    // 查找番号, 匹配fc2,  只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
+    // 查找番号, 匹配fc2、200GANA、259LUXU、300MIUM、一本道、东京热、HEYZO
+        // 只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
+        // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
     function findAndReplaceDOMTextFunFC2(){
                 findAndReplaceDOMText(allHTML, {
-                    find:/FC2[^\d]*(\d+)/gi,
+                    find:/FC2[^\d]*(\d+)|(?<!(\w|-))200GANA[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))259LUXU[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))300MIUM[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))n\d{4}(?!(\w|\d|-))|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!(\w|-))HEYZO[_\s]?\d{4}(?!(\w|\d|-))/gi,
                     preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
                     forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
                     replace: function(portion) {
                         var otext = portion.text;
                         var odiv = document.createElement('a');
-                        odiv.style.textDecoration = "underline green";
+                        odiv.style.textDecoration = "underline #66ccff";
                         odiv.href = 'https://javdb.com/search?q=' + otext + '&f=all';
                         odiv.target = "_blank";      
                         odiv.innerHTML = otext;
@@ -438,11 +441,11 @@
                 if(image){otherInfo.appendChild(image);};
                 document.querySelector(".sav-menu").appendChild(otherInfo);
 
-                // 每200毫秒检查1次, 2s后停止检查
+                // 每200毫秒检查1次, 3s后停止检查
                 const interval = setInterval(settingPostion,200);
                 setTimeout(() => { 
                     clearInterval(interval)
-                }, 2000)
+                }, 3000)
             }
         });
     }
@@ -479,7 +482,7 @@
         return str;
     }
 
-    // 增加番号中间的横杠
+    // 添加番号中间的横杠
     function addHyphen(otext){
         otext = otext.replace(/\s+/g,"")
         if(otext.indexOf("-")<0){
@@ -570,6 +573,7 @@
             box.parentNode.removeChild(box);
         }
     }
+    // 清除浏览历史
     function clearHistory(){
         GM_setValue("avInfo2",{});
         localInfo = {}

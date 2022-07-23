@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.1
+// @version      0.10.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -65,9 +65,9 @@
     
     // 自定义搜索列表
         // 如果是想自定义搜索列表, 去设置里改, 不要改动此处
-    var savList = GM_getValue("_setting");
-    if(!savList){
-        savList = {
+    var setting = GM_getValue("_setting");  // setting: 相关设置选项, 现在只有搜索列表
+    if(!setting){
+        setting = {
             "version":1,
             "list":[
                 ["FreeJav 搜索","https://freejavbt.com/%s"],
@@ -77,11 +77,12 @@
                 ["btsow 下载","https://btsow.com/search/%s"]
             ]
         }
-        GM_setValue("_setting",savList);
+        GM_setValue("_setting",setting);
     }
 
     // 对于一些网站,可能需要第二种正则来匹配
-    var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,5}(?!(\w|\d|-))/gi;  // 可以避免很多误报
+    // var oregExp = /(?<!(\w|-))[a-z|A-Z]{2,5}[-\s]?\d{2,5}(?!(\w|\d|-))/gi;  // 可以避免很多误报
+    var oregExp = /(?<!(\w|-))(?!SCUTE|LUXU|MIUM|DCV)[a-z|A-Z]{2,5}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-)/gi;  // 可以避免很多误报
     var oregExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi;     //更容易将字符串识别成番号, 误报比较严重
     var webList = [
         // https://xslist.org/zh/model/69636.html
@@ -96,7 +97,7 @@
     }
 
     findAndReplaceDOMTextFun();     // 查找普通番号
-    findAndReplaceDOMTextFunFC2();  // 查找fc2等番号 (无菜单,点击后会跳转到javdb进行搜索)
+    findAndReplaceDOMTextFunOnlyJump();  // 查找fc2等番号 (无菜单,点击后会跳转到javdb进行搜索)
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
@@ -160,20 +161,20 @@
         });
     }
 
-    // 查找番号, 匹配fc2、200GANA、259LUXU、300MIUM、一本道、东京热、HEYZO
+    // 查找番号, 匹配fc2、200GANA、229SCUTE、259LUXU、261ARA、277DCV、300MIUM、300MAAN、300NTK、345SIMM、358WITH、390JAC、390JNT、428SUKE、一本道、东京热、HEYZO等
         // 只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
         // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
-    function findAndReplaceDOMTextFunFC2(){
+    function findAndReplaceDOMTextFunOnlyJump(){
                 findAndReplaceDOMText(allHTML, {
-                    find:/FC2[^\d]*(\d+)|(?<!(\w|-))200GANA[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))259LUXU[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))300MIUM[-\s]?\d{2,5}(?!(\w|\d|-))|(?<!(\w|-))n\d{4}(?!(\w|\d|-))|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!(\w|-))HEYZO[_\s]?\d{4}(?!(\w|\d|-))/gi,
+                    find:/FC2[^\d]*(\d+)|200GANA[-\s]?\d{3,4}|(?:229)?SCUTE[-\s]?\d{3}|(?:259)?LUXU[-\s]?\d{3,4}|261ARA[-\s]?\d{3,4}|(?:277)?DCV[-\s]?\d{3,4}|(?:300)?(?:MIUM|MAAN|NTK)[-\s]?\d{3,4}|345SIMM[-\s]?\d{3}|358WITH[-\s]?\d{3}|390(?:JAC|JNT)[-\s]?\d{3}|428SUKE[-\s]?\d{3}|HEYZO[_\s]?\d{4}|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!(\w|-))n\d{4}(?!(\w|\d|-))/gi,
                     preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
                     forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
                     replace: function(portion) {
                         var otext = portion.text;
-                        var odiv = document.createElement('a');
+                        var odiv = document.createElement('jumpJavDB');
                         odiv.style.textDecoration = "underline #66ccff";
-                        odiv.href = 'https://javdb.com/search?q=' + otext + '&f=all';
-                        odiv.target = "_blank";      
+                        odiv.style.cursor = "pointer";    
+                        odiv.setAttribute("onclick","window.open('https://javdb.com/search?q="+ otext + "&f=all')")
                         odiv.innerHTML = otext;
                         return odiv;
                     }
@@ -184,10 +185,10 @@
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
         var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>JavBus 页面</a>" +"</avdiv>" ;
-        if(savList){
-            var savListItem = savList.list;
-            for(let i=0; i<savListItem.length;i++){
-                aPattern += "<avdiv class='savlink'>" + "<a href='" + savListItem[i][1].replace("%s", id) +" 'target='_blank' style='color:#459df5;'>" + savListItem[i][0] + "</a>" + "</avdiv>"
+        if(setting){
+            var savList = setting.list;
+            for(let i=0; i<savList.length;i++){
+                aPattern += "<avdiv class='savlink'>" + "<a href='" + savList[i][1].replace("%s", id) +" 'target='_blank' style='color:#459df5;'>" + savList[i][0] + "</a>" + "</avdiv>"
             }
         }
         var ofloat = document.createElement("avdiv")
@@ -206,13 +207,13 @@
         }
     }
 
-    // 鼠标进入文章中番号
+    // 鼠标经过番号
     function savIDMouseEnter(e){ 
         avInfo = {};
         clearTimeout(timerMouseLeave);   
         avmouseenter(e);
     }
-    // 鼠标离开文章中番号
+    // 鼠标离开番号
     function savIDMouseLeave(e){    
         timerMouseLeave = setTimeout(function(){
             savMenuMouseLeave();
@@ -275,7 +276,7 @@
         if(document.querySelector(".sav-menu")) return; //如果已经存在菜单, 退出
 
         var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
-        if (selectText.length>12) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
+        if (selectText.length>10) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
         selectText = selectText.replace(/[^a-zA-Z0-9]/g,"");  //去掉一些莫名其妙的符号。网友分享的番号总是各种各样
         var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,5}/i);
         if(!oav) return;  //如果没搜索到,退出
@@ -542,7 +543,7 @@
         "border-radius:4px;" +
         "padding:10px 20px;" ;
         var innerH = " "+
-        "<p>搜索词用 %s 代替 <br>修改时注意中英文标点符号 <br>格式是 JSON ,注意有无逗号 </p>" +
+        "<p>搜索词用 %s 代替 <br>修改时注意中英文标点符号 <br>格式是 JSON ,注意有无逗号 <br>点击保存无反应,大概率是修改错误, 可以去<a href='https://greasyfork.org/zh-CN/scripts/423350/feedback'>论坛求助</a> </p>" +
         "<textarea wrap='off' cols='66' rows='20' style='overflow:auto;border-radius:4px;'>" + JSON.stringify( GM_getValue("_setting"),false,4) + "</textarea>" +
         "<br>" +
         "<p>老司机共浏览了" + Object.keys(localInfo).length + "个番号！</p>" +

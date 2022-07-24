@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.2
+// @version      0.10.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -106,18 +106,19 @@
             // find:/[a-z|A-Z]{2,5}-\d{2,4}/gi,
             find:oregExp,
             // preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
-            // forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
-            forceContext: function(el) {
-                // 自定义隔断上下文, 如果前后文字在不同的<a>、<div>中, 判定为两段文字,不再合并判断。
-                return el.matches('a,div');
-              },
+            forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
+            // forceContext: function(el) {
+            //     // 自定义隔断上下文, 如果前后文字在不同的<a>、<div>中, 判定为两段文字,不再合并判断。
+            //     return el.matches('a,div');
+            //   },
             replace: function(portion) {
                 var otext = portion.text;
                 if(otext.length<4) return otext;
 
                 var odiv = document.createElement('avdiv');
                 odiv.classList.add("sav-id");
-                odiv.style.textDecoration = "underline green";
+                if(setting.linkColor) odiv.style.color = setting.linkColor;
+                odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";
                 odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
                 odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
                 odiv.addEventListener("click",savIDClick);  // 点击番号复制
@@ -151,7 +152,8 @@
                 // 浏览过的番号下划线改为虚线
                 var avid = addHyphen(otext)
                 if(localInfo[avid]){
-                    odiv.style.textDecoration = "underline dotted green";
+                    if(setting.visitedColor) odiv.style.color = setting.visitedColor;
+                    odiv.style.textDecoration = setting.visitedTextDecoration?setting.visitedTextDecoration:"underline dotted green";
                 }
                 
                 odiv.dataset.av = avid;       
@@ -166,13 +168,14 @@
         // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
     function findAndReplaceDOMTextFunOnlyJump(){
                 findAndReplaceDOMText(allHTML, {
-                    find:/FC2[^\d]*(\d+)|200GANA[-\s]?\d{3,4}|(?:229)?SCUTE[-\s]?\d{3}|(?:259)?LUXU[-\s]?\d{3,4}|261ARA[-\s]?\d{3,4}|(?:277)?DCV[-\s]?\d{3,4}|(?:300)?(?:MIUM|MAAN|NTK)[-\s]?\d{3,4}|345SIMM[-\s]?\d{3}|358WITH[-\s]?\d{3}|390(?:JAC|JNT)[-\s]?\d{3}|428SUKE[-\s]?\d{3}|HEYZO[_\s]?\d{4}|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!(\w|-))n\d{4}(?!(\w|\d|-))/gi,
+                    find:/FC2[^\d]{0,5}\d{6,7}|200GANA[-\s]?\d{3,4}|(?:229)?SCUTE[-\s]?\d{3}|(?:259)?LUXU[-\s]?\d{3,4}|261ARA[-\s]?\d{3,4}|(?:277)?DCV[-\s]?\d{3,4}|(?:300)?(?:MIUM|MAAN|NTK)[-\s]?\d{3,4}|345SIMM[-\s]?\d{3}|358WITH[-\s]?\d{3}|390(?:JAC|JNT)[-\s]?\d{3}|428SUKE[-\s]?\d{3}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!\w)n\d{4}(?!(\w|\d|-))/gi,
                     preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
                     forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
                     replace: function(portion) {
                         var otext = portion.text;
                         var odiv = document.createElement('jumpJavDB');
-                        odiv.style.textDecoration = "underline #66ccff";
+                        if(setting.onlyJumpLinkColor) odiv.style.color = setting.onlyJumpLinkColor;
+                        odiv.style.textDecoration = setting.onlyJumpLinkTextDecoration?setting.onlyJumpLinkTextDecoration:"underline #66ccff";
                         odiv.style.cursor = "pointer";    
                         odiv.setAttribute("onclick","window.open('https://javdb.com/search?q="+ otext + "&f=all')")
                         odiv.innerHTML = otext;
@@ -237,6 +240,7 @@
     // 鼠标滑过 显示菜单
     function avmouseenter(e){
         var avid = e.target.dataset.av;
+        if(setting.visitedColor) e.target.style.color = setting.visitedColor;
         e.target.style.textDecoration = "underline dotted green";
         var avdiv = document.querySelector(".sav-menu")
         if(avdiv){
@@ -273,6 +277,7 @@
 
     // 鼠标选中 显示菜单
     document.onmouseup = function(e){
+        if(e.button !=0) return;
         if(document.querySelector(".sav-menu")) return; //如果已经存在菜单, 退出
 
         var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");

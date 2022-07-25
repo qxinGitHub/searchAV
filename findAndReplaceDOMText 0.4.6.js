@@ -128,7 +128,9 @@
 		// Input elements
 		input:1, textarea:1, select:1, option:1, optgroup:1, button:1,
 		// Table related elements:
-		table:1, tbody:1, thead:1, th:1, tr:1, td:1, caption:1, col:1, tfoot:1, colgroup:1
+		table:1, tbody:1, thead:1, th:1, tr:1, td:1, caption:1, col:1, tfoot:1, colgroup:1,
+		// 自用,  > v0.10.4 2022-07-25 添加
+		a:1
 
 	};
 

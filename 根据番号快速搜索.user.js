@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.5
+// @version      0.10.6
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
 // @license      MIT
 // @match        *://**/*
-// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1074122
+// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1074625
 // @connect     *
 // @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
@@ -87,25 +87,9 @@
 
     // 用到的一些正则表达式
     // 一般发行番号
-    // var oRegExp = /(?<!(\w|-))[a-zA-Z]{2,5}[-\s]?\d{2,5}(?!(\w|\d|-))/gi;  // 可以避免很多误报
     var oRegExp = /(?<!(\w|-))[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-)/gi;  // 可以避免很多误报
-    // 更容易将字符串识别成番号, 误报比较严重
-    var oRegExp2 = /[a-z|A-Z]{2,5}-?\d{2,4}/gi; 
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    // var oRegExp_OnlyJump = /FC2[^\d]{0,5}\d{6,7}|200GANA[-\s]?\d{3,4}|(?:229)?SCUTE[-\s]?\d{3}|(?:259)?LUXU[-\s]?\d{3,4}|261ARA[-\s]?\d{3,4}|(?:277)?DCV[-\s]?\d{3,4}|(?:300)?(?:MIUM|MAAN|NTK)[-\s]?\d{3,4}|345SIMM[-\s]?\d{3}|358WITH[-\s]?\d{3}|390(?:JAC|JNT)[-\s]?\d{3}|428SUKE[-\s]?\d{3}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{3}(?!(\w|\d|-))|(?<!\w)n\d{4}(?!(\w|\d|-))/gi;
     var oRegExp_OnlyJump = /(?<!(\w|-))[2-7]{1}\d{2}[a-zA-Z]{3,5}[-\s]?\d{3,4}(?!(\w|\d|-))|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!(\w|-))|(?<!\w)T28-\d{3}|(?<!\w)\d{6}-\w{2,7}/gi;
-
-
-    var webList = [
-        /^https?:\/\/xslist\.org\//,
-        /^https?:\/\/192\.168\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)/,
-    ]
-    var webListTag = webList.some(function hashUrl(element){
-            return ~window.location.href.search(element);
-        });
-    if(webListTag){
-        oRegExp = oRegExp2;
-    }
 
     // 需要延时加载的网站
     var delayList = [
@@ -204,7 +188,7 @@
                         if(setting.onlyJumpLinkColor) odiv.style.color = setting.onlyJumpLinkColor;
                         odiv.style.textDecoration = setting.onlyJumpLinkTextDecoration?setting.onlyJumpLinkTextDecoration:"underline #66ccff";
                         odiv.style.cursor = "pointer";    
-                        odiv.setAttribute("onclick","window.open('https://javdb.com/search?q="+ otext + "&f=all')")
+                        odiv.setAttribute("onclick","window.open('https://javdb.com/search?q="+ otext + "&f=all');return false")
                         odiv.innerHTML = otext;
                         return odiv;
                     }
@@ -235,6 +219,8 @@
         if(avid){
             GM_setClipboard(avid)
         }
+        e.preventDefault();
+        return false;
     }
 
     // 鼠标经过番号
@@ -306,7 +292,9 @@
 
     // 鼠标选中 显示菜单
     document.onmouseup = function(e){
+        console.log(e);
         if(e.button !=0) return;
+        if(e.target.nodeName.toUpperCase() == "INPUT" || e.target.nodeName.toUpperCase() == "TEXTAREA") return;
         if(document.querySelector(".sav-menu")) return; //如果已经存在菜单, 退出
 
         var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
@@ -392,7 +380,16 @@
 
                 // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
                 if(data.status==404 && avID.length - avID.indexOf("-") ==3){
-                    getInfo(avID.replace("-","-0"));
+                    // 将错误番号存储到本地
+                    localInfo[avID] = {};   
+                    localInfo[avID].title = "番号可能存在问题";
+                    setTimeout(() => {
+                        var avdivinfo = document.querySelector("avdivsinfo");
+                        avdivinfo.parentNode.removeChild(avdivinfo);
+                    }, 300);
+                    GM_setValue("avInfo2",localInfo)
+                    // 重新获取信息
+                    getInfo(avID.replace("-","-0"),true);
                     var linkJavbusPageLink = document.querySelector(".linkJavbusPage a");
                     if(linkJavbusPageLink){
                         linkJavbusPageLink.href = linkJavbusPageLink.href.replace("-","-0");
@@ -451,7 +448,7 @@
                 
                 // 标题翻译
                 if(data.status==404){
-                    var RegExp_suRen = avID.search(/ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH/i);
+                    var RegExp_suRen = avID.search(/ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH/i);
                     if(RegExp_suRen>-1){
                         avInfo.titleTrans = "未收录,疑似素人番号,请前往 <a target='_blank' style='text-decoration:underline' href='https://javdb.com/search?q="+ avID + "&f=all'> javdb 搜索</a>";
                     }else{
@@ -623,33 +620,6 @@
         savBoxClose()
     }
     GM_registerMenuCommand("自定义搜索", savBoxEdit)
-
-
-    // 获取演员的相关信息 未用到
-    function getActorInfo(acterName){
-        console.log("函数: getActorInfo(acterName");
-        // https://xslist.org/search?query=%E3%81%95%E3%81%A4%E3%81%8D%E8%8A%BD%E8%A1%A3&lg=zh
-        var actor_url = 'https://xslist.org/search?query=' + acterName + "&lg=zh";
-        console.log(actor_url);
-        GM_xmlhttpRequest({
-            method: 'GET',
-            url: actor_url,
-            onload: function (data) {
-                setTimeout(function () {
-                    console.log("这是获取到的演员信息");
-                    console.log(data.responseXML);
-                    var parser=new DOMParser();
-                    var htmlDoc=parser.parseFromString(data.responseText, "text/html");
-                    var avActorLink = htmlDoc.querySelector("a");
-                    console.log(avActorLink);
-                }, 300);
-
-            },
-            onerror: function (e) {
-                console.error(e);
-            }
-        });
-    }
 
     GM_addStyle("" +
                 ".sav-menu{" +

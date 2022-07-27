@@ -143,6 +143,13 @@
 		prose: {
 			forceContext: exposed.NON_INLINE_PROSE,
 			filterElements: function(el) {
+				//    2022-07-27 添加, 排除在链接内没有横杠的番号, 视为用户名, 排除
+					// td是由于图书馆论坛界面的用户名在td中。
+				if(el.nodeName.toUpperCase() == "A" || el.nodeName.toUpperCase() == "TD"){
+					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+						return false
+					}
+				}
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());
 			}
 		}

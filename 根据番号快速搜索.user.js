@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.6
+// @version      0.10.7
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -23,6 +23,7 @@
 // @exclude	    *.smzdm.com/*
 // @exclude	    *.zhihu.com/*
 // @exclude	    *.qq.com/*
+// @exclude     *://*.amazon.tld/*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -46,15 +47,8 @@
         transText:"",
         trans:[]
     }
-
-    var debuge = false;
-    // debuge = true;   // 打开一些console.log提示
-
-    if(debuge) var avNO = 0;    // 计数, 查看有多少番号
-
-    // 获取网页
-    var allHTML = document.querySelector("body");
-
+    var allHTML = document.querySelector("body");   // 获取网页
+    
     // 删掉以前保存的信息 v0.8.5 2022-07-05
     if(GM_getValue("avInfo")) {
         GM_deleteValue("avInfo")
@@ -66,12 +60,10 @@
         GM_setValue("avInfo2",{});
         localInfo = {};
     }
-    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
     
-    // 自定义搜索列表
-        // 如果是想自定义搜索列表, 去设置里改, 不要改动此处
-    var setting = GM_getValue("_setting");  // setting: 相关设置选项, 现在只有搜索列表
-    if(!setting){
+    // setting: 相关设置选项
+    var setting = GM_getValue("_setting");  
+    if(!setting || JSON.stringify(setting) == "{}"){
         setting = {
             "version":1,
             "list":[
@@ -84,13 +76,21 @@
         }
         GM_setValue("_setting",setting);
     }
-
+    
+    // 测试用
+    var debug = setting.debug?setting.debug:false
+    // debug = true;   // 打开一些console.log提示
+    if(debug) {var searchTimes = 0; var avIDTimes=0};    // 计数, 查看有多少番号。搜索到的次数,和最后的实际匹配的番号数量
+    
     // 用到的一些正则表达式
     // 一般发行番号
-    var oRegExp = /(?<!(\w|-))[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-)/gi;  // 可以避免很多误报
+    var oRegExp = /(?<!(\w|-))[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-)|(?<!(\w|-))PARATHD[-\s]?\d{3,4}/gi; 
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    var oRegExp_OnlyJump = /(?<!(\w|-))[2-7]{1}\d{2}[a-zA-Z]{3,5}[-\s]?\d{3,4}(?!(\w|\d|-))|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!(\w|-))|(?<!\w)T28-\d{3}|(?<!\w)\d{6}-\w{2,7}/gi;
-
+    var oRegExp_OnlyJump = /(?<!(\w|-))[2-7]{1}\d{2}[a-zA-Z]{3,5}[-\s]?\d{3,4}(?!(\w|\d|-))|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!(\w|-))|(?<!\w)T28-\d{3}|(?<!\w)\d{6}-\w{2,7}|(?<!\w)MKD-S\d{2,3}(?!(\w|-))|KITAIKE[-\s]?\d{3}(?!(\w|-))|xxx-av-\d{4,5}(?!(\w|-))|(?<!\w)crazyasia\d{5}(?!(\w|-))|(?<!\w)PEWORLD\d{5}(?!(\w|-))/gi;
+    // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
+    var oRegExp_Exclude = /^(aes|ak|akb|aptx|au|ax|bej|cc|cctv|ckg|covid|cpu|df|ds|emui|error|flyme|fps|gbx|gnz|gp|gt|gts|gtx|hao|hp|ilc|ilce|imx|ipad|iso|it|jav|javdb|lumia|mh|miui|nc|next|note|os|osx|qbz|qsz|rx|scp|shp|sn|snh|top|win|xfx)$/i
+    // 可能是素人番号
+    var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH/i
     // 需要延时加载的网站
     var delayList = [
         /^https?:\/\/magnetar1\.pw\/jav/,
@@ -98,8 +98,8 @@
     var delayListTag = delayList.some(function hashUrl(element){
         return ~window.location.href.search(element);
     });
-
-    if(debuge) console.time("正则查询用时");
+    
+    if(debug) {console.clear();console.time("正则查询用时");}
     if(delayListTag){
         setTimeout(() => {
             findAndReplaceDOMTextFun();
@@ -109,8 +109,8 @@
         findAndReplaceDOMTextFun();     // 查找普通番号
         findAndReplaceDOMTextFunOnlyJump();  // 查找fc2等番号 (无菜单,点击后会跳转到javdb进行搜索)
     }
-    if(debuge) console.timeEnd("正则查询用时");
-    if(debuge) console.log("本页面共搜索到番号: " + avNO);
+    if(debug) {console.timeEnd("正则查询用时"); console.log("本页面匹配到番号: " + searchTimes + " . 实际的番号数量: " + avIDTimes);}
+    console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
 
 
     // 查找番号, 匹配最基础的番号
@@ -126,7 +126,7 @@
             //     return el.matches('a,div');
             //   },
             replace: function(portion,match) {
-                if(debuge) avNO++;
+                if(debug) {searchTimes++; console.log(portion.text);}
                 var otext = portion.text;
                 // 当番号介于元素两个HTML元素, 只作用最后一个
                 if(portion.isEnd){
@@ -135,39 +135,41 @@
                     return "";
                 }
 
-                if(otext.length<4) return otext;
+                // if(otext.length<4) return otext;
 
                 var odiv = document.createElement('avdiv');
                 odiv.classList.add("sav-id");
-                if(setting.linkColor) odiv.style.color = setting.linkColor; // 自定义颜色
-                odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
                 odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
                 odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
                 odiv.addEventListener("click",savIDClick);  // 点击番号复制
-    
+                
                 var oNoHyphen = otext.indexOf("-"); // 如果没有,返回-1
                 var oOnlyText = otext.replace(/[^a-zA-Z]/gi,"");    // 番号中的英文
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
                 // 排除所有包含在此的关键词, 和番号重名的没有排除:  例: covid-19 win10
-                var oExclude = oOnlyText.search(/^(cpu|dos|win|os|osx|ipad|lumia|miui|flyme|emui|note|snh|bej|gnz|ckg|akb|gp|gt|gts|gtx|covid|aptx|rx|mh|bmw|sn|au|cc|cctv|shp|hao|top|scp|iso|it|ilc|ILCE|ax|gbx|aes|nc|imx|xfx|fps|ds|error|hp|df|qbz|qsz|ak|jav|javdb)$/i)  
+                var oExclude = oOnlyText.search(oRegExp_Exclude)  
                 // console.table([{name:"完整番号",value:otext},{name:"英文",value:oOnlyText},{name:"数字",value:oOnlyNum},{name:"是否有横杠",value:oNoHyphen},{name:"是否排除",value:oExclude},{name:"占位",value:"占位"}])
-
+                
                 if(oExclude>-1){    // 包含关键词的情况下, 跳过
                     return otext;
                 }
                 if(oNoHyphen<0 && oOnlyNum.length!=3){    // 没有横杠的情况,如果数字的个数是2个或者4个,不是番号的可能性更大些,选择跳过。
                     return otext;
                 }
-
-                // 浏览过的番号下划线改为虚线
+                
+                // 自定义颜色
                 var avid = addHyphen(otext)
                 if(localInfo[avid]){
                     if(setting.visitedColor) odiv.style.color = setting.visitedColor;
                     odiv.style.textDecoration = setting.visitedTextDecoration?setting.visitedTextDecoration:"underline dotted green";
+                }else{
+                    if(setting.linkColor) odiv.style.color = setting.linkColor; // 自定义颜色
+                    odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
                 }
                 
                 odiv.dataset.av = avid;       
                 odiv.innerHTML = otext;
+                if(debug){avIDTimes++; console.log(avid);}
                 return odiv;
             }
         });
@@ -182,7 +184,7 @@
                     preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
                     forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
                     replace: function(portion) {
-                        if(debuge) avNO++;
+                        if(debug) {searchTimes++;avIDTimes++; console.log(portion.text);}
                         var otext = portion.text;
                         var odiv = document.createElement('jumpJavDB');
                         if(setting.onlyJumpLinkColor) odiv.style.color = setting.onlyJumpLinkColor;
@@ -199,8 +201,8 @@
     function createPattenr(id){
         var linkJavbusPage = "https://www.javbus.com/" + id;
         var aPattern =  "<avdiv class='savlink linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' style='color:#459df5;'>JavBus 页面</a>" +"</avdiv>" ;
-        if(setting){
-            var savList = setting.list;
+        var savList = setting.list;
+        if(savList){
             for(let i=0; i<savList.length;i++){
                 aPattern += "<avdiv class='savlink'>" + "<a href='" + savList[i][1].replace("%s", id) +" 'target='_blank' style='color:#459df5;'>" + savList[i][0] + "</a>" + "</avdiv>"
             }
@@ -292,15 +294,15 @@
 
     // 鼠标选中 显示菜单
     document.onmouseup = function(e){
-        console.log(e);
-        if(e.button !=0) return;
-        if(e.target.nodeName.toUpperCase() == "INPUT" || e.target.nodeName.toUpperCase() == "TEXTAREA") return;
+        if(e.button !=0) return;    // 排除非左键点击
+        if(document.activeElement.tagName.toUpperCase() == "INPUT" || document.activeElement.tagName.toUpperCase() == "TEXTAREA") return;   // 排除inpu和textarea内的文本
         if(document.querySelector(".sav-menu")) return; //如果已经存在菜单, 退出
-
-        var selectText = window.getSelection().toString().trim().replace(/\s+/g,"");
-        if (selectText.length>10) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
-        selectText = selectText.replace(/[^a-zA-Z0-9]/g,"");  //去掉一些莫名其妙的符号。网友分享的番号总是各种各样
-        var oav = selectText.match(/[a-z|A-Z]{2,5}-?\d{2,5}/i);
+        
+        var selectText = window.getSelection().toString().trim();
+        var selectLength = setting.selectLength?setting.selectLength:10;
+        if (selectText.length > selectLength) return; //如果复制的文字过长,退出。避免复制网址时自己弹出。
+        selectText = selectText.replace(/[^a-zA-Z0-9-]/g,"");  //去掉一些莫名其妙的符号。网友分享的番号总是各种各样
+        var oav = selectText.match(/[a-z|A-Z]{2,8}-?\d{2,6}/i);
         if(!oav) return;  //如果没搜索到,退出
         
         var avid = oav[0]  
@@ -448,14 +450,13 @@
                 
                 // 标题翻译
                 if(data.status==404){
-                    var RegExp_suRen = avID.search(/ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH/i);
-                    if(RegExp_suRen>-1){
+                    if(avID.search(oRegExp_SuRen)>-1){
                         avInfo.titleTrans = "未收录,疑似素人番号,请前往 <a target='_blank' style='text-decoration:underline' href='https://javdb.com/search?q="+ avID + "&f=all'> javdb 搜索</a>";
                     }else{
                         avInfo.titleTrans = "没有找到相关页面";
                     }
                 }else if(!avInfo.titleTrans){   // 如果本地存在翻译, 就不再重复翻译
-                    if(debuge) console.log("开始翻译标题");
+                    if(debug) console.log("开始翻译标题");
                     Trans.id = avID;
                     Trans.transText=avInfo.title;
                     googleTrans();
@@ -582,18 +583,22 @@
         "border-radius:4px;" +
         "padding:10px 20px;" ;
         var innerH = " "+
-        "<p>搜索词用 %s 代替 <br>修改时注意中英文标点符号 <br>格式是 JSON ,注意有无逗号 <br>点击保存无反应,大概率是修改错误, 可以去<a href='https://greasyfork.org/zh-CN/scripts/423350/feedback'>论坛求助</a> </p>" +
+        "<p>搜索词用 %s 代替 <br>格式是 JSON ,修改时注意中英文标点符号 尤其有无逗号 <br>点击保存无反应,大概率是修改错误, 可以去<a href='https://greasyfork.org/zh-CN/scripts/423350/feedback'>论坛求助</a> </p>" +
         "<textarea wrap='off' cols='66' rows='20' style='overflow:auto;border-radius:4px;'>" + JSON.stringify( GM_getValue("_setting"),false,4) + "</textarea>" +
         "<br>" +
         "<p>老司机共浏览了" + Object.keys(localInfo).length + "个番号！</p>" +
+        "<button id='savDebug' >测试用</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='savSetting' >清空设置</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savHistory' >清空浏览历史</button> &nbsp;&nbsp;&nbsp;" +
-        "<button id='editBoxCloase' >关闭</button> &nbsp;&nbsp;&nbsp;" +
-        "<button id='editBoxSave' >保存</button>" +
+        "<button id='savEditBoxCloase' >关闭</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='savEditBoxSave' >保存</button>" +
         "";
         editbox.innerHTML = innerH;
+        editbox.querySelector("#savDebug").addEventListener("click",savDebug)
+        editbox.querySelector("#savSetting").addEventListener("click",clearSetting)
         editbox.querySelector("#savHistory").addEventListener("click",clearHistory)
-        editbox.querySelector("#editBoxCloase").addEventListener("click",savBoxClose)
-        editbox.querySelector("#editBoxSave").addEventListener("click",savBoxSave)
+        editbox.querySelector("#savEditBoxCloase").addEventListener("click",savBoxClose)
+        editbox.querySelector("#savEditBoxSave").addEventListener("click",savBoxSave)
         document.body.appendChild(editbox);
     }
     // 菜单保存
@@ -612,6 +617,29 @@
         if(box){
             box.parentNode.removeChild(box);
         }
+    }
+    // 开启debug, 会加入额外的信息  
+    function savDebug(){
+        // 如果是想自定义搜索列表和颜色, 去设置里点击“测试”,然后“保存”, 不要改动此处
+        var debug_setting = {
+            "debug":true,  
+            "selectLength":16,  // 选中搜索的字符长度。设置0则关闭滑词搜索。 设置更大的数字,例如16,可以应对一些超长的番号。
+            "linkColor": "red",  // 一般番号, 没有浏览过的颜色
+            "linkTextDecoration": "underline red",   // 一般番号, 没有浏览过的下划线样式
+            "visitedColor": "green", //一般番号, 浏览过的字体颜色
+            "visitedTextDecoration": "underline dotted green",   // 一般番号, 浏览过的下划线样式
+            "onlyJumpLinkColor": "#66ccff", // 特殊番号(素人、稀缺、无码等所有直接跳转的番号)  字体颜色
+            "onlyJumpLinkTextDecoration": "underline #66ccff",   // 特殊番号(……) 下划线颜色
+        }
+        Object.assign(debug_setting,setting);
+        document.querySelector("#sav-editCodeBox textarea").value = JSON.stringify(debug_setting,false,4)
+    }
+    // 清空设置
+    function clearSetting(){
+        GM_deleteValue("_setting");
+        localInfo = {}
+        savBoxClose()
+        location.reload();
     }
     // 清除浏览历史
     function clearHistory(){

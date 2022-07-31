@@ -149,7 +149,21 @@
 					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
 						return false
 					}
+					// javbus 发帖的用户名
+					if(el.classList && el.classList.contains("au")){
+						return false
+					}
 				}
+
+				// var classList = [
+				// 	""
+				// ]
+				// javbus 修改帖子的用户名
+				if(el.classList && el.classList.contains("pstatus")){
+					return false
+				}
+
+
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());
 			}
 		}

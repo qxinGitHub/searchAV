@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.8
+// @version      0.10.9
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
 // @license      MIT
 // @match        *://**/*
-// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1074625
+// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1076102
 // @connect     *
 // @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
@@ -15,7 +15,7 @@
 // @exclude	    *://www.v2ex.com/*
 // @exclude	    *://greasyfork.org/*
 // @exclude	    *://bilibili.com/*
-// @exclude	    *://www.bilibili.com/*
+// @exclude	    *.bilibili.com/*
 // @exclude	    *://www.douyin.com/*
 // @exclude	    *.1688.com/*
 // @exclude	    *.taobao.com/*
@@ -84,13 +84,15 @@
     
     // 用到的一些正则表达式
     // 一般发行番号
-    var oRegExp = /(?<!(\w|-))[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-)|(?<!(\w|-))PARATHD[-\s]?\d{3,4}/gi; 
+    var oRegExp = /(?<!\w|-)(?!heyzo|SHINKI)[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-|％|%|歳)|(?<!\w|-)PARATHD[-\s]?\d{3,4}(?!\w)|(?<!\w|-)HIMEMIX[-\s]?\d{3}(?!\w)|(?<!\w)\d{6}-\d{2,3}(?!\w)/gi; 
+    // 省略字母, 连续数字的番号 例: abc-001、002、003
+    var oRegExp2 = /(?<!\w|-)(?<=([a-zA-Z]{2,6})(?:[\s,、-]\d{3,4})+[\s,、]?)\d{3,4}(?!\w|％|%|人|年|歳)/gmi
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    var oRegExp_OnlyJump = /(?<!(\w|-))\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!(\w|\d|-))|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!(\w|-))\d{6}[-_]\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!(\w|-))|(?<!\w)T28-\d{3}|(?<!\w)\d{6}-\w{2,7}|(?<!\w)MKD-S\d{2,3}(?!(\w|-))|SHINKI[-\s]?\d{3}(?!(\w|-))|KITAIKE[-\s]?\d{3}(?!(\w|-))|xxx-av-\d{4,5}(?!(\w|-))|(?<!\w)crazyasia\d{5}(?!(\w|-))|(?<!\w)PEWORLD\d{5}(?!(\w|-))/gi;
+    var oRegExp_OnlyJump = /(?<!\w|-)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|\d|-)|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!\w)\d{6}_\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)[01]\d{5}-\w{2,7}|(?<!\w)MKD-S\d{2,3}(?!\w|-)|SHINKI[-\s]?\d{3}(?!\w|-)|KITAIKE[-\s]?\d{3}(?!\w|-)|xxx-av-\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}/gi;
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude = /^(aes|ak|akb|aptx|au|ax|bej|cc|cctv|ckg|covid|cpu|df|ds|emui|error|flyme|fps|gbx|gnz|gp|gt|gts|gtx|hao|hp|ilc|ilce|imx|ipad|iso|it|jav|javdb|lumia|mh|miui|nc|next|note|os|osx|qbz|qsz|rx|scp|shp|sn|snh|top|win|xfx)$/i
+    var oRegExp_Exclude = /^(aes|ak|aptx|au|ax|bej|cc|cctv|ckg|class|covid|cpu|df|ds|dx|emui|error|file|flyme|fps|gbx|gnz|gp|gt|gts|gtx|hao|hp|ilc|ilce|imx|ipad|iso|it|jav|javdb|lumia|mh|miui|nc|next|note|ok|os|osx|qbz|qsz|rx|sale|scp|shp|sn|snh|top|win|xfx)$/i
     // 可能是素人番号
-    var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH/i
+    var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}/i
     // 需要延时加载的网站
     var delayList = [
         /^https?:\/\/magnetar1\.pw\/jav/,
@@ -102,14 +104,15 @@
     if(debug) {console.clear();console.time("正则查询用时");}
     if(delayListTag){
         setTimeout(() => {
-            findAndReplaceDOMTextFun();
             findAndReplaceDOMTextFunOnlyJump();
+            findAndReplaceDOMTextFun();
         }, 2000);
     } else {
+        findAndReplaceDOMTextFunOnlyJump();  // 查找fc2、素人、无码等番号 (无菜单,点击后会跳转到javdb进行搜索)
         findAndReplaceDOMTextFun();     // 查找普通番号
-        findAndReplaceDOMTextFunOnlyJump();  // 查找fc2等番号 (无菜单,点击后会跳转到javdb进行搜索)
+        findAndReplaceDOMTextFun2();    // 省略字母, 连续数字的番号 例: abc-001、002、003
     }
-    if(debug) {console.timeEnd("正则查询用时"); console.log("本页面匹配到番号: " + searchTimes + " . 实际的番号数量: " + avIDTimes);}
+    if(debug) {console.timeEnd("正则查询用时"); console.log("本页面通过正则匹配的有: " + searchTimes + " . 实际的番号数量: " + avIDTimes);}
     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
 
 
@@ -126,9 +129,10 @@
             //     return el.matches('a,div');
             //   },
             replace: function(portion,match) {
-                if(debug) {searchTimes++; console.log(portion.text);}
+                // console.log(match);
+                if(debug) {searchTimes++; console.log(match.index + ": " + portion.text);}
                 var otext = portion.text;
-                // 当番号介于元素两个HTML元素, 只作用最后一个
+                // 当番号介于两个HTML元素之中, 只作用最后一个
                 if(portion.isEnd){
                     otext = match[0];
                 }else{
@@ -148,12 +152,17 @@
                 var oOnlyNum = otext.replace(/[^0-9]/ig,"");    // 番号中的数字
                 // 排除所有包含在此的关键词, 和番号重名的没有排除:  例: covid-19 win10
                 var oExclude = oOnlyText.search(oRegExp_Exclude)  
+                // 没有横杠的情况下, 会排除在此的关键词
+                var oSpecial = oOnlyText.search(/akb|sex|best|part|tv/i) 
                 // console.table([{name:"完整番号",value:otext},{name:"英文",value:oOnlyText},{name:"数字",value:oOnlyNum},{name:"是否有横杠",value:oNoHyphen},{name:"是否排除",value:oExclude},{name:"占位",value:"占位"}])
                 
                 if(oExclude>-1){    // 包含关键词的情况下, 跳过
                     return otext;
                 }
-                if(oNoHyphen<0 && oOnlyNum.length!=3){    // 没有横杠的情况,如果数字的个数是2个或者4个,不是番号的可能性更大些,选择跳过。
+                if(oNoHyphen<0 && oOnlyNum.length>4){    // 没有横杠的情况,数字的位数限制五位数以下。
+                    return otext;
+                }
+                if(oNoHyphen<0 && oSpecial>-1){ // 没有横杠的情况下, 并且含有关键词
                     return otext;
                 }
                 
@@ -169,13 +178,45 @@
                 
                 odiv.dataset.av = avid;       
                 odiv.innerHTML = otext;
-                if(debug){avIDTimes++; console.log(avid);}
+                if(debug){avIDTimes++; console.log("番号: " + avid);}
                 return odiv;
             }
         });
     }
+    // 省略字母, 连续数字的番号 例: abc-001、002、003
+    function findAndReplaceDOMTextFun2(){
+        findAndReplaceDOMText(allHTML,{
+            find: oRegExp2,
+            preset: "prose",
+            forceContext:findAndReplaceDOMText.NON_INLINE_PROSE, 
+            replace: function(portion,match){
+                if(debug) {searchTimes++; console.log(portion.text);}
+                var avID = match[1] + "-" +match[0]
+                avID = addHyphen(avID)
+                
+                var odiv = document.createElement('avdiv');
+                odiv.classList.add("sav-id");
+                odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
+                odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
+                odiv.addEventListener("click",savIDClick);  // 点击番号复制
+                
+                // 自定义颜色
+                if(localInfo[avID]){
+                    if(setting.visitedColor) odiv.style.color = setting.visitedColor;
+                    odiv.style.textDecoration = setting.visitedTextDecoration?setting.visitedTextDecoration:"underline dotted green";
+                }else{
+                    if(setting.linkColor) odiv.style.color = setting.linkColor; // 自定义颜色
+                    odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
+                }
 
-    // 查找番号, 匹配fc2、200GANA、229SCUTE、259LUXU、261ARA、277DCV、300MIUM、300MAAN、300NTK、345SIMM、358WITH、390JAC、390JNT、428SUKE、一本道、东京热、HEYZO等
+                odiv.dataset.av = avID;       
+                odiv.innerHTML = portion.text;
+                if(debug){avIDTimes++; console.log("省略字母,连续数字的番号: " + avID);}
+                return odiv;
+            }
+        })
+    }
+    // 查找番号, 匹配fc2、MGSTAGE(259LUXU等)、、261ARA、277DCV、300MIUM、300MAAN、300NTK、345SIMM、358WITH、390JAC、390JNT、428SUKE、一本道、东京热、HEYZO等
         // 只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
         // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
     function findAndReplaceDOMTextFunOnlyJump(){
@@ -184,7 +225,7 @@
                     preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
                     forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
                     replace: function(portion) {
-                        if(debug) {searchTimes++;avIDTimes++; console.log(portion.text);}
+                        if(debug) {searchTimes++;avIDTimes++; console.log("直接跳转的番号: " + portion.text);}
                         var otext = portion.text;
                         var odiv = document.createElement('jumpJavDB');
                         if(setting.onlyJumpLinkColor) odiv.style.color = setting.onlyJumpLinkColor;
@@ -227,6 +268,7 @@
 
     // 鼠标经过番号
     function savIDMouseEnter(e){ 
+        if(e.buttons != 0) return;  // 如果是按键的情况下划过番号, 则不触发
         avInfo = {};
         clearTimeout(timerMouseLeave);   
         clearTimeout(timerGetInfo);
@@ -309,7 +351,6 @@
         avid = addHyphen(avid);
         var odiv = createPattenr(avid);
         document.body.appendChild(odiv);
-        odiv.addEventListener("mouseleave",savMenuMouseLeave);
 
         var divClientRect = odiv.getBoundingClientRect()
         var divWidth = divClientRect.right - divClientRect.left;
@@ -577,6 +618,7 @@
         var editbox = document.createElement("div");
         editbox.id = "sav-editCodeBox";
         editbox.style.cssText = "position:fixed;" +
+        "z-index:9;" +
         "top:50%;left:50%;" +
         "transform:translate(-50%,-50%);" +
         "background:#ccc;" +

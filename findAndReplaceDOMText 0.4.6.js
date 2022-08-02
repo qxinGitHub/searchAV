@@ -108,7 +108,7 @@
 		// Media / Source elements:
 		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,
 		// Input elements
-		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1
+		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1, savdiv:1, avdiv:1
 	};
 
 	exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
@@ -158,11 +158,11 @@
 				// var classList = [
 				// 	""
 				// ]
+
 				// javbus 修改帖子的用户名
 				if(el.classList && el.classList.contains("pstatus")){
 					return false
 				}
-
 
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());
 			}

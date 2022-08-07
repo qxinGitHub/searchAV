@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.13
+// @version      0.10.14
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -80,7 +80,7 @@
     if(debug) {var searchTimes = 0; var avIDTimes=0};    // 计数, 查看有多少番号。searchTimes: 通过正则搜索到的次数。 avIDTimes:最后的实际匹配的番号数量
     
     // 一般发行番号
-    var oRegExp = /(?<!\w|-)(?!heyzo|SHINKI|JPNXXX)[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-|％|%|歳| 歲|分| Minute| day| time|cm|\.)|(?<!\w|-)PARATHD[-\s]?\d{3,4}(?!\w)|(?<!\w|-)HIMEMIX[-\s]?\d{3}(?!\w)|(?<!\w)\d{6}-\d{2,3}(?!\w)/gi; 
+    var oRegExp = /(?<!\w|-)(?!heyzo|SHINKI|JPNXXX)[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-|％|%|歳| 歲|分| Min| day| time|cm|\.)|(?<!\w|-)PARATHD[-\s]?\d{3,4}(?!\w)|(?<!\w|-)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)\d{6}-\d{2,3}(?!\w)/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
     var oRegExp2 = /(?<=(?<!\w|-)([a-zA-Z]{2,6})(?:[\s,、-](?!2022|2021|2020)\d{3,4})+(?!\d)[\s,、]?)\d{3,4}(?!\w|％|%|人|年|歳|万)/gmi
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
@@ -170,7 +170,7 @@
                     odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
                 }
                 
-                if(debug){avIDTimes++; console.log("番号: " + avid);otext = "("+avIDTimes +")" + otext;}
+                if(debug){avIDTimes++; console.log("番号: " + avid);otext = "["+avIDTimes +"]" + otext;}
                 odiv.dataset.av = avid;       
                 odiv.innerHTML = otext;
                 return odiv;
@@ -203,14 +203,14 @@
                     odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
                 }
 
-                if(debug){avIDTimes++; console.log("省略字母,连续数字的番号: " + avID);portion.text = "(*"+avIDTimes +")" + portion.text}
+                if(debug){avIDTimes++; console.log("省略字母,连续数字的番号: " + avID);portion.text = "[*"+avIDTimes +"]" + portion.text}
                 odiv.dataset.av = avID;       
                 odiv.innerHTML = portion.text;
                 return odiv;
             }
         })
     }
-    // 查找番号, 匹配fc2、MGSTAGE(259LUXU等)、、261ARA、277DCV、300MIUM、300MAAN、300NTK、345SIMM、358WITH、390JAC、390JNT、428SUKE、一本道、东京热、HEYZO等
+    // 查找番号, 匹配fc2、MGSTAGE(259LUXU等)、一本道、东京热、HEYZO等
         // 只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
         // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
     function findAndReplaceDOMTextFunOnlyJump(){
@@ -232,7 +232,7 @@
                         odiv.style.cursor = "pointer";    
                         odiv.setAttribute("onclick","window.open('https://javdb.com/search?q="+ otext + "&f=all');return false")
                         
-                        if(debug) {searchTimes++;avIDTimes++; console.log("直接跳转的番号: " + portion.text); otext = "(!"+avIDTimes +")" + otext;}
+                        if(debug) {searchTimes++;avIDTimes++; console.log("直接跳转的番号: " + portion.text); otext = "[!"+avIDTimes +"]" + otext;}
                         odiv.innerHTML = otext;
                         return odiv;
                     }

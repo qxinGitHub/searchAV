@@ -35,6 +35,8 @@
 ### 更新历史
  > 开始佛系更新
 
+ > v0.10.14 2022-08-07
+  - 调整: 增加对 CASMANI 番号的识别(7位字母, vr)
  > v0.10.13 2022-08-05
   - 修复: 排除关键字agen、bt、with、row、rush、index、for、the、of、joy 例: bt709
   - 修复: 调整对番号后面文字的限制,增加:| Minute| day| time|cm 。目前的正则:(?!\d|\[A-BD-Za-bd-z0-9]|-|％|%|歳| 歲|分| Minute| day| time|cm|\\.)

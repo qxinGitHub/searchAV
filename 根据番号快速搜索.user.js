@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.10.14
+// @version      0.10.15
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -19,6 +19,7 @@
 // @exclude	    *://www.douyin.com/*
 // @exclude	    *.1688.com/*
 // @exclude	    *.taobao.com/*
+// @exclude	    *.tmall.com/*
 // @exclude	    *.jd.com/*
 // @exclude	    *.smzdm.com/*
 // @exclude	    *.zhihu.com/*
@@ -80,11 +81,11 @@
     if(debug) {var searchTimes = 0; var avIDTimes=0};    // 计数, 查看有多少番号。searchTimes: 通过正则搜索到的次数。 avIDTimes:最后的实际匹配的番号数量
     
     // 一般发行番号
-    var oRegExp = /(?<!\w|-)(?!heyzo|SHINKI|JPNXXX)[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-|％|%|歳| 歲|分| Min| day| time|cm|\.)|(?<!\w|-)PARATHD[-\s]?\d{3,4}(?!\w)|(?<!\w|-)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)\d{6}-\d{2,3}(?!\w)/gi; 
+    var oRegExp = /(?<!\w|-)(?!heyzo|SHINKI|JPNXXX)[a-zA-Z]{2,6}[-\s]?\d{2,5}(?!\d|[A-BD-Za-bd-z0-9]|-|％|%|歳| 歲|分| Min| day| time|cm| ppi|\.)|(?<!\w|-)PARATHD[-\s]?\d{3,4}(?!\w)|(?<!\w|-)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w|-)\d{6}-\d{2,3}(?!\w|-)/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
-    var oRegExp2 = /(?<=(?<!\w|-)([a-zA-Z]{2,6})(?:[\s,、-](?!2022|2021|2020)\d{3,4})+(?!\d)[\s,、]?)\d{3,4}(?!\w|％|%|人|年|歳|万)/gmi
+    var oRegExp2 = /(?<=(?<!\w|-)([a-zA-Z]{2,6})(?:[\s,、-](?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、]?)\d{3,4}(?!\w|％|%|人|年|歳|万)/gmi
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    var oRegExp_OnlyJump = /(?<!\w|-)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|\d|-)|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!\w)\d{6}_\d{2,3}(?!\w)|(?<!\w)n\d{4}(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)[01]\d{5}-\w{2,7}|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av-\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}/gi;
+    var oRegExp_OnlyJump = /(?<!\w|-)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|\d|-)|FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3}|(?<!\w|-)\d{6}_\d{2,3}(?!\w|-)|(?<!\w|-)n\d{4}(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)T-\d{5}(?!\w|-)|(?<!\w|-)[01]\d{5}-\w{2,7}(?!\w|-)|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av-\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}/gi;
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
     var oRegExp_Exclude = /^(aes|again|ak|aptx|au|ax|bej|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|emui|error|file|flyme|fps|for|gbx|gnz|gp|gt|gts|gtx|hao|http|hp|ilc|ilce|imx|index|ipad|is|iso|it|jav|javdb|joy|lumia|mh|miui|nc|next|note|ok|os|osx|qbz|qsz|row|rush|rx|sale|scp|shp|sn|snh|status|the|top|usc|vol|win|with|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
@@ -145,12 +146,15 @@
                 // if(debug) console.table([{name:"完整番号",value:otext},{name:"英文",value:oOnlyText},{name:"数字",value:oOnlyNum},{name:"是否有横杠",value:oNoHyphen},{name:"是否排除",value:oExclude},{name:"占位",value:"占位"}]);
 
                 if(oExclude>-1 || oOnlyNum=="000"){    // 包含关键词 oRegExp_Exclude 的情况下, 跳过. 数字完全是000的情况下跳过
+                    if(debug) {console.log("存在关键词,略过: " + oOnlyText);}
                     return otext;
                 }
                 if(oNoHyphen<0 && oOnlyNum.length!=3){    // 没有横杠的情况,数字的位数限制五位数以下。
+                    if(debug) {console.log("无横杠,数字位数不对,略过: " + oOnlyNum);}
                     return otext;
                 }
                 if(oNoHyphen<0 && oSpecial>-1){ // 没有横杠的情况下, 并且含有关键词 oRegExp_Special
+                    if(debug) {console.log("无横杠,且有关键词,略过: " + oOnlyText);}
                     return otext;
                 }
 
@@ -635,7 +639,7 @@
         "<textarea wrap='off' cols='66' rows='20' style='overflow:auto;border-radius:4px;'>" + JSON.stringify( GM_getValue("_setting"),false,4) + "</textarea>" +
         "<br>" +
         "<p>老司机共浏览了" + Object.keys(localInfo).length + "个番号！</p>" +
-        "<button id='savDebug' >测试用</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='savDebug' >供测试使用</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savSetting' >清空设置</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savHistory' >清空浏览历史</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savEditBoxCloase' >关闭</button> &nbsp;&nbsp;&nbsp;" +

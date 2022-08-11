@@ -130,7 +130,8 @@
             forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
             replace: function(portion,match) {
                 // console.log(match);
-                if(debug) {searchTimes++; console.log(match.index + ": " + portion.text);}
+                // if(debug) {searchTimes++; console.log(match.index + ": " + portion.text);}
+                if(debug) {searchTimes++; console.log(portion.text);}
                 // 当番号介于两个HTML元素之中, 只作用最后一个
                 if(portion.isEnd){
                     var otext = match[0];
@@ -174,7 +175,7 @@
                     odiv.style.textDecoration = setting.linkTextDecoration?setting.linkTextDecoration:"underline green";    // 自定义下滑线
                 }
                 
-                if(debug){avIDTimes++; console.log("番号: " + avid);otext = "["+avIDTimes +"]" + otext;}
+                if(debug){avIDTimes++; console.log(avIDTimes + "番号: " + avid);otext = "["+avIDTimes +"]" + otext;}
                 odiv.dataset.av = avid;       
                 odiv.innerHTML = otext;
                 return odiv;

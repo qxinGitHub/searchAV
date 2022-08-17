@@ -108,7 +108,9 @@
 		// Media / Source elements:
 		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,
 		// Input elements
-		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1, savdiv:1, avdiv:1
+		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1, savdiv:1, 
+		// 自用添加
+		avdiv:1
 	};
 
 	exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
@@ -143,25 +145,41 @@
 		prose: {
 			forceContext: exposed.NON_INLINE_PROSE,
 			filterElements: function(el) {
-				//    2022-07-27 添加, 排除在链接内没有横杠的番号, 视为用户名, 排除
-					// td是由于图书馆论坛界面的用户名在td中。
-				if(el.nodeName.toUpperCase() == "A" || el.nodeName.toUpperCase() == "TD"){
+				// 在链接内的番号进一步筛选
+				if(el.nodeName.toUpperCase() == "A"){
+					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
 					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
 						return false
 					}
-					// javbus 发帖的用户名
-					if(el.classList && el.classList.contains("au")){
+					// 疑似是磁力链接, 略过 magnet:?
+					if(el.href.search("magnet:?")>-1){
 						return false
 					}
 				}
 
-				// var classList = [
-				// 	""
-				// ]
+				// td是由于图书馆论坛界面的用户名在td中。 位于td内, 且没有横杠的, 排除
+				if(el.nodeName.toUpperCase() == "TD"){
+					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+						return false
+					}
+				}
 
-				// javbus 修改帖子的用户名
-				if(el.classList && el.classList.contains("pstatus")){
-					return false
+				// 根据id排除 
+					// "magnet-table" javbus的磁力列表
+					// "magnets"  javdb 的磁力列表
+				// if(el.id){
+				// 	if(el.id=="magnet-table" || el.id=="magnets")
+				// 	return false
+				// }
+
+				// 根据class排除
+				if(el.classList){
+					// "pstatus" javbus修改帖子的用户名
+					// "au" javbus 发帖的用户名
+					if(el.classList.contains("pstatus") ||el.classList.contains("au")){
+						return false
+					}
+					// "magnet-content" freejavbt 的磁力列表  el.classList.contains("magnet-content")
 				}
 
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());

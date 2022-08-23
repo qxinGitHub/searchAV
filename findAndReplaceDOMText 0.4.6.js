@@ -149,10 +149,14 @@
 				if(el.nodeName.toUpperCase() == "A"){
 					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
 					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+					// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
 						return false
 					}
 					// 疑似是磁力链接, 略过 magnet:?
 					if(el.href.search("magnet:?")>-1){
+						el.addEventListener("click",function(){
+							GM_setClipboard(el.href);
+						});
 						return false
 					}
 				}
@@ -160,6 +164,7 @@
 				// td是由于图书馆论坛界面的用户名在td中。 位于td内, 且没有横杠的, 排除
 				if(el.nodeName.toUpperCase() == "TD"){
 					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+					// if(el.innerHTML.indexOf("-")<0){
 						return false
 					}
 				}
@@ -176,10 +181,10 @@
 				if(el.classList){
 					// "pstatus" javbus修改帖子的用户名
 					// "au" javbus 发帖的用户名
-					if(el.classList.contains("pstatus") ||el.classList.contains("au")){
+					// "tucao-author"  jandan 的用户名
+					if(el.classList.contains("pstatus") || el.classList.contains("au") || el.classList.contains("tucao-author")){
 						return false
 					}
-					// "magnet-content" freejavbt 的磁力列表  el.classList.contains("magnet-content")
 				}
 
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());

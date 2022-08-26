@@ -35,6 +35,19 @@
 ### 更新历史
  > 开始佛系更新
 
+ > v0.11.0 2022-08-26
+  - 增加: 可以识别页面的磁力链接, 点击复制。可以在设置里关闭: "dontCopyMagnet":true,
+  - 增加: 设置里额外增加了4个选项 1. 禁止获取额外信息"dontGetInfo": false, 2.禁止复制磁力链接 "dontCopyMagnet": false, 3. 禁止翻译标题"dontTransTitle": false,  4. 自定义fc2番号的搜索链接 "fc2Link":"https://www.baidu.com/s?ie=UTF-8&wd=%s" 
+  - 增加: 可以排除特定数字,仅限没有横杠的情况下
+  - 增加: 连续fc2番号的支持。例: fc2-123456 567890
+  - 增加: 支持 Tokyo-Hot 的 k1234 类型的番号, 都是17年之前的
+  - 增加: 吃吃 メス豚 的 120101_123_01 类型的番号, 都是16年之前的  6位数字(发行时间)\_3或4位数字\_01 
+  - 增加: 支持 10musume的番号,011717_01-10mu
+  - 修复: 支持 Carib_123456_789 类型, 前面带有carib; 支持 heyzo_hd_1234 类型,中间带有 hd;
+  - 调整: fc2 的番号点击跳转由 javdb 改为 javmenu.com
+  - 调整: 更改演员链接为由 xslist.org 改为 db.msin.jp
+  - 调整: 默认搜索中的 freejavbt.com 改为 javmenu.com
+
  > v0.10.16 2022-08-23
   - 增加: 3DSVR 番号的识别
   - 增加: javbus,javdb等网站的磁力链接, 点击会直接复制, 不会影响原有的点击效果。

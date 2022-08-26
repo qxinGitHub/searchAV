@@ -108,9 +108,9 @@
 		// Media / Source elements:
 		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,
 		// Input elements
-		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1, savdiv:1, 
+		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,
 		// 自用添加
-		avdiv:1
+		savdiv:1, avdiv:1
 	};
 
 	exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
@@ -154,6 +154,7 @@
 					}
 					// 疑似是磁力链接, 略过 magnet:?
 					if(el.href.search("magnet:?")>-1){
+						el.title = "点击复制磁力链接";
 						el.addEventListener("click",function(){
 							GM_setClipboard(el.href);
 						});

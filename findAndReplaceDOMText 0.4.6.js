@@ -110,7 +110,7 @@
 		// Input elements
 		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,
 		// 自用添加
-		savdiv:1, avdiv:1
+		savdiv:1, avdiv:1,noscript:1
 	};
 
 	exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
@@ -179,11 +179,16 @@
 				// }
 
 				// 根据class排除
-				if(el.classList){
+				if(el.classList && el.classList.length){
 					// "pstatus" javbus修改帖子的用户名
 					// "au" javbus 发帖的用户名
 					// "tucao-author"  jandan 的用户名
-					if(el.classList.contains("pstatus") || el.classList.contains("au") || el.classList.contains("tucao-author")){
+					if(el.classList.contains("pstatus") || el.classList.contains("au")){
+						return false
+					}
+					// class 中存在name, 且没有横杠
+					// 对于svg , classname 返回 SVGAnimatedString 的对象导致报错
+					if(typeof(el.className)=="string" && el.className.search(/name|author|userid/i)>-1 && el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
 						return false
 					}
 				}

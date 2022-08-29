@@ -148,8 +148,9 @@
 				// 在链接内的番号进一步筛选
 				if(el.nodeName.toUpperCase() == "A"){
 					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
-					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+					if(el.innerText.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
 					// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
+						console.log("------------------ 链接内没有横杠: ",el.innerText)
 						return false
 					}
 					// 疑似是磁力链接, 略过 magnet:?
@@ -188,7 +189,8 @@
 					}
 					// class 中存在name, 且没有横杠
 					// 对于svg , classname 返回 SVGAnimatedString 的对象导致报错
-					if(typeof(el.className)=="string" && el.className.search(/name|author|userid/i)>-1 && el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+					if(typeof(el.className)=="string" && el.className.search(/name|author|userid/i)>-1 && el.innerText.search(/(?<!\w)[a-z|A-Z]{2,6}\d{2,5}(?!\w)/i)>-1){
+						console.log("------------------ 特殊class内没有横杠: ",el.innerText)
 						return false
 					}
 				}

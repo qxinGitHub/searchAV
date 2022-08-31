@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.13.0
+// @version      0.13.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -92,6 +92,10 @@
         ];
         GM_setValue("_setting",setting);
     }
+
+    // 自定义获取信息的地址, 避免网络不通顺 
+    var javbusLink = setting.javbus? setting.javbus: "https://www.javbus.com/"
+    var javDBLink = setting.javdb? setting.javdb: "https://javdb.com/"
     
     // 测试用
     var debug = setting.debug?setting.debug:false
@@ -329,7 +333,7 @@
     // 创建搜索基本菜单
     function createPattenr(id,id_wuma){
         if(id_wuma){
-            var basiceSearch = "https://javdb.com/search?q=%s&f=all".replace("%s",id_wuma);
+            var basiceSearch = javDBLink + "search?q="+ id_wuma + "&f=all"
             var aPattern =  "<avdiv class='savlink basiceSearch'>" + "<a href='" + basiceSearch +"' target='_blank' referrerpolicy='same-origin'>JavDB 搜索</a>" +"</avdiv>" ;
             var savList = setting.list_wuma;
             if(savList){
@@ -338,7 +342,7 @@
                 }
             }
         } else{
-            var linkJavbusPage = "https://www.javbus.com/" + id;
+            var linkJavbusPage = javbusLink + id;
             var aPattern =  "<avdiv class='savlink basiceSearch linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' referrerpolicy='same-origin'>JavBus 页面</a>" +"</avdiv>" ;
             var savList = setting.list;
             if(savList){
@@ -544,7 +548,7 @@
         };
         GM_xmlhttpRequest({
             method: 'get',
-            url: 'https://www.javbus.com/' + avID,
+            url: javbusLink + avID,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -616,7 +620,7 @@
                 if(!image){ // 图片加载失败就判定网页404, 将具体的番号页面替换为搜索
                     var basicLink = document.querySelector(".basiceSearch a");
                     if(basicLink){
-                        basicLink.href = "https://www.javbus.com/search/" + avID;
+                        basicLink.href = javbusLink + "search/" + avID;
                         basicLink.innerHTML = "JavBus 搜索";
                     }
                 }else{
@@ -624,7 +628,7 @@
                     if(imgSrc.search("dmm.co.jp")<0){
                         // var imgNum = imgSrc.search(/(imgs|pics)/i);
                         imgSrc = imgSrc.slice(imgSrc.search(/(imgs|pics)/i));
-                        image.src = "https://www.javbus.com/" + imgSrc;
+                        image.src = javbusLink + imgSrc;
                     }
                     image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                     image.classList.add("avimg");
@@ -746,7 +750,7 @@
         if(setting.dontGetInfo){return;};
         GM_xmlhttpRequest({
             method: 'get',
-            url: 'https://javdb.com/search?q=' + avID ,
+            url: javDBLink + 'search?q=' + avID ,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -785,7 +789,7 @@
                     return
                 } else {
                     var avLink = searchResult[0].querySelector("a").href;
-                    avLink = "https://www.javdb.com" + avLink.slice(avLink.search(/\/v\//i));
+                    avLink = javDBLink.slice(0,-1) + avLink.slice(avLink.search(/\/v\//i));
 
                     var basicLink = document.querySelector(".basiceSearch a");
                     if(basicLink){
@@ -974,6 +978,7 @@
 
     // 点击图片后放大图片
     function imageBig(e){
+        if(setting.dontImgBig){return};
         e.target.classList.toggle("imageBig");
         const interval = setInterval(settingPostion,100);
         setTimeout(() => { 
@@ -1154,7 +1159,10 @@
             "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
             "selectLength":10,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
                                 // 设置更大的数字,例如16,可以应对一些超长的番号。
-            "infoReload": false,    //  将信息保存到本地, 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑
+            "javbus":"https://www.javsee.bid/", // javbus地址
+            "javdb":"https://javdb004.com/",    // javdb地址
+            "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
+            "dontImgBig": false,    // 禁止图片点击放大
             "dontGetInfo":false,    // 获取番号的相关信息(标题、演员、封面图等)
             "dontGetInfoFc2":false, // 获取fc2的相关信息(标题、演员、封面图等)
             "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。

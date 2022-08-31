@@ -43,6 +43,11 @@
 ### 更新历史
  > 开始佛系更新
 
+ > v0.13.1 2022-08-31
+  - 增加: 可以自定义 javbus 和 javdb 的地址, 如果网站的永久地址打不开的话, 可以自己替换网址。要求: 必须是相同站点的网址域名, javbus后面必须跟javbus网站的域名,网址后面有"/",例: https://www.javbus.com/  , javdb同理。
+  - 增加: 图片点击放大可以关闭 dontImgBig:true,
+  - 感谢 [jywyf](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/discussions/146694) 的建议
+
  > v0.13.0 2022-08-31
   - 增加: 浏览过的番号将从本地获取信息, 不再重复获取, 图片自动从浏览器缓存读取
 

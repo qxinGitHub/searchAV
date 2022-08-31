@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.13.1
+// @version      0.13.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -50,6 +50,7 @@
     var timerMouseLeave;    // 鼠标进入菜单时的定时器, 超时不进入, 菜单消失
     var avInfo = {};    // 临时存储相关信息
     var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在和存储信息时使用
+    var Imgscall = 1.0; // 图片默认放大倍数, 在图片上滚动鼠标滚轮使用。
     var Trans = {       // 临时存储翻译的相关信息
         id:"",
         transText:"",
@@ -112,7 +113,7 @@
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_OnlyJump2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|bej|bd|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|emui|eof|ep|error|fc|file|flyme|fps|for|fuck|gbx|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|ipad|is|ISBN|iso|issue|it|jav|javdb|jukujo|joy|lumia|lg|md|mh|miui|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|shp|sn|snh|status|the|top|usc|vol|win|with|xfx)$/i
+    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|bej|bd|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|emui|eof|ep|error|fc|file|flyme|fps|for|fuck|gbx|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|ipad|is|ISBN|iso|issue|it|jav|javdb|jukujo|joy|lumia|lg|md|mh|miui|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|shp|sn|snh|status|the|top|usc|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
     var oRegExp_Special = /^(?:akb|am|be|best|bt|crc|girl|jd|mk|mx|open|of|over|part|pt|tv|sb|sex)$/i
     // 在没有横杠的情况下, 会排除在此的数字 100  720 2010-2023
@@ -351,11 +352,16 @@
                 }
             }
         }
-        if(debug){aPattern += "<avdiv class='savlink' data-av='"+ id +"'>" + id + "</avdiv>"};
+        if(debug){aPattern += "<avdiv class='savlink savCopyID' data-av='"+ id +"'>" + id + "</avdiv>"};
         var odiv = document.createElement("avdiv")
         odiv.classList.add("sav-menu");
         odiv.addEventListener("mouseenter",savMenuMouseEnter)
         odiv.addEventListener("mouseleave",savMenuMouseLeave)
+        // 鼠标在图片上点击和滚轮放大缩小图片
+        if(!setting.dontImgBig){ 
+            odiv.addEventListener("click",savMenuClick)
+            odiv.addEventListener("wheel",savImgWheel)
+        };
 
         odiv.innerHTML=aPattern;
         return odiv;
@@ -403,6 +409,7 @@
             } else {
                 odiv.parentNode.removeChild(odiv);
             }
+            Imgscall = 1.0;
         }
         avInfo = {};
         clearTimeout(timerGetInfo);
@@ -468,6 +475,51 @@
         e.target.parentNode.parentNode.title = "";
         settingPostion();  //重置位置
     }
+    // 点击事件, 图片放大缩小, debug中复制番号
+    function savMenuClick(e){
+        // 测试使用
+        if(e.target.classList.contains("savCopyID")){
+            GM_setClipboard(e.target.dataset.av)
+        }
+        // 图片放大缩小
+        if(e.target.tagName == "IMG"){
+            if( e.target.classList.contains("imageBig")){    
+                e.target.classList.remove("imageBig");
+                Imgscall = 1.0
+                e.target.style = "";
+            } else {
+                Imgscall = 1.3  // 重置大小
+                e.target.classList.add("imageBig");
+            }
+        } else {
+            var oImg = document.querySelector(".sav-menu").querySelector("img");
+            if(oImg){
+                oImg.classList.remove("imageBig");
+                Imgscall = 1.0
+                oImg.style = "";
+            }
+        } 
+    }
+    // 滚动图片放大缩小
+    function savImgWheel(e){
+        if(e.target.tagName == "IMG"){
+            if(e.wheelDelta>0){
+                e.target.classList.add("imageBig"); // 点击后可以恢复
+                Imgscall += 0.15
+                e.target.style.transform = "scale(" + Imgscall +")"
+            } else if(e.wheelDelta<0){
+                if(Imgscall>1){
+                    Imgscall -= 0.15
+                    e.target.style.transform = "scale(" + Imgscall +")"
+                }else{
+                    e.target.classList.remove("imageBig");
+                    e.target.style = "";
+                }
+            }
+        }
+        e.preventDefault();
+        return false;
+    }
 
     // 鼠标选中 划词搜索
     function selectSearch(e){
@@ -515,6 +567,7 @@
 
     // 调整距离底部的距离,以防越界
     function settingPostion(){
+        if(debug){console.log("正在重置位置");};
         var odiv = document.querySelector(".sav-menu");
         if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
@@ -632,7 +685,6 @@
                     }
                     image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                     image.classList.add("avimg");
-                    image.addEventListener("click",imageBig)
                 }
                 
                 getInfo_end(avID,data,image);
@@ -641,16 +693,16 @@
     }
 
     // 无码信息获取
-    function getInfo_wuma(avid){
+    function getInfo_wuma(avID){
         if(debug){console.log("从网络获取信息中 getInfo_wuma: " + avID);}
-        if(avid.match(/fc2/i)){
+        if(avID.match(/fc2/i)){
             if(setting.dontGetInfoFc2){
                 var otherInfo = document.createElement('avdivsInfo');
                 otherInfo.innerHTML = "<avdiv>已经设置为禁止获取 FC2 信息</avdiv>";
                 document.querySelector(".sav-menu").appendChild(otherInfo);
                 return
             };
-            getInfo_wuma_fc2(avid);
+            getInfo_wuma_fc2(avID);
         }else{
             if(setting.dontGetInfoWuma){
                 var otherInfo = document.createElement('avdivsInfo');
@@ -658,7 +710,7 @@
                 document.querySelector(".sav-menu").appendChild(otherInfo);
                 return
             };
-            getInfo_wuma_javdb1(avid);
+            getInfo_wuma_javdb1(avID);
         }
     }
     // 无码信息获取 - fc2
@@ -727,7 +779,6 @@
                         image.src = imageSrc;
                         image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                         image.classList.add("avimg");
-                        image.addEventListener("click",imageBig)
                     } else{
                         console.log("图片加载失败")
                         image = document.createElement('imgInfo');
@@ -737,7 +788,6 @@
                     image.src = image.src;
                     image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                     image.classList.add("avimg");
-                    image.addEventListener("click",imageBig)
                 }
                 
                 getInfo_end(avID,data,image);
@@ -854,7 +904,6 @@
                 var image = htmlDoc.querySelector(".video-meta-panel img");
                 image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                 image.classList.add("avimg");
-                image.addEventListener("click",imageBig)
                 
                 getInfo_end(avID,data,image);
             }
@@ -883,7 +932,9 @@
         localInfo[avID].date = avInfo.date?avInfo.date:false;
         localInfo[avID].series = avInfo.series?avInfo.series:false;
         localInfo[avID].tags = avInfo.tags?avInfo.tags:false;
-        localInfo[avID].image = image.outerHTML;
+        if(image){
+            localInfo[avID].image = image.outerHTML;
+        }
 
         // 第一次浏览番号,将信息保存到本地
         // if(oFirstBrowse){
@@ -919,7 +970,6 @@
         if(localInfo[avID].image){
             image = document.createElement("savimgdiv");
             image.innerHTML = localInfo[avID].image;
-            image.addEventListener("click",imageBig)
         }
 
         avInfo = {};   // 重置,防止在一个页面重复划过番号导致系列、发行日期等重复显示。
@@ -1257,6 +1307,7 @@
                     "border-top: 1px solid #fff;" +
                     "border-left: 1px solid #fff;" +
                     "border-radius: 4px;" +
+                    "transform-origin: center bottom;" +
                     "transition:0.2s;" +
                     "transition-timing-function: ease-out;" +
                 "}" +
@@ -1267,8 +1318,7 @@
                 "avdiv.sav-menu img.avimg.imageBig{" +
                     "max-width: 900px;" +
                     "max-height: 600px;" +
-                    "width: 150%;" +
-                    "transform: translateX(-15%);" +
+                    "transform: scale(1.3);" +
                     "border-radius: 10px;" +
                     "border-top: 2px solid #fff;" +
                     "border-left: 2px solid #fff;" +

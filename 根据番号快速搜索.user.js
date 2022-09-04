@@ -121,15 +121,15 @@
     // 省略字母, 连续数字的番号 例: abc-001、002、003
     var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    var oRegExp_OnlyJump = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?(?:hd_)?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}_\d{2,3}(?:-paco)?(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)(?:k|n)\d{4}(?!\w|-)|(?<!\w)T-\d{5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w|\d-|\/)\d{6}-\d{2,3}(?!\w|-\d)|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}|(?<!\w)\d{6}[-_]?_01(?=-10mu)/gi;
+    var oRegExp_OnlyJump = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?(?:hd_)?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}_\d{2,3}(?:-paco)?(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w)T-\d{5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w|\d-|\/)\d{6}-\d{2,3}(?!\w|-\d)|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}|(?<!\w)\d{6}[-_]?_01(?=-10mu)/gi;
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_OnlyJump2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|bej|bd|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|gbx|get|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|ipad|is|ISBN|iso|issue|it|jav|javdb|jukujo|joy|lumia|lg|md|mh|miui|mipc|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|shp|sn|snh|status|the|top|usc|utc|vol|win|with|width|xfx)$/i
+    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|bd|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|gbx|get|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|it|jav|javdb|jukujo|joy|Kirin|lumia|lg|md|mh|miui|mipc|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|status|the|top|ts|uhd|usc|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special = /^(?:akb|am|be|best|bt|crc|girl|jd|mk|mx|open|of|over|part|pt|tv|sb|sex)$/i
+    var oRegExp_Special = /^(?:akb|am|be|best|bt|crc|exynos|girl|jd|mk|mx|open|of|over|part|pdd|pt|tv|sb|sex)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
-    var oRegExp_Num = /^(?:007|110|115|123|128|256|365|512|520|911|996|\d00|\d{2}00|19[89]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
+    var oRegExp_Num = /^(?:007|110|115|123|128|256|365|370|512|520|618|911|996|\d00|\d{2}00|19[89]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人番号
     var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDN|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}/i
     // 磁力链接
@@ -194,8 +194,7 @@
                 
                 // 添加事件和样式
                 var avID = formatAVID(otext)
-                var odiv = addEventAndStyle(localInfo[avID])   // 添加事件和样式
-
+                
                 // 判断3位数字写成2位的
                 if(avID.match(/-\d{2}$/) && localInfo[avID] && localInfo[avID].noInfo){
                     let avID2 = avID.replace("-","-0");
@@ -204,8 +203,9 @@
                     }
                 }
                 
+                var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
                 if(debug){avIDTimes++; console.log(avIDTimes + "番号: " + avID,otext);otext = "["+avIDTimes +"]" + otext;}
-                odiv.dataset.av = avID;       
+                // odiv.dataset.av = avID;       
                 odiv.innerHTML = otext;
                 return odiv;
             }
@@ -226,10 +226,10 @@
                 
                 // 添加事件和样式
                 avID = formatAVID(avID)
-                var odiv = addEventAndStyle(localInfo[avID])   // 添加事件和样式
+                var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
 
                 if(debug){avIDTimes++; console.log(avIDTimes + "省略字母,连续数字的番号: " + avID, portion.text);portion.text = "[*"+avIDTimes +"]" + portion.text}
-                odiv.dataset.av = avID;       
+                // odiv.dataset.av = avID;       
                 odiv.innerHTML = portion.text;
                 return odiv;
             }
@@ -251,6 +251,8 @@
                     return "";
                 }
 
+                // 检查番号是否合法
+                // if(IDcheckWuma(otext)){return otext};
                 // 添加事件和样式
                 var avID = formatWuma(otext);    // 格式化番号
                 // 123abc-456 数字字母-数字
@@ -259,10 +261,10 @@
                     avID = formatAVID(avID)
                 }
 
-                var odiv = addEventAndStyle(localInfo[avID])   // 添加事件和样式
+                var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
 
                 if(debug) {searchTimes++;avIDTimes++; console.log(avIDTimes + "无码番号: " + avID, otext); otext = "[!"+avIDTimes +"]" + otext;}
-                odiv.dataset.av = avID;
+                // odiv.dataset.av = avID;
                 odiv.dataset.av_wuma = avID;
                 odiv.innerHTML = otext;
                 return odiv;
@@ -285,10 +287,10 @@
                 var avID = match[1] + otext;
 
                 avID = formatWuma(avID); // 格式化 fc2 番号
-                var odiv = addEventAndStyle(localInfo[avID])   // 添加事件和样式
+                var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
                 
                 if(debug) {searchTimes++;avIDTimes++; console.log(avIDTimes + "连续Fc2番号: " + avID,otext); otext = "[**"+avIDTimes +"]" + otext;}
-                odiv.dataset.av = avID;
+                // odiv.dataset.av = avID;
                 odiv.dataset.av_wuma = avID;
                 odiv.innerHTML = otext;
                 return odiv;
@@ -328,7 +330,7 @@
     }
         
     // 添加页面番号样式 , 传入的参数是番号, 用来判断番号是否在本地存在
-    function addEventAndStyle(isExist){
+    function addEventAndStyle(isExist,avID){
         // 添加事件
         var odiv = document.createElement('savdiv');
         odiv.classList.add("sav-id");
@@ -354,6 +356,14 @@
                 odiv.style[key] = styleRule[key]
             }
         }
+
+        if(isExist && isExist.visited){
+            odiv.dataset.visited = isExist.visited;
+        }else if (isExist){
+            odiv.dataset.visited = 1;
+        }
+        odiv.dataset.av = avID;    
+
         return odiv;
     }
 
@@ -369,8 +379,8 @@
                 }
             }
         } else{
-            var linkJavbusPage = javbusLink + id;
-            var aPattern =  "<avdiv class='savlink basiceSearch linkJavbusPage'>" + "<a href='" + linkJavbusPage +"' target='_blank' referrerpolicy='same-origin'>JavBus 页面</a>" +"</avdiv>" ;
+            var basiceSearch = javbusLink + id;
+            var aPattern =  "<avdiv class='savlink basiceSearch'>" + "<a href='" + basiceSearch +"' target='_blank' referrerpolicy='same-origin'>JavBus 页面</a>" +"</avdiv>" ;
             var savList = setting.list;
             if(savList){
                 for(let i=0; i<savList.length;i++){
@@ -381,7 +391,13 @@
         if(debug || setting.addOtherButton){aPattern += "<avdiv class='savlink savSetting'>设置</avdiv><avdiv class='savlink savCopyID' data-av='"+ id +"'>" + id + "</avdiv>"};
         if(setting.dontClearMenu || setting.addOtherButton){aPattern += "<avdiv class='savlink savCloseMenu'> 关闭 </avdiv>"};
         var odiv = document.createElement("avdiv")
-        odiv.classList.add("sav-menu");
+        if(localInfo[id]){
+            odiv.classList.add("sav-menu","idExistent");
+            odiv.dataset.visited = localInfo[id].visited?localInfo[id].visited:1;
+        }else{
+            odiv.classList.add("sav-menu","idNonExistent");
+            odiv.dataset.visited = 0;
+        }
         odiv.addEventListener("mouseenter",savMenuMouseEnter)
         odiv.addEventListener("mouseleave",savMenuMouseLeave)
         // 鼠标在图片上点击和滚轮放大缩小图片
@@ -389,7 +405,7 @@
             odiv.addEventListener("click",savMenuClick)
             odiv.addEventListener("wheel",savImgWheel)
         };
-
+        odiv.dataset.av = id; 
         odiv.innerHTML=aPattern;
         return odiv;
     }
@@ -653,6 +669,7 @@
     function getInfo(avID,oFirstBrowse){
         if(debug){console.log("从网络获取信息中 getInfo: " + avID);}
         if(setting.dontGetInfo){
+            removeLoading();
             var otherInfo = document.createElement('avdivsInfo');
             otherInfo.innerHTML = "<avdiv>已经设置为禁止获取番号信息</avdiv>";
             document.querySelector(".sav-menu").appendChild(otherInfo);
@@ -684,7 +701,7 @@
                         }, 300);
                         // 重新获取信息
                         getInfo(avID.replace("-","-0"),true);
-                        var basicLink = document.querySelector(".linkJavbusPage a");
+                        var basicLink = document.querySelector(".basiceSearch a");
                         if(basicLink){
                             basicLink.href = basicLink.href.replace("-","-0");
                         }
@@ -759,6 +776,7 @@
         if(debug){console.log("从网络获取信息中 getInfo_wuma: " + avID);}
         if(avID.match(/fc2/i)){
             if(setting.dontGetInfoFc2){
+                removeLoading();
                 var otherInfo = document.createElement('avdivsInfo');
                 otherInfo.innerHTML = "<avdiv>已经设置为禁止获取 FC2 信息</avdiv>";
                 document.querySelector(".sav-menu").appendChild(otherInfo);
@@ -767,6 +785,7 @@
             getInfo_wuma_fc2(avID);
         }else{
             if(setting.dontGetInfoWuma){
+                removeLoading();
                 var otherInfo = document.createElement('avdivsInfo');
                 otherInfo.innerHTML = "<avdiv>已经设置为禁止获取信息</avdiv><avdiv>如果该选项自动出现, 说明IP地址已被禁止访问。</avdiv><avdiv>javdb会在两个星期内禁止你的访问,在此期间不要开启自动获取无码信息</avdiv>";
                 document.querySelector(".sav-menu").appendChild(otherInfo);
@@ -1042,6 +1061,7 @@
         }
         localInfo[avID].link = avInfo.link?avInfo.link:false;
         localInfo[avID].noInfo = avInfo.noInfo?avInfo.noInfo:false;
+        localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
 
         // 第一次浏览番号,将信息保存到本地
         // if(oFirstBrowse){
@@ -1084,6 +1104,8 @@
             var noInfoDiv = document.createElement('avdivsInfo');
             noInfoDiv.innerHTML="<avdiv style='padding: 10px 15px 0px 3em'>没有找到 " + avID + " 的相关页面</avdiv>";
             document.querySelector(".sav-menu").appendChild(noInfoDiv);
+            localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
+            GM_setValue("avInfo2",localInfo);
             return;
         }
 
@@ -1114,6 +1136,9 @@
         var otherInfo = document.createElement('avdivsInfo');
         otherInfo.appendChild(image);
         document.querySelector(".sav-menu").appendChild(otherInfo);
+
+        localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
+        GM_setValue("avInfo2",localInfo);
 
         // 每200毫秒检查1次, 1s后停止检查
         const interval = setInterval(settingPostion,100);
@@ -1251,6 +1276,10 @@
                 return true;
             }
         }
+        return false;
+    }
+    // 检查番号是否需要排除 无码
+    function IDcheckWuma(otext){
         return false;
     }
 
@@ -1419,7 +1448,7 @@
                     "backdrop-filter: blur(5px);" +
                     "border-radius: 4px;" +
                     "padding:6px 12px 10px 9px;" +
-                    // "margin-top: -2px; " +
+                    "margin-top: -2px; " +
                     "z-index: 99999; " +
                     "font-size: 14px;" +
                     "max-width: 600px;" +

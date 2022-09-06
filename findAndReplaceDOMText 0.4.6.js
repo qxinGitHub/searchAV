@@ -156,10 +156,12 @@
 					}
 					// 疑似是磁力链接, 略过 magnet:?
 					if(el.href.search("magnet:?")>-1){
-						el.title = "点击复制磁力链接";
-						el.addEventListener("click",function(){
-							GM_setClipboard(el.href);
-						});
+						if(window.qxinCopyMagnet){
+							el.title = "点击复制磁力链接";
+							el.addEventListener("click",function(){
+								GM_setClipboard(el.href);
+							});
+						}
 						return false
 					}
 				}

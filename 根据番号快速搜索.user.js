@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.13.5
+// @version      0.13.6
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
 // @license      MIT
 // @match        *://**/*
-// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1086871
+// @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1090201
 // @connect     *
 // @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
@@ -110,6 +110,9 @@
     var javbusLink = setting.javbus? setting.javbus: "https://www.javbus.com/"
     var javDBLink = setting.javdb? setting.javdb: "https://javdb.com/"
     
+    // 磁链复制功能在引用脚本中还有一部分
+    window.qxinCopyMagnet = setting.dontCopyMagnet? false:true;
+
     // 测试用
     var debug = setting.debug?setting.debug:false
     // debug = true;   // 打开一些console.log提示
@@ -147,6 +150,7 @@
         }); 
     }); 
     
+    addStyle()
     if(debug) {console.clear();console.log("sav已开启debug模式:");}
     findAVID()
     console.log("老司机共浏览了" + Object.keys(localInfo).length + "个番号！");
@@ -333,35 +337,28 @@
     function addEventAndStyle(isExist,avID){
         // 添加事件
         var odiv = document.createElement('savdiv');
-        odiv.classList.add("sav-id");
         odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
         odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
         odiv.addEventListener("click",savIDClick);  // 点击番号复制
-        // 添加样式
-        var styleRule = {};
+
         if(isExist){
-            if(isExist.noInfo && setting.noExistStyle){
-                styleRule = setting.noExistStyle;
-            }else if(isExist.noInfo){
-                styleRule = {"textDecoration":"underline dotted red"}
+            // 添加浏览次数
+            if(isExist.visited){
+                odiv.dataset.visited = isExist.visited;
             } else {
-                styleRule = setting.visitStyle ? setting.visitStyle:{"textDecoration":"underline dotted #66ccff"}
+                odiv.dataset.visited = 1;
             }
-        } else {
-            styleRule = setting.linkStyle ? setting.linkStyle:{"textDecoration":"underline green"}
+            // 添加class 在本地是否存在, (通过添加 class 来改变颜色)
+            if(isExist.noInfo){
+                odiv.classList.add("sav-id", "infoNonExistent");
+            }else{
+                odiv.classList.add("sav-id", "infoExistent");
+            }
+        }else {
+            odiv.dataset.visited = 0;
+            odiv.classList.add("sav-id", "infoFirst");
         }
 
-        if(styleRule){
-            for(let key in styleRule){
-                odiv.style[key] = styleRule[key]
-            }
-        }
-
-        if(isExist && isExist.visited){
-            odiv.dataset.visited = isExist.visited;
-        }else if (isExist){
-            odiv.dataset.visited = 1;
-        }
         odiv.dataset.av = avID;    
 
         return odiv;
@@ -466,11 +463,9 @@
         var wuma = e.target.dataset.av_wuma;
         var avid = e.target.dataset.av;
 
-        if(!localInfo[avid]){
-            var styleRule = setting.visitStyle ? setting.visitStyle:{"textDecoration":"underline dotted #66ccff"}
-            for(let key in styleRule){
-                e.target.style[key] = styleRule[key]
-            }
+        if(e.target.classList.contains("infoFirst")){
+            e.target.classList.remove("infoFirst");
+            e.target.classList.add("infoExistent");
         }
 
         var avdiv = document.querySelector(".sav-menu")
@@ -1033,10 +1028,8 @@
                 avInfo.titleTrans = "没有找到 " + avID +" 相关页面";
                 avInfo.noInfo = true;
 
-                let styleRule = setting.noExistStyle?setting.noExistStyle:{"textDecoration":"underline dotted red"}
-                for(let key in styleRule){
-                    divTarget.style[key] = styleRule[key]
-                }
+                divTarget.classList.remove("infoExistent");
+                divTarget.classList.add("infoNonExistent");
                 
         }else if(setting.dontTransTitle){
             if(debug){console.log("禁止翻译标题 ✖  ✖  ✖ ");}
@@ -1438,147 +1431,181 @@
     }
     GM_registerMenuCommand("自定义搜索", savBoxEdit)
 
-    GM_addStyle("" +
-                ".sav-menu{" +
-                    "font-family: Microsoft YaHei,sans-serif;" +
-                    "display: block;" +
-                    "text-align: left;" +
-                    "color: #000;" +
-                    "background:rgba(255,255,255,.8);" +
-                    "backdrop-filter: blur(5px);" +
-                    "border-radius: 4px;" +
-                    "padding:6px 12px 10px 9px;" +
-                    "margin-top: -2px; " +
-                    "z-index: 99999; " +
-                    "font-size: 14px;" +
-                    "max-width: 600px;" +
-                    "box-shadow: 4px 4px 12px #ccc, -1px -1px 5px #eee;" +
-                    "border-top: 2px solid #fff;" +
-                    "border-left: 2px solid #fff;" +
-                    "transition:0.2s;" +
-                    "transition-timing-function: ease-out;" +
+    function addStyle(){
+        var styleText = "";
+        var styleAVID = "";
+        if(setting.linkStyle){
+            styleAVID += ".infoFirst{"
+            for(let key in setting.linkStyle){
+                styleAVID += key + ":" + setting.linkStyle[key] + ";"
+            }
+            styleAVID += "}"
+        }else {
+            styleAVID += ".infoFirst{text-decoration:underline green;}"
+        }
+        if(setting.visitStyle){
+            styleAVID += ".infoExistent{"
+            for(let key in setting.visitStyle){
+                styleAVID += key + ":" + setting.visitStyle[key] + ";"
+            }
+            styleAVID += "}"
+        }else {
+            styleAVID += ".infoExistent{text-decoration:underline dotted #66ccff;}"
+        }    
+        if(setting.noExistStyle){
+            styleAVID += ".infoNonExistent{"
+            for(let key in setting.noExistStyle){
+                styleAVID += key + ":" + setting.noExistStyle[key] + ";"
+            }
+            styleAVID += "}"
+        }else {
+            styleAVID += ".infoNonExistent{text-decoration:underline dotted red;}"
+        }
+
+        styleText = "" +
+            ".sav-menu{" +
+                "font-family: Microsoft YaHei,sans-serif;" +
+                "display: block;" +
+                "text-align: left;" +
+                "color: #000;" +
+                "background:rgba(255,255,255,.8);" +
+                "backdrop-filter: blur(5px);" +
+                "border-radius: 4px;" +
+                "padding:6px 12px 10px 9px;" +
+                "margin-top: -2px; " +
+                "z-index: 99999; " +
+                "font-size: 14px;" +
+                "max-width: 600px;" +
+                "box-shadow: 4px 4px 12px #ccc, -1px -1px 5px #eee;" +
+                "border-top: 2px solid #fff;" +
+                "border-left: 2px solid #fff;" +
+                "transition:0.2s;" +
+                "transition-timing-function: ease-out;" +
+            "}" +
+            ".savlink{" +
+                "margin: 4px 10px 4px 5px;" +
+                "border-radius: 4px;" +
+                "padding: 3px 5px;" +
+                "background: #fff;" +
+                "display: inline-block;" +
+                "transition: 0.2s;" +
+                "transition-timing-function: ease-out;" +
+                "box-shadow: -2px -2px 4px rgb(240 240 240), 2px 2px 4px rgb(70 70 70 / 50%);" +
+            "}" +
+            ".savlink:hover{" +
+                "background: aliceblue;" +
+                "box-shadow: -2px -2px 6px rgb(255 255 255 / 50%), 1px 1px 2px rgb(70 70 70 / 50%), inset -2px -2px 6px rgb(255 255 255 / 50%),inset 2px 2px 6px rgb(100 100 100 / 50%);" +
+            "}" +
+            "avdivsinfo{" +
+                "text-indent: -2.5em;" +
+                "line-height: normal;" +
+            "}" +
+            "avdivsinfo avdiv{" +
+                "display:block;" +
+                "margin-bottom: 5px;" +
+                "text-shadow: 0 0 #d9d9d9;" +
+                "transition: 0.2s;" +
+                "padding-left: 2.5em;" +
+            "}" +
+            "avdivsinfo .avInfoTags," +
+            "avdivsinfo .avInfoSeries{" +
+                "overflow: hidden;" +
+                "text-overflow: ellipsis;" +
+                "white-space: nowrap;" +
+            "}" +
+            "avdiv.sav-menu savimgdiv{" +
+                // "display:block;" +
+                // "text-align:center;" +
+            "}" +
+            "avdiv.sav-menu .avimg{" +
+                // "height: 100%;" +
+                "height: 400px;" +
+                "max-width: 100%;" +
+                "max-height: 500px;" +
+                // "width:100%;" +
+                "cursor: pointer;" +
+                "box-shadow: -2px -2px 4px rgb(230 230 230), 2px 2px 2px rgb(70 70 70 / 50%);" +
+                "border-top: 1px solid #fff;" +
+                "border-left: 1px solid #fff;" +
+                "border-radius: 4px;" +
+                "transform-origin: center bottom;" +
+                "transition:0.2s;" +
+                "transition-timing-function: ease-out;" +
+            "}" +
+            "avdiv.sav-menu .avimg:hover{" +
+                "scale:1.01;" +
+                "box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);" +
                 "}" +
-                ".savlink{" +
-                    "margin: 4px 10px 4px 5px;" +
-                    "border-radius: 4px;" +
-                    "padding: 3px 5px;" +
-                    "background: #fff;" +
-                    "display: inline-block;" +
-                    "transition: 0.2s;" +
-                    "transition-timing-function: ease-out;" +
-                    "box-shadow: -2px -2px 4px rgb(240 240 240), 2px 2px 4px rgb(70 70 70 / 50%);" +
-                "}" +
-                ".savlink:hover{" +
-                    "background: aliceblue;" +
-                    "box-shadow: -2px -2px 6px rgb(255 255 255 / 50%), 1px 1px 2px rgb(70 70 70 / 50%), inset -2px -2px 6px rgb(255 255 255 / 50%),inset 2px 2px 6px rgb(100 100 100 / 50%);" +
-                "}" +
-                "avdivsinfo{" +
-                    "text-indent: -2.5em;" +
-                    "line-height: normal;" +
-                "}" +
-                "avdivsinfo avdiv{" +
-                    "display:block;" +
-                    "margin-bottom: 5px;" +
-                    "text-shadow: 0 0 #d9d9d9;" +
-                    "transition: 0.2s;" +
-                    "padding-left: 2.5em;" +
-                "}" +
-                "avdivsinfo .avInfoTags," +
-                "avdivsinfo .avInfoSeries{" +
-                    "overflow: hidden;" +
-                    "text-overflow: ellipsis;" +
-                    "white-space: nowrap;" +
-                "}" +
-                "avdiv.sav-menu savimgdiv{" +
-                    // "display:block;" +
-                    // "text-align:center;" +
-                "}" +
-                "avdiv.sav-menu .avimg{" +
-                    // "height: 100%;" +
-                    "height: 400px;" +
-                    "max-width: 100%;" +
-                    "max-height: 500px;" +
-                    // "width:100%;" +
-                    "cursor: pointer;" +
-                    "box-shadow: -2px -2px 4px rgb(230 230 230), 2px 2px 2px rgb(70 70 70 / 50%);" +
-                    "border-top: 1px solid #fff;" +
-                    "border-left: 1px solid #fff;" +
-                    "border-radius: 4px;" +
-                    "transform-origin: center bottom;" +
-                    "transition:0.2s;" +
-                    "transition-timing-function: ease-out;" +
-                "}" +
-                "avdiv.sav-menu .avimg:hover{" +
-                    "scale:1.01;" +
-                    "box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);" +
-                    "}" +
-                "avdiv.sav-menu img.avimg.imageBig{" +
-                    // "max-width: 900px;" +
-                    "max-height: 600px;" +
-                    "transform: scale(1.3);" +
-                    "border-radius: 10px;" +
-                    "border-top: 2px solid #fff;" +
-                    "border-left: 2px solid #fff;" +
-                    "box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);" +
-                "}" +
-                "avdiv.sav-menu img.avimg.imageBig:hover{" +
-                    "box-shadow: -4px -4px 8px rgb(160 160 160), 6px 6px 8px rgb(70 70 70 / 60%);" +
-                "}" +
-                "avdiv.sav-menu .savlink a{" +
-                    "color:#459df5;" +
-                    "text-decoration:none;" +
-                "}" +
-                "avdiv.sav-menu .savlink:hover a {" +
-                    "color: #039cff;" +
-                    "text-shadow: 0 0 #7cfb80;" +
-                "}" +
-                ".sav-menu a:link," +
-                ".sav-menu a:visited{" +
-                    "color: #000" +
-                "}" +
-                "savdiv," +
-                "savMagnet {" +
-                    "cursor: pointer;" +
-                "}" +
-                // 根据子元素选择父元素。 2022-08-02 现版本的edge和chrome都不支持,  chrome的105版本据说已经支持, 不过目前下载到的是103
-                "u:has(savdiv){" +
-                    "text-decoration: none;" +
-                "}" +
-                // 加载动画
-                // 来源: Loading line https://codepen.io/gsound/pen/yVPVGQ
-                "@keyframes hr-animation {" +
-                    "from{ transform: translate(0, 0); }" +
-                    "to{ transform: translate(50%, 0); }" +
-                "}" +
-                ".hr-animation {" +
-                    "-webkit-animation: hr-animation 3s linear infinite;" +
-                    "animation: hr-animation 3s linear infinite;" +
-                "}" +
-                ".savcolored {" +
-                    "background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, from(#6dc4ed), to(#fff));" +
-                "}" +
-                ".savcontainer {" +
-                    "overflow: hidden;" +
-                    "width: 100%;" +
-                    "transition: all .5s;" +
-                    "height: 3px;" +
-                    "margin-top: 5px;" +
-                "}" +
-                ".savwrap {" +
-                    "font-size: 0;" +
-                    "height: 100%;" +
-                    "width: 200%;" +
-                    "position: relative;" +
-                "}" +
-                ".savwrap savhr {" +
-                    "border: none;" +
-                    "height: 100%;" +
-                    "width: 50%;" +
-                    "position: absolute;" +
-                "}" +
-                ".savwrap savhr:last-child {" +
-                    "left: -50%;" +
-                "}" +
-    "");
+            "avdiv.sav-menu img.avimg.imageBig{" +
+                // "max-width: 900px;" +
+                "max-height: 600px;" +
+                "transform: scale(1.3);" +
+                "border-radius: 10px;" +
+                "border-top: 2px solid #fff;" +
+                "border-left: 2px solid #fff;" +
+                "box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);" +
+            "}" +
+            "avdiv.sav-menu img.avimg.imageBig:hover{" +
+                "box-shadow: -4px -4px 8px rgb(160 160 160), 6px 6px 8px rgb(70 70 70 / 60%);" +
+            "}" +
+            "avdiv.sav-menu .savlink a{" +
+                "color:#459df5;" +
+                "text-decoration:none;" +
+            "}" +
+            "avdiv.sav-menu .savlink:hover a {" +
+                "color: #039cff;" +
+                "text-shadow: 0 0 #7cfb80;" +
+            "}" +
+            ".sav-menu a:link," +
+            ".sav-menu a:visited{" +
+                "color: #000" +
+            "}" +
+            "savdiv," +
+            "savMagnet {" +
+                "cursor: pointer;" +
+            "}" +
+            // 根据子元素选择父元素。 2022-08-02 现版本的edge和chrome都不支持,  chrome的105版本据说已经支持, 不过目前下载到的是103
+            "u:has(savdiv){" +
+                "text-decoration: none;" +
+            "}" +
+            // 加载动画
+            // 来源: Loading line https://codepen.io/gsound/pen/yVPVGQ
+            "@keyframes hr-animation {" +
+                "from{ transform: translate(0, 0); }" +
+                "to{ transform: translate(50%, 0); }" +
+            "}" +
+            ".hr-animation {" +
+                "-webkit-animation: hr-animation 3s linear infinite;" +
+                "animation: hr-animation 3s linear infinite;" +
+            "}" +
+            ".savcolored {" +
+                "background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, from(#6dc4ed), to(#fff));" +
+            "}" +
+            ".savcontainer {" +
+                "overflow: hidden;" +
+                "width: 100%;" +
+                "transition: all .5s;" +
+                "height: 3px;" +
+                "margin-top: 5px;" +
+            "}" +
+            ".savwrap {" +
+                "font-size: 0;" +
+                "height: 100%;" +
+                "width: 200%;" +
+                "position: relative;" +
+            "}" +
+            ".savwrap savhr {" +
+                "border: none;" +
+                "height: 100%;" +
+                "width: 50%;" +
+                "position: absolute;" +
+            "}" +
+            ".savwrap savhr:last-child {" +
+                "left: -50%;" +
+            "}" +
+            "";
+        styleText += styleAVID;
+        GM_addStyle(styleText);
+    }
 
 })();

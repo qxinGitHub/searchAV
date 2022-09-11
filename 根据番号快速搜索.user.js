@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.13.6
+// @version      0.13.7
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -31,6 +31,7 @@
 // @exclude	    *.wikipedia.org/*
 // @exclude     *://*.amazon.tld/*
 // @exclude	    *.flightradar24.com/*
+// @exclude	    *.obsidian.md/*
 // @exclude	    https://regex101.com/
 // @exclude     *mall*
 // @exclude     *shop*
@@ -38,6 +39,7 @@
 // @exclude     *buy*
 // @exclude     *product*
 // @exclude     *detail*
+// @exclude     *tools*
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -54,6 +56,7 @@
 
     var timerGetInfo;   // 延时获取信息
     var timerMouseLeave;    // 鼠标进入菜单时的定时器, 超时不进入, 菜单消失
+    var timerImgLoading;    // 图片加载后 重新定位的定时器。 加载成功后, 清除该定时器
     var avInfo = {};    // 临时存储相关信息
     var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在和存储信息时使用
     var Imgscall = 1.0; // 图片默认放大倍数, 在图片上滚动鼠标滚轮使用。
@@ -120,21 +123,21 @@
     
     // 一般发行番号
     // var oRegExp = /[a-zA-Z]{2,6}[-\s]?\d{2,5}/gi; 
-    var oRegExp = /(?<!\w|\/|www\.|col-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|[0-9]|-\d|\.com)|(?<!\w|\/|\.|#|@|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\d|[A-Za-z]|[0-9]|-|\.|％|%|@|歳| 歲|分| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
+    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|[0-9]|-\d|\.com)|(?<!\w|\/|\.|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\d|[A-Za-z]|[0-9]|-|\.|％|%|@|歳| 歲|分| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
     var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号, 仅跳转到javdb搜索, 无菜单等其他功能    
-    var oRegExp_OnlyJump = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?(?:hd_)?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}_\d{2,3}(?:-paco)?(?!\w|-)|(?<!\w)T28-\d{3}|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w)T-\d{5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w|\d-|\/)\d{6}-\d{2,3}(?!\w|-\d)|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}|(?<!\w)\d{6}[-_]?_01(?=-10mu)/gi;
+    var oRegExp_OnlyJump = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYZO[_-\s]?(?:hd_)?\d{4}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w)T28-\d{3}|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w)T-\d{5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w|\d-|\/)\d{6}-\d{2,3}(?!\w|-\d)|(?<!\w)MKD-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)MKBD-S\d{2,3}|(?<!\w)\d{6}[-_]?_01(?=-10mu)/gi;
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_OnlyJump2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|bd|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|gbx|get|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|it|jav|javdb|jukujo|joy|Kirin|lumia|lg|md|mh|miui|mipc|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|status|the|top|ts|uhd|usc|utc|via|vol|win|with|width|xfx)$/i
+    var oRegExp_Exclude = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|bd|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|gbx|get|gnz|gp|gt|gts|gtx|hao|her|http|hp|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|lumia|lg|md|mh|miui|mipc|mvp|nc|next|note|ok|only|os|osx|ppv|qbz|qsz|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|ssd|status|the|top|ts|uhd|usc|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special = /^(?:akb|am|be|best|bt|crc|exynos|girl|jd|mk|mx|open|of|over|part|pdd|pt|tv|sb|sex)$/i
+    var oRegExp_Special = /^(?:akb|am|be|best|bt|crc|exynos|girl|jd|mk|mx|no|open|of|over|part|pdd|pt|tv|sb|sex)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
-    var oRegExp_Num = /^(?:007|110|115|123|128|256|365|370|512|520|618|911|996|\d00|\d{2}00|19[89]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
+    var oRegExp_Num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|618|911|996|\d00|\d{2}00|19[89]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人番号
-    var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDN|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}/i
+    var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDN|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|pow|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}/i
     // 磁力链接
     var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\|)[0-9a-fA-F]{40}(?!\w|-)/i
 
@@ -264,6 +267,19 @@
                     avID = avID.slice(3);
                     avID = formatAVID(avID)
                 }
+                // fc2 番号是否合法: FC2-012345 和 FC2PPV-012345 搜索结果不一样
+                if(avID.match(/fc2/i) && localInfo[avID] && localInfo[avID].noInfo ){
+                    console.log("--------判断是fc2, 且浏览过, 本地无有效信息")
+                    let avID2;
+                    if(avID.match(/ppv/i)){
+                        avID2 = avID.replace("FC2PPV","FC2");
+                    }else{
+                        avID2 = avID.replace("FC2","FC2PPV");
+                    }
+                    if(localInfo[avID2] && !localInfo[avID2].noInfo){
+                        avID = avID2;
+                    }
+                }
 
                 var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
 
@@ -291,6 +307,20 @@
                 var avID = match[1] + otext;
 
                 avID = formatWuma(avID); // 格式化 fc2 番号
+
+                // 复制上方的。 fc2 番号是否合法: FC2-012345 和 FC2PPV-012345 搜索结果不一样 
+                if(avID.match(/fc2/i) && localInfo[avID] && localInfo[avID].noInfo ){
+                    let avID2;
+                    if(avID.match(/ppv/i)){
+                        avID2 = avID.replace("FC2PPV","FC2");
+                    }else{
+                        avID2 = avID.replace("FC2","FC2PPV");
+                    }
+                    if(localInfo[avID2] && !localInfo[avID2].noInfo){
+                        avID = avID2;
+                    }
+                }
+
                 var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
                 
                 if(debug) {searchTimes++;avIDTimes++; console.log(avIDTimes + "连续Fc2番号: " + avID,otext); otext = "[**"+avIDTimes +"]" + otext;}
@@ -455,6 +485,7 @@
         }
         avInfo = {};
         clearTimeout(timerGetInfo);
+        clearInterval(timerImgLoading); // 重置位置的定时器
         observer.observe(observerTarget, observerConfig);     
     }
 
@@ -619,7 +650,11 @@
             avInfo = {};
             avInfo = localInfo[avid];
             timerGetInfo = setTimeout(() => {
-                getInfo(avid);
+                if(setting.infoReload){
+                    getInfo(avid);
+                }else{
+                    getInfo_local(avid)
+                }
             }, 500);
         } else{
             timerGetInfo = setTimeout(() => {
@@ -627,17 +662,16 @@
             }, 300);
         }
         
-        var otherInfo = document.createElement('avdivsInfo');
-        otherInfo.innerHTML=addOtherInfo();
-        odiv.appendChild(otherInfo);
         document.body.appendChild(odiv);
-        
-        // settingPostion();  //重置位置
     }
 
     // 调整距离底部的距离,以防越界
-    function settingPostion(){
+    function settingPostion(image){
         if(debug){console.log("正在重置位置");};
+        if(image && image.complete){
+            if(debug){console.log("图片加载情况: " + image.complete)};
+            clearInterval(timerImgLoading);
+        }
         var odiv = document.querySelector(".sav-menu");
         if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
@@ -689,7 +723,7 @@
                         localInfo[avID] = {};   
                         localInfo[avID].title = "番号可能存在问题";
                         localInfo[avID].noInfo = true;
-                        GM_setValue("avInfo2",localInfo)
+                        GM_setValue("avInfo2",localInfo);
                         setTimeout(() => {
                             var avdivinfo = document.querySelector("avdivsinfo");
                             avdivinfo.parentNode.removeChild(avdivinfo);
@@ -708,10 +742,8 @@
                     return;
                 }
 
-
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
-
 
                 // 番号
                 avInfo.id = avID;
@@ -790,7 +822,7 @@
         }
     }
     // 无码信息获取 - fc2
-    function getInfo_wuma_fc2(avID,oFirstBrowse){
+    function getInfo_wuma_fc2(avID,reloadGetInfo){
         if(debug){console.log("从网络获取信息中 getInfo_wuma_fc2: " + avID);}
         if(setting.dontGetInfo){return;};
         GM_xmlhttpRequest({
@@ -809,8 +841,25 @@
                 
                 if(data.status==404 || !htmlDoc.querySelector("h1")){
                     data.status = 404
-                    getInfo_end(avID,data,false)
-                    return
+
+                    if(reloadGetInfo){
+                        console.log("重新获取信息",avID);
+                        getInfo_end(avID,data,false)
+                        return
+                    }else{
+                        console.log("第二次进入",avID);
+                        // 先保存信息
+                        localInfo[avID] = {};   
+                        localInfo[avID].title = "未查到该fc2相关信息";
+                        localInfo[avID].noInfo = true;
+                        GM_setValue("avInfo2",localInfo);
+                        // 重新获取信息
+                        if(avID.match(/ppv/i)){
+                            getInfo_wuma_fc2(avID.replace("FC2PPV","FC2"),true);
+                        }else{
+                            getInfo_wuma_fc2(avID.replace("FC2","FC2PPV"),true);
+                        }
+                    }
                 }
 
                 // 番号
@@ -859,7 +908,8 @@
                     // } else{
                         console.log("图片加载失败")
                         image = document.createElement('imgInfo');
-                        image.innerHTML="图片加载失败"
+                        image.innerHTML="图片加载失败, 相关网页: <a href='https://javmenu.com/" + avID +"' target='_blank'>" + avID + "</a>" ;
+                        image.complete = true;  // 强行认定为true
                     // }
                 }else{
                     image.src = image.src;
@@ -868,6 +918,7 @@
                     image.removeAttribute("width");
                 }
                 
+                avInfo.link = 'https://javmenu.com/' + avID;
                 getInfo_end(avID,data,image);
             }
         });
@@ -1004,7 +1055,9 @@
                         var starNameList = other[i].querySelectorAll("a")
                         var starName = [];
                         for(let i=0;i<starNameList.length;i++){
-                            starName.push(starNameList[i].innerText);
+                            if(starNameList[i].nextElementSibling.classList.contains("female")){
+                                starName.push(starNameList[i].innerText);
+                            }
                         }
                     }
                 }
@@ -1028,8 +1081,10 @@
                 avInfo.titleTrans = "没有找到 " + avID +" 相关页面";
                 avInfo.noInfo = true;
 
-                divTarget.classList.remove("infoExistent");
-                divTarget.classList.add("infoNonExistent");
+                if(divTarget){
+                    divTarget.classList.remove("infoExistent");
+                    divTarget.classList.add("infoNonExistent");
+                }
                 
         }else if(setting.dontTransTitle){
             if(debug){console.log("禁止翻译标题 ✖  ✖  ✖ ");}
@@ -1074,14 +1129,14 @@
             let imageDiv = document.createElement('savimgdiv');
             imageDiv.appendChild(image)
             otherInfo.appendChild(imageDiv);
+            // 每200毫秒检查1次, 3s后停止检查
+            timerImgLoading = setInterval(settingPostion,200,image);
+            setTimeout(() => { 
+                clearInterval(timerImgLoading);
+            }, 3000)
         };
         document.querySelector(".sav-menu").appendChild(otherInfo);
 
-        // 每200毫秒检查1次, 3s后停止检查
-        const interval = setInterval(settingPostion,200);
-        setTimeout(() => { 
-            clearInterval(interval)
-        }, 3000)
     }
 
     // 从本地加载信息
@@ -1183,15 +1238,6 @@
             loading.parentNode.removeChild(loading);
         }
     }
-    // 点击图片后放大图片
-    function imageBig(e){
-        if(setting.dontImgBig){return};
-        e.target.classList.toggle("imageBig");
-        const interval = setInterval(settingPostion,100);
-        setTimeout(() => { 
-            clearInterval(interval)
-        }, 500)
-    }
 
     // 格式化番号, 添加中间的横杠
     function formatAVID(otext){
@@ -1206,7 +1252,7 @@
     }
     // 格式化无码番号
     function formatWuma(otext){
-        otext = otext.replace(/\s+|carib[-_]|1pondo[-_]|-paco|-carib|hd_/ig,"");
+        otext = otext.replace(/\s+|carib[-_]|1pondo[-_]|-1pon|-paco|-carib|hd_/ig,"");
         // FC2PPV-
         if(otext.match(/fc2/i)){
             var oindex = otext.search(/(?<!fc)\d/i);
@@ -1380,7 +1426,7 @@
         // 如果是想自定义搜索列表和颜色, 去设置里点击“测试”,然后“保存”, 不要改动此处
         var debug_setting = {
             "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
-            "selectLength":10,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
+            "selectLength":0,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
                                 // 设置更大的数字,例如16,可以应对一些超长的番号。
             "javbus":"https://www.javbus.com/", // 自定义javbus网站地址 "https://www.javsee.bid/"
             "javdb":"https://javdb.com/",    // 自定义javdb网站地址 "https://javdb004.com/"
@@ -1430,7 +1476,7 @@
         location.reload();
     }
     GM_registerMenuCommand("自定义搜索", savBoxEdit)
-
+    // 添加样式
     function addStyle(){
         var styleText = "";
         var styleAVID = "";
@@ -1564,7 +1610,6 @@
             "savMagnet {" +
                 "cursor: pointer;" +
             "}" +
-            // 根据子元素选择父元素。 2022-08-02 现版本的edge和chrome都不支持,  chrome的105版本据说已经支持, 不过目前下载到的是103
             "u:has(savdiv){" +
                 "text-decoration: none;" +
             "}" +

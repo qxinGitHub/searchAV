@@ -156,10 +156,15 @@
 					}
 					// 疑似是磁力链接, 略过 magnet:?
 					if(el.href.search("magnet:?")>-1){
-						if(window.qxinCopyMagnet){
+						// 如果允许复制, 且不含有特定title
+						if(window.qxinCopyMagnet && !el.title.match(/点击复制磁力链接/)){
 							el.title = "点击复制磁力链接";
 							el.addEventListener("click",function(){
 								GM_setClipboard(el.href);
+								if(window.qxinQBit){
+									// console.log("开始下载")
+									window.qxinQBit(el.href);
+								}
 							});
 						}
 						return false
@@ -192,7 +197,7 @@
 					}
 					// class 中存在name, 且没有横杠
 					// 对于svg , classname 返回 SVGAnimatedString 的对象导致报错
-					if(typeof(el.className)=="string" && el.className.search(/name|author|userid/i)>-1 && el.innerText.search(/(?<!\w)[a-z|A-Z]{2,6}\d{2,5}(?!\w)/i)>-1){
+					if(typeof(el.className)=="string" && el.className.search(/name|auth|user|code/i)>-1 && el.innerText.search(/(?<!\w)[a-z|A-Z]{2,6}\d{2,5}(?!\w)/i)>-1){
 						// console.log("------------------ 特殊class内没有横杠: ",el.innerText)
 						// console.log(el);
 						return false

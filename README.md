@@ -1,46 +1,232 @@
-# 根据番号快速搜索
-- 在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
-- 脚本出现的原因是因为经常在一些论坛上有好心人分享番号, 但是需要复制、新开页面、粘贴、搜索太复杂, 所有有了这个脚本来简化这个步骤
+脚本出现的原因:  在一些论坛上经常有好心人分享番号, 但是需要复制、新开页面、粘贴、搜索太复杂, 所有有了这个脚本来简化这个步骤。
+在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
+### 功能
+* 标记网页所有番号, 未浏览过的显示绿色下划线, 浏览过的显示蓝色虚线,浏览过且没找到相关信息的显示红色虚线。颜色可以在设置中更改
+* 鼠标滑过可以激活搜索菜单, 搜索选项可以在设置中更改
+* 标记网页中的磁链, 点击复制, 可以在设置中关闭
+* 点击番号复制
+* 默认没有启用的其他功能, 需要在设置中开启: 
+	* 划词搜索默认处于关闭状态
+	* 查看本地 jellyfin 是否存在需要设置两处: 本地地址`jellyfinHost`和ApiKey`jellyfinApiKey`
+	* 自动调用 qbit 下载磁链需要设置两处: 本地地址`qBitHost`和下载地址`qBitDownload`
+![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
-#### 功能
-- 在网页标注所有番号,番号显示绿色下划线,浏览过的显示蓝色虚线  
-- 鼠标滑过可以激活搜索菜单  
-- 点击番号可以直接复制  
-- 对于不识别的番号, 可以鼠标选择番号, 进行滑词搜索(从v0.12.0 开始默认关闭, 自动识别已经足够)  
-- 自定义搜索: 点击浏览器上的“TamerMonkey”扩展: “根据番号快速搜索” - “自定义搜索”
-- 所有的功能以更新历史为准
+# 一、设置
+点击浏览器上的`TamerMonkey`扩展: `“根据番号快速搜索” - “自定义搜索”`。
+![2022-09-18_18-25-31 打开设置.png (390×161) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_18-25-31%20%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE.png)
 
-#### 不足
-<!-- 1. 2022-07-25 未补全0的番号,能识别, 但是网页一直实线标记,无法判断是否浏览过。例: abc-01, 实际番号应该是abc-001 -->
-1. 2022-07-24 在javbus测试中出现了有下划线,但是无菜单,无功能的情况。在javbus如果是通过搜索进去的帖子就会概率出现这种问题,网址链接后面通常有 &highlight=
-2. 偶尔会出现javbus拒绝访问的情况,原因未知, 带来的后果就是无法获取到该番号的相关信息
-3. 短时间内大量访问无码素人番号会导致javdb封你的IP地址
-4. 脚本主要是针对有码的发行番号
-<!-- 5. 虽然用的谷歌翻译,但效果并不好。不懂日语,纯粹从翻译结果的可读性来看,相较于有道和百度, 它的表现最差
-9. 论坛中的用户名是字母加3位数字的情况下会被识别成番号
-8. ~~番号中将字母或数字单独添加html标签的, 识别错误~~  v0.10.4 
-6. ~~关于番号:只能识别 字母-数字 的番号, 其他类型不识别或者识别错误~~ 可以识别fc2等, 点击番号可以跳转到javdb进行搜索。 v0.10.0
-2. ~~有时简介会被重复两次(甚至三次)~~ 标题还是会偶尔重复 v0.9.1
-3. ~~当番号处于换行时,搜索菜单会显示在第二行~~ 图片加载完成后, 0.3s内鼠标划过去就可以 v0.9.1
-4. ~~带链接番号会识别错误~~ 例:javdb详情页的番号,&lt;a&gt;abc&lt;/a&gt;-123 , 现在不再识别,略过 v0.9.2  
-1. 才疏学浅,知道的网站就几个,但有番号的网站千千万,,所以默认是对所有网站开启的   
- -->
+设置一般不需要改动
+目前可以设置的选项:
+```
+"debug":false,   // 会在番号上额外添加一些信息, 不建议开启
+"selectLength":0,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
+"javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
+"javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
+"dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
+"dontImgBig": false,    // 图片点击放大, 包括滚动放大
+"dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
+"dontGetInfoFc2":false, // 获取fc2的相关信息(从fc2hub获取)
+"dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
+"dontCopyMagnet":false, // 点击磁链复制到剪贴板
+"dontTransTitle":false, // 翻译标题
+"fc2Thumbnail":false,   // fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
+"infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
+"closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
+"closeLoadingAnimation":false,  // 关闭信息加载时的动画
+"addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
+"jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
+"jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
+"qBitHost":"http://localhost:8080/", //本地 qbit 的地址
+"qBitDownload":"",    // 在qbit中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
+"linkStyle":{   // 没浏览的番号
+	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0) 
+	"text-decoration":"underline green",  //下划线
+	"font-weight":"normal",   // 加粗: normal、bold、lighter 
+	"text-shadow":"rgb(177 177 177 / 70%) 1px 1px",    // 字体阴影
+},
+"visitStyle":{  // 已经浏览过的番号
+	"color":"red",  // 颜色
+	"text-decoration":"underline dotted red",   // 下划线
+	"font-weight":"normal", // 加粗
+	"text-shadow":"rgb(177 177 177 / 65%) 1px 1px", // 字体阴影
+},
+"noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号
+	"color":"chocolate",    // 颜色
+	"text-decoration":"underline dotted red",   // 下划线
+},
+```
+在设置菜单中点击`供测试使用`按钮后, 会默认将上面所有选项添加进去, 会影响脚本功能, 对于无用的信息直接删掉即可, 对于自带的`version`、`javdbTime`、`list`、`list_wuma`不要删。
 
-#### 警告  
-1. 如果短时间内过多的浏览无码番号, 会导致javdb封锁IP地址, 致使14天内无法访问javdb。如果你是频繁的浏览无码番号, 我建议你关闭该选项, 只当成一个快捷跳转脚本使用。关闭无码信息的获取: dontGetInfoWuma:true,
+### 具体介绍
+ `"debug":false,`
+* 会在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
+* 默认`false`: 关闭
+* `true`: 开启。 开启会在菜单中添加两个额外的按钮: 设置 番号, 点击番号会复制番号
 
-<!-- #### 待办
-2022-07-23: 素人番号等小众番号会直接跳转javdb, 实际可以显示信息的。可以从freejavbt中获取,并且在弃用的v0.9.3中已经写过相关函数
-2022-08-28: javmenu.com 的信息也很全,有码,无码包括fc2, 是信息最全的。但是同freejavbt有相同的问题就是不知道网站能存多久, 此站点的一些图片信息上还显示着javdb的水印, 网站下标着2016-2022, 但是查询后就能发现此域名是2020年11月才注册。
+`"selectLength":0,`
+* 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。设置更大的数字,例如16,可以应对一些超长的番号。实际使用中颇多的问题。
 
-2022-08-27: 鼠标移动到图片上后, 图片下方(位于图片)可以半透明出现javbus上的预览图像, 鼠标移到预览图像上后替换到上面大图(类似淘宝商品界面)  
+`"javbus":"https://www.javbus.com/",` 
+* 自定义javbus网址, 必须是正确的javbus, 否则脚本会错误
+* 默认: https://www.javbus.com/
 
- -->
+`"javdb":"https://javdb.com/",`    
+* 自定义javdb网址, 必须是正确的javdb, 否则脚本会错误
+* 默认:https://javdb.com/
+
+`"dontClearMenu": false,`
+* 鼠标移出后,菜单不会消失(用来测试脚本使用, 开启会影响脚本使用)
+* 默认: `false` 。 鼠标离开菜单, 菜单消失
+* `true`: 鼠标离开菜单, 菜单不会消失, 会自动在菜单添加一个关闭按钮。
+
+`"dontImgBig": false,`    
+* 图片点击放大, 包括鼠标滚轮放大
+* 默认: `false`
+* `true`:  关闭图片放大功能
+
+ `"dontGetInfo":false,`    
+ * 获取番号的相关信息(从javbus获取)
+ * 默认: `false`
+ * `true`: 关闭从javbus中获取一般发行番号的相关信息, 且本地不会保存番号信息
+
+`"dontGetInfoFc2":false,`
+* 获取fc2的相关信息(从fc2hub中获取)
+* 默认: `false`
+* `true`: 关闭从fc2hub中获取fc2的相关信息, 且本地不会保存番号信息
+
+`"dontGetInfoWuma":false, `   
+* 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
+* 默认: `false`
+* `true`: 关闭从javdb中获取素人等相关信息, 且本地不会保存番号信息
+
+`"dontCopyMagnet":false,`
+* 点击磁链复制到剪贴板, 会自动补全磁链
+* 默认: `false`
+* `true`: 关闭磁链识别功能
+
+`"dontTransTitle":false,`
+* 使用谷歌翻译标题
+* 默认: `false`
+* `true`: 不再翻译标题, 显示日语
+
+`"fc2Thumbnail":false,`
+* fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
+* 默认:`false`
+* `true`: 使用缩略图, 原图大概4兆左右, 开启后会使用缩略图, 大小只有原来的1/10
+
+` "infoReload": false, `
+* 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
+* 默认: `false`
+* `true`: 不使用本地的信息, 每次浏览都会重新从网站中获取, 开启后有风险
+
+`"closeJavdbLimit":false,`
+* 禁止在短时间内多次访问javdb。5分钟10次。
+* 默认: `false`
+* `true`: 取消脚本对javdb的限制, 不受限制的访问javdb, 极其容易封IP
+
+`"closeLoadingAnimation":false,`
+* 关闭信息加载时的动画
+* 默认: `false`
+* `true`: 关闭信息加载时的动画
+
+`"addOtherButton":false,`
+* 添加额外的按钮
+* 默认:`false`
+* `true`: 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
+
+`"jellyfinHost":"http://localhost:8096/",`
+* 本地的jellyfin的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
+* 默认:`http://localhost:8096/`
+
+` "jellyfinApiKey":"",`
+* 外部程序需要密钥才能和jellyfin通信。  “设置 - 控制台 - API密钥” 点击加号生成一个
+* 设置完`jellyfinHost` 和本选项`jellyfinApiKey`后, 菜单中会自动添加jellyfin按钮, 查询本地是否存在该番号, 如果有删除线, 说明本地并没有该番号相关的信息。
+
+`"qBitHost":"http://localhost:8080/",`
+* 本地 qbit 的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
+
+`"qBitDownload":"",`
+* 在qBittorrent中的下载地址,注意地址中要使用双斜杠: `D:\\_下载\\qBittorrent`
+* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontCopyMagnet`为默认值`false`, 在页面中点击磁链会直接下载, 弹窗* 返回的数据是qBittorrent的返回数据, 正常返回是 `OK`, 如果长时间不返回,例如超过1秒, 通常是出现了错误。
+
+设置页面中番号的相关颜色
+* 可以设置的项目不限于下面的举例, 还可以设置`border`,`background`等可以设置的css选项。
+```
+"linkStyle":{   // 没浏览的番号
+	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0)
+	"text-decoration":"underline green",  //下划线
+	"font-weight":"normal",   // 加粗: normal、bold、lighter
+	"text-shadow":"rgb(177 177 177 / 70%) 1px 1px",    // 字体阴影
+},
+"visitStyle":{  // 已经浏览过的番号
+	"color":"red",
+},
+"noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号
+	"color":"chocolate",    // 颜色
+},
+```
+
+自定义搜索列表
+* `list` 一般的发行番号
+* `list_wuma`  素人等番号
+* 搜索列表两边用中括号, 第一项是搜索名称, 第二项是搜索链接。如果放在列表的最后, 后面不要加逗号, 如果是插入到列表中间, 最后需要加逗号。此处的列表顺序就是按钮的显示顺序。
+* 关于如何获得搜索链接: 可以查看这篇文章:[奔跑中的奶酪 ](https://www.runningcheese.com/browser-search)中: `一、关键字搜索 1、添加关键字` 这节的相关介绍。
+* 可以删掉所有搜索,仅仅保留`"list": [],`,  此时脚本会保留自带的javbus搜索。 `list_wuma` 会保留javdb搜索
+* 搜索词用`%s`替代, 下面的例子是百度搜索的写法
+```
+[
+	"百度",
+	"https://www.baidu.com/s?ie=UTF-8&wd=%s"
+]
+```
 
 
+---
 
-### 更新历史
- > 佛系更新
+# 二、注意事项
+### 1. 关于 javbus
+* 有时会遭到javbus的拒绝访问, 具体情况不明, 尤其是一些老番。
+* 通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。
+
+### 2. 关于 javdb
+* 如果设置`"closeJavdbLimit":true,`,解除限制后, 并且短时间内过多的浏览无码素人番号, 会导致javdb封锁IP地址, 致使14天内无法访问javdb。
+* 如果你是频繁的浏览素人的番号, 会受到脚本的限制, 不排除依旧就封IP的风险。由于脚本只是记录了从脚本中获取信息的访问时间, 如果在此之外, 还通过浏览器搜索过javdb,  就加大了封IP的风险。如果未使用其他有关javdb的脚本或者没有单独的搜索过javdb, 脚本自带的限制足以应付javdb的封锁策略。
+* 如果你本身是直连用户, 那你可以用路由器重新拨号,  就能重新获得IP进行访问。
+
+### 3. 关于 jellyfin 查询
+* 理论上emby也可以使用, 因为相关API就是从emby中查询的。 
+* 查询结果仅供参考, 存在结果不对的情况。
+* 使用的版本: jellyfin 10.8.3
+
+### 4. 关于使用 qBittorrent 下载
+* 需要开启 qBIt 的 Web UI,  百度上有相关教程:[教你通过浏览器网页来管理qBittorrent上传下载任务 (baidu.com)](https://baijiahao.baidu.com/s?id=1728372149353644847&wfr=spider&for=pc)。 且网页必须要登录一次才可以。
+* 该功能刚刚加的, 具体有什么问题还不清楚, 使用的版本:qBittorrent v4.4.5 Web UI (64-bit)
+* 下载地址可以直接复制下图位置的这个: 
+ ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
+
+# 三、排除网站
+脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。
+![2022-09-18_20-45-28 排除.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4.png)
+
+# 四、其他
+* 中间不带横杠的番号ipx177相较于完整的ipx-177, 限制会比较多,导致有些明明是番号但是不识别。
+* 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
+
+
+# 五、更新历史
+ > v0.14.0 2022-09-18
+  - 增加: 搜索本地jellyfin, 需要设置本地地址和ApiKey, 两者都设置后, 会自动增加jellyfin的按钮
+  - 增加: 将磁链直接下载到qBittorrent, 需要设置本地地址和下载地址, 两者都设置后, 点击磁链会复制的同时进行下载
+  - 调整: 东京热、加勒比、一本道、MuraMura 的番号会优先从javbus中获取
+  - 调整: FC2 的图片信息从 fc2hub.com 中获取
+  - 修复: 一本道番号不识别的问题
+  - 修复: 网友分享的番号一本道(下划线)和加勒比(横杠)番号,由于下划线和横杠的不同导致无法获取信息的问题。
+  - 修复: 从菜单再次进入番号会重复获取信息的问题
+  -  更新使用文档
+
+ > v0.13.7 2022-09-11
+  - 修复: 关键字: 西数机械硬盘型号: HC550
+  - 修复: 关键字: utf-18
 
  > v0.13.7 2022-09-11
   - 修复: 划词搜索,如果搜索番号无信息导致报错的问题
@@ -341,11 +527,8 @@
   - hello world 
 
 
-#### 演示图片的版本 v0.1.x:  
-![例图](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/searchav.png)
 
-
-#### 开源声明
+# 开源声明
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  

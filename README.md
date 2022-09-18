@@ -1,4 +1,4 @@
-脚本出现的原因:  在一些论坛上经常有好心人分享番号, 但是需要复制、新开页面、粘贴、搜索太复杂, 所有有了这个脚本来简化这个步骤。
+脚本出现的原因:  在一些论坛上经常有好心人分享番号, 但是需要复制、新开页面、粘贴、搜索太复杂, 所有有了这个脚本来简化这个步骤。  
 在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
 ### 功能
 * 标记网页所有番号, 未浏览过的显示绿色下划线, 浏览过的显示蓝色虚线,浏览过且没找到相关信息的显示红色虚线。颜色可以在设置中更改
@@ -7,12 +7,12 @@
 * 点击番号复制
 * 默认没有启用的其他功能, 需要在设置中开启: 
 	* 划词搜索默认处于关闭状态
-	* 查看本地 jellyfin 是否存在需要设置两处: 本地地址`jellyfinHost`和ApiKey`jellyfinApiKey`
-	* 自动调用 qbit 下载磁链需要设置两处: 本地地址`qBitHost`和下载地址`qBitDownload`
+	* 查看本地 jellyfin 是否存在需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
+	* 自动调用 qBittorrent 下载磁链需要设置两处: 本地地址 `qBitHost` 和下载地址 `qBitDownload`  
 ![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
 # 一、设置
-点击浏览器上的`TamerMonkey`扩展: `“根据番号快速搜索” - “自定义搜索”`。
+点击浏览器上的`TamerMonkey`扩展: `“根据番号快速搜索” - “自定义搜索”`。  
 ![2022-09-18_18-25-31 打开设置.png (390×161) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_18-25-31%20%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE.png)
 
 设置一般不需要改动
@@ -61,7 +61,7 @@
  `"debug":false,`
 * 会在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
 * 默认`false`: 关闭
-* `true`: 开启。 开启会在菜单中添加两个额外的按钮: 设置 番号, 点击番号会复制番号
+* `true`: 开启。 开启会在菜单中添加两个额外的按钮: 1,设置 2,番号。 会影响网页,在网页上添加额外信息。
 
 `"selectLength":0,`
 * 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。设置更大的数字,例如16,可以应对一些超长的番号。实际使用中颇多的问题。
@@ -117,7 +117,7 @@
 ` "infoReload": false, `
 * 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
 * 默认: `false`
-* `true`: 不使用本地的信息, 每次浏览都会重新从网站中获取, 开启后有风险
+* `true`: 不使用本地的信息, 每次浏览都会重新从网站中获取, 开启后有封IP地址的风险
 
 `"closeJavdbLimit":false,`
 * 禁止在短时间内多次访问javdb。5分钟10次。
@@ -147,7 +147,7 @@
 
 `"qBitDownload":"",`
 * 在qBittorrent中的下载地址,注意地址中要使用双斜杠: `D:\\_下载\\qBittorrent`
-* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontCopyMagnet`为默认值`false`, 在页面中点击磁链会直接下载, 弹窗* 返回的数据是qBittorrent的返回数据, 正常返回是 `OK`, 如果长时间不返回,例如超过1秒, 通常是出现了错误。
+* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontCopyMagnet`为默认值`false`, 在页面中点击磁链会直接下载, 弹窗返回的数据是qBittorrent的返回数据, 正常返回是 `OK`, 如果长时间不返回,例如超过1秒, 通常是出现了错误。
 
 设置页面中番号的相关颜色
 * 可以设置的项目不限于下面的举例, 还可以设置`border`,`background`等可以设置的css选项。
@@ -172,7 +172,7 @@
 * 搜索列表两边用中括号, 第一项是搜索名称, 第二项是搜索链接。如果放在列表的最后, 后面不要加逗号, 如果是插入到列表中间, 最后需要加逗号。此处的列表顺序就是按钮的显示顺序。
 * 关于如何获得搜索链接: 可以查看这篇文章:[奔跑中的奶酪 ](https://www.runningcheese.com/browser-search)中: `一、关键字搜索 1、添加关键字` 这节的相关介绍。
 * 可以删掉所有搜索,仅仅保留`"list": [],`,  此时脚本会保留自带的javbus搜索。 `list_wuma` 会保留javdb搜索
-* 搜索词用`%s`替代, 下面的例子是百度搜索的写法
+* 搜索词用`%s`替代, 下面的例子是百度搜索的写法  
 ```
 [
 	"百度",
@@ -201,15 +201,15 @@
 ### 4. 关于使用 qBittorrent 下载
 * 需要开启 qBIt 的 Web UI,  百度上有相关教程:[教你通过浏览器网页来管理qBittorrent上传下载任务 (baidu.com)](https://baijiahao.baidu.com/s?id=1728372149353644847&wfr=spider&for=pc)。 且网页必须要登录一次才可以。
 * 该功能刚刚加的, 具体有什么问题还不清楚, 使用的版本:qBittorrent v4.4.5 Web UI (64-bit)
-* 下载地址可以直接复制下图位置的这个: 
+* 下载地址可以直接复制下图位置的这个:   
  ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
 
 # 三、排除网站
-脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。
+脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。  
 ![2022-09-18_20-45-28 排除.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4.png)
 
 # 四、其他
-* 中间不带横杠的番号ipx177相较于完整的ipx-177, 限制会比较多,导致有些明明是番号但是不识别。
+* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
 
 
@@ -525,7 +525,6 @@
   - 修复:显示位置错误
  > v0.1 2021-03-16
   - hello world 
-
 
 
 # 开源声明

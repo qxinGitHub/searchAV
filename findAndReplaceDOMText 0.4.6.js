@@ -106,11 +106,13 @@
 	exposed.NON_PROSE_ELEMENTS = {
 		br:1, hr:1,
 		// Media / Source elements:
-		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,
+		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,source:1,
 		// Input elements
-		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,
+		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,form:1,
 		// 自用添加
-		savdiv:1, avdiv:1,noscript:1
+		savdiv:1, avdiv:1,
+		// 添加的其他项目
+		noscript:1,code:1,footer:1,head:1,nav:1,pre:1,ruby:1
 	};
 
 	exposed.NON_CONTIGUOUS_PROSE_ELEMENTS = {
@@ -148,7 +150,7 @@
 				// 在链接内的番号进一步筛选
 				if(el.nodeName.toUpperCase() == "A"){
 					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
-					if(el.innerText.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
+					if(el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}$/i)>-1){
 					// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
 						// console.log("------------------ 链接内没有横杠: ",el.innerText)
 						// console.log(el);

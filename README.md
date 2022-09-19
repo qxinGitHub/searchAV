@@ -186,7 +186,7 @@
 # 二、注意事项
 ### 1. 关于 javbus
 * 有时会遭到javbus的拒绝访问, 具体情况不明, 尤其是一些老番。
-* 通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。
+* ~~通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。~~
 
 ### 2. 关于 javdb
 * 如果设置`"closeJavdbLimit":true,`,解除限制后, 并且短时间内过多的浏览无码素人番号, 会导致javdb封锁IP地址, 致使14天内无法访问javdb。
@@ -209,11 +209,24 @@
 ![2022-09-18_20-45-28 排除.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4.png)
 
 # 四、其他
-* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。
+* 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
+	* 番号前面是 `/` 或者 `=` 的将不会识别, 例:  ` =ssni-618`   `/ssni-618` 
+	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表
+	* 番号是个链接, 链接内的文本仅仅是番号的情况,不会识别, 例:  `<a href="">ssni-618</a>`不识别; 如果前后链接内的番号前后有其他汉字等可以识别: `<a href="">ssni-618 搜索</a>`  
+	* 如果该页面的网址中含有 `shop、mall、store、buy、product、detail、tools`等关键字的, 该页面将不会识别。
+	* 和番号重名的常用搭配不会识别,例如 `top-10` , 并且整个 `top` 番号都不会识别
+* 缺少 `-` 不识别的情况
+	* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。(此处仅举例, v0.14.1 已经不在将 `618` 设置为关键字)
+	* 如果番号所在dom的class名字中含有 `/name|auth|user|code/` 且无横杠,将不会识别
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
 
 
 # 五、更新历史
+ > v0.14.1 2022-09-19
+  - 修复: javbus论坛通过搜索进入的帖子, 无法显示工具栏的问题
+  - 调整: 排除dom元素: ` source、form、code、footer、head、nav、pre、ruby` 
+  - 调整: 位于链接内的番号, 不在识别。例:  `<a>ssni-618</a>`  
+ 
  > v0.14.0 2022-09-18
   - 增加: 搜索本地jellyfin, 需要设置本地地址和ApiKey, 两者都设置后, 会自动增加jellyfin的按钮
   - 增加: 将磁链直接下载到qBittorrent, 需要设置本地地址和下载地址, 两者都设置后, 点击磁链会复制的同时进行下载
@@ -527,6 +540,7 @@
   - hello world 
 
 
+具体更新历史[Github](https://github.com/qxinGitHub/searchAV)
 # 开源声明
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  

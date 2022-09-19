@@ -12,10 +12,12 @@
 ![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
 # 一、设置
+### 1.打开设置
 点击浏览器上的`TamerMonkey`扩展: `“根据番号快速搜索” - “自定义搜索”`。  
 ![2022-09-18_18-25-31 打开设置.png (390×161) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_18-25-31%20%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE.png)
 
-设置一般不需要改动
+### 2.设置总览
+设置一般不需要改动, 改动错误会导致脚本无法运行。  
 目前可以设置的选项:
 ```
 "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
@@ -55,9 +57,9 @@
 	"text-decoration":"underline dotted red",   // 下划线
 },
 ```
-在设置菜单中点击`供测试使用`按钮后, 会默认将上面所有选项添加进去, 会影响脚本功能, 对于无用的信息直接删掉即可, 对于自带的`version`、`javdbTime`、`list`、`list_wuma`不要删。
+在设置菜单中点击`供测试使用`按钮后, 会默认将上面所有选项添加进去, 并且影响脚本功能, 对于无用的信息直接删掉即可, 不过对于自带的`version`、`javdbTime`、`list`、`list_wuma`不要删。
 
-### 具体介绍
+### 3.设置内容具体介绍
  `"debug":false,`
 * 会在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
 * 默认`false`: 关闭
@@ -200,8 +202,8 @@
 
 ### 4. 关于使用 qBittorrent 下载
 * 需要开启 qBIt 的 Web UI,  百度上有相关教程:[教你通过浏览器网页来管理qBittorrent上传下载任务 (baidu.com)](https://baijiahao.baidu.com/s?id=1728372149353644847&wfr=spider&for=pc)。 且网页必须要登录一次才可以。
-* 该功能刚刚加的, 具体有什么问题还不清楚, 使用的旧版本:[qBittorrent v4.3.5 Web UI (64-bit)](https://www.fosshub.com/qBittorrent-old.html?dwl=qbittorrent_4.3.5_x64_setup.exe)
-* 已知问题: qBitv4.4.5 文件夹名称会乱码, 用旧版本4.3.5 则不会, 原因貌似是因为qBit  以 ISO8859-1方式读取UTF-8。 
+* 该功能刚刚加的, ~~具体有什么问题还不清楚,~~ 使用旧版本:[qBittorrent v4.3.5 Web UI (64-bit)](https://www.fosshub.com/qBittorrent-old.html?dwl=qbittorrent_4.3.5_x64_setup.exe)
+* 已知问题: `qBit v4.4.5` 文件夹名称会乱码, 用旧版本 `4.3.5`  则不会, 原因貌似是因为 `qBit` 以 `ISO8859-1` 方式读取 `UTF-8` 。 
 * 下载地址可以直接复制你的下图位置这个地址, 你也可以自己输入, 没有的话qbit会帮你创建:   
  ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
 
@@ -209,7 +211,7 @@
 脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。  
 ![2022-09-18_20-45-28 排除.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4.png)
 
-# 四、其他
+# 四、其他说明
 * 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
 	* 番号前面是 `/` 或者 `=` 的将不会识别, 例:  ` =ssni-618`   `/ssni-618` 
 	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表

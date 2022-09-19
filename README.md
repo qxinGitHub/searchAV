@@ -200,8 +200,9 @@
 
 ### 4. 关于使用 qBittorrent 下载
 * 需要开启 qBIt 的 Web UI,  百度上有相关教程:[教你通过浏览器网页来管理qBittorrent上传下载任务 (baidu.com)](https://baijiahao.baidu.com/s?id=1728372149353644847&wfr=spider&for=pc)。 且网页必须要登录一次才可以。
-* 该功能刚刚加的, 具体有什么问题还不清楚, 使用的版本:qBittorrent v4.4.5 Web UI (64-bit)
-* 下载地址可以直接复制下图位置的这个:   
+* 该功能刚刚加的, 具体有什么问题还不清楚, 使用的旧版本:[qBittorrent v4.3.5 Web UI (64-bit)](https://www.fosshub.com/qBittorrent-old.html?dwl=qbittorrent_4.3.5_x64_setup.exe)
+* 已知问题: qBitv4.4.5 文件夹名称会乱码, 用旧版本4.3.5 则不会, 原因貌似是因为qBit  以 ISO8859-1方式读取UTF-8。 
+* 下载地址可以直接复制你的下图位置这个地址, 你也可以自己输入, 没有的话qbit会帮你创建:   
  ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
 
 # 三、排除网站

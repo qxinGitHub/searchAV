@@ -149,18 +149,13 @@
 			filterElements: function(el) {
 				// 在链接内的番号进一步筛选
 				if(el.nodeName.toUpperCase() == "A"){
-					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
-					if(el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}$/i)>-1){
-					// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
-						// console.log("------------------ 链接内没有横杠: ",el.innerText)
-						// console.log(el);
-						return false
-					}
 					// 疑似是磁力链接, 略过 magnet:?
-					if(el.href.search("magnet:?")>-1){
+					if(el.href.match(/magnet:\?/)){
 						// 如果允许复制, 且不含有特定title
+						// console.log("链接内含有磁链")
 						if(window.qxinCopyMagnet && !el.title.match(/点击复制磁力链接/)){
 							el.title = "点击复制磁力链接";
+							el.style.textDecoration= "underline #D9B412";
 							el.addEventListener("click",function(){
 								GM_setClipboard(el.href);
 								if(window.qxinQBit){
@@ -170,6 +165,12 @@
 							});
 						}
 						return false
+					}
+					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
+					if(el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}(\.torrent)?$/i)>-1){
+						// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
+							// console.log("------------------ 链接内没有横杠: ",el.innerText)
+							return false
 					}
 				}
 
@@ -181,14 +182,6 @@
 					}
 				}
 
-				// 根据id排除 
-					// "magnet-table" javbus的磁力列表
-					// "magnets"  javdb 的磁力列表
-				// if(el.id){
-				// 	if(el.id=="magnet-table" || el.id=="magnets")
-				// 	return false
-				// }
-
 				// 根据class排除
 				if(el.classList && el.classList.length){
 					// "pstatus" javbus修改帖子的用户名
@@ -199,9 +192,9 @@
 					}
 					// class 中存在name, 且没有横杠
 					// 对于svg , classname 返回 SVGAnimatedString 的对象导致报错
-					if(typeof(el.className)=="string" && el.className.search(/name|auth|user|code/i)>-1 && el.innerText.search(/(?<!\w)[a-z|A-Z]{2,6}\d{2,5}(?!\w)/i)>-1){
-						// console.log("------------------ 特殊class内没有横杠: ",el.innerText)
-						// console.log(el);
+					if(typeof(el.className)=="string" && el.className.match(/name|auth|user|code/i) && el.innerText.match(/(?<!\w)[a-z|A-Z]{2,6}[-\s]?\d{2,5}(?!\w)/i) && el.innerHTML.search("magnet:?")<0){
+						// console.log("------------------ 特殊class内没有横杠: ",el.className)
+						// console.log(el.innerText)
 						return false
 					}
 				}

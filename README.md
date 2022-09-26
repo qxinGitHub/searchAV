@@ -3,12 +3,11 @@
 ### 功能
 * 标记网页所有番号, 未浏览过的显示绿色下划线, 浏览过的显示蓝色虚线,浏览过且没找到相关信息的显示红色虚线。颜色可以在设置中更改
 * 鼠标滑过可以激活搜索菜单, 搜索选项可以在设置中更改
-* 标记网页中的磁链, 点击复制, 可以在设置中关闭
+* 标记网页中的磁链文本, 改为链接, 可以在设置中关闭
 * 点击番号复制
 * 默认没有启用的其他功能, 需要在设置中开启:  
 	* 划词搜索默认处于关闭状态  
-	* 查看本地 jellyfin 是否存在需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
-	* 自动调用 qBittorrent 下载磁链需要设置两处: 本地地址 `qBitHost` 和下载地址 `qBitDownload`  
+	* 查看本地 jellyfin 是否存在,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
 
 ![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
@@ -17,8 +16,10 @@
 点击浏览器上的`TamerMonkey`扩展: `“根据番号快速搜索” - “自定义搜索”`。  
 ![2022-09-18_18-25-31 打开设置.png (390×161) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_18-25-31%20%E6%89%93%E5%BC%80%E8%AE%BE%E7%BD%AE.png)
 
+
 ### 2.设置总览
 设置一般不需要改动, 改动错误会导致脚本无法运行。  
+如果突然之前设置好的选项没有效果了, 通常是设置有所变动, 你可以来此查询。
 目前可以设置的选项:
 ```
 "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
@@ -30,7 +31,9 @@
 "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
 "dontGetInfoFc2":false, // 获取fc2的相关信息(从fc2hub获取)
 "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
-"dontCopyMagnet":false, // 点击磁链复制到剪贴板
+"dontCopyMagnet":false, // 旧, 弃用
+"dontMagnetDiscern":false,   // 将磁链转为链接
+"magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
 "dontTransTitle":false, // 翻译标题
 "fc2Thumbnail":false,   // fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
 "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
@@ -41,7 +44,7 @@
 "jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
 "qBitHost":"http://localhost:8080/", //本地 qBittorrent 的地址
 "qBitDownload":"",    // 在qBittorrent中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
-"qBitNoPopup":"false",   // qbit 弹窗询问是否调用qbit下载
+"qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载
 "linkStyle":{   // 没浏览的番号
 	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0) 
 	"text-decoration":"underline green",  //下划线
@@ -104,9 +107,17 @@
 * `true`: 关闭从javdb中获取素人等相关信息, 且本地不会保存番号信息
 
 `"dontCopyMagnet":false,`
-* 点击磁链复制到剪贴板, 会自动补全磁链
+* 旧, 弃用。 停止使用
+
+`"dontMagnetDiscern":false,`
+* 将网页中的文本磁链转为链接, 网页存在的 hash 也会被转为链接
 * 默认: `false`
 * `true`: 关闭磁链识别功能
+
+`"magnetCopy":false,`     
+* 磁链不转化链接,点击磁链复制到剪贴板。 同时该选项会对链接是磁链的链接起作用。此功能有一部分是脱离上面的 `dontMagnetDiscern`, 想要完整的关闭磁链识别功能, 此处应设置为 `false` 
+* 默认: `false`
+* `true`: 磁链不转化链接, 点击磁链不再跳转, 改为复制
 
 `"dontTransTitle":false,`
 * 使用谷歌翻译标题
@@ -152,9 +163,9 @@
 
 `"qBitDownload":"",`
 * 在qBittorrent中的下载地址,注意地址中要使用双斜杠: `D:\\_下载\\qBittorrent`
-* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontCopyMagnet`为默认值`false`, 在页面中点击磁链会直接下载, 弹窗返回的数据是qBittorrent的返回数据, 正常返回是 `OK`。如果长时间不返回,例如超过1秒, 通常是出现了错误。
+* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontMagnetDiscern`为默认值`false`, `magnetCopy`改为 `true`, 在页面中点击磁链会直接下载, 弹窗返回的数据是qBittorrent的返回数据, 正常返回是 `OK`。如果长时间不返回,例如超过1秒, 通常是出现了错误。
 
-`"qBitNoPopup":"false",`
+`"qBitNoPopup":false,`
 * 点击磁链后会弹窗询问是否调用qBittorrent下载,  并将qBittorrent的返回结果再次弹窗提醒, 共有两次弹窗。
 * 默认: `false` 
 * `true`: 关闭弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
@@ -207,16 +218,21 @@
 * 理论上emby也可以使用, 因为相关API就是从emby中查询的。 
 * 查询结果仅供参考, 存在结果不对的情况, 尤其是jellyfin中存在两个相同番号的时候。
 * 使用的版本:  [jellyfin 10.8.3](https://github.com/jellyfin/jellyfin/releases/)
+* 下图是效果图, 设置正确后, 会增加一个 `jellyfin` 的按钮,点击跳转至本地jellyfin; 如果jellyfin存在相关演员, 演员后面也会加一个按钮, 点击跳转至jellyfin的演员相关页面。
+* ![2022-09-26_08-14-57 jellyfin.jpg (642×591) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-26_08-14-57%20jellyfin.jpg)
 
 ### 4. 关于使用 qBittorrent 下载
+* 这个功能只有在你的电脑上没有磁链下载软件, 并且你还有其他电脑, 比如nas, 在nas上面开着qBittorrent 的情况下有用。否则, 直接点击磁链就能调用本地软件进行下载。这个功能很绕, 就当不存在吧。
+* 开启功能需要设置中更改:`qBitHost` 、`qBitDownload` 、`magnetCopy` 三个选项, 且`dontMagnetDiscern`为默认值`false` , 才能调用qBittorrent下载。
 * 需要开启 qBittorrent 的 Web UI,  百度上有相关教程:[教你通过浏览器网页来管理qBittorrent上传下载任务 (baidu.com)](https://baijiahao.baidu.com/s?id=1728372149353644847&wfr=spider&for=pc)。 且网页必须要登录一次才可以。
 * 已知问题: `qBittorrent v4.4.5` 文件夹名称会乱码, 用旧版本则不会, 原因貌似是因为 qBittorrent 以 ISO8859-1 方式读取 UTF-8导致 。 本人使用的是非官方版本v4.4.4.10 [c0re100/qBittorrent-Enhanced-Edition (github.com)](https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases) 
 * 下载地址可以直接复制你的下图位置这个地址, 你也可以自己输入, 没有的话qBittorrent会帮你创建:   
- ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
+ * ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
+ * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
 
 # 三、排除网站
 脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。  
-![2022-09-18_20-45-28 排除.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4.png)
+![2022-09-18_20-45-28 排除-step.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4-step.png)
 
 # 四、其他说明
 * 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
@@ -233,13 +249,21 @@
 
 # 五、更新历史
 
+ > v0.14.3 2022-09-26
+ - 修复:  熟女俱乐部的番号识别问题,之前会将其识别成club, 不过javdb上没有该系列的相关信息。 jukujo-club-514
+ - 修复: 上个版本排除的关键字 `store`  加了回来, 修复了javstore.net网站上部的番号不识别的问题
+ - 修复: 上个版本添加的设置选项 `qBitNoPopup` 默认值设置错误的问题
+ - 修复: 后续加载的磁链无法识别的问题
+ - 更改: 磁链识别后, 会将文本改为链接, 不再是复制功能, 可以在设置中改回复制 `magnetCopy`
+ - 代码: RE_className_Special 挪到主脚本中, 排除class可以直接从主脚本中调整。
+ 
  > v0.14.2 2022-09-24
  - 增加: 设置中增加选项qbit的弹窗提醒。 qbit下载增加了一个弹窗, 询问是否调用下载, 目前共有两个弹窗, 同时增加设置选项:  `"qBitNoPopup":"true",` 可以关闭弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
  - 增加: 增加jellyfin演员的查询, 如果本地存在该演员, 会在名称后面添加一个jellyfin的图标进行跳转。
  - 增加: 增加排除规则 `oRegExp_Exclude_ID` 能够精确排除,例: PG-13
  - 修复: javdb详情页中无法复制magnet的问题
  - 修复: 部分链接会被认为磁链的问题,链接中含有magnet
- - 修复: 因为**javstore.net** 所有对网页含有store的不再排除
+ - 修复: 因为**javstore.net** 所有对网页含有 `store` 的不再排除
  - 调整: 统一磁链样式, 识别到的磁链加上黄色下划线
 
  > v0.14.1 2022-09-19

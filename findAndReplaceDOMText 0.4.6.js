@@ -110,7 +110,7 @@
 		// Input elements
 		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,form:1,
 		// 自用添加
-		savdiv:1, avdiv:1,
+		savdiv:1, avdiv:1,savmagnet:1,
 		// 添加的其他项目
 		noscript:1,code:1,footer:1,head:1,nav:1,pre:1,ruby:1
 	};
@@ -153,20 +153,20 @@
 					if(el.href.match(/magnet:\?/)){
 						// 如果允许复制, 且不含有特定title
 						// console.log("链接内含有磁链")
-						if(window.qxinCopyMagnet && !el.title.match(/点击复制磁力链接/)){
+						if(window.qxin.CopyMagnet && !el.title.match(/点击复制磁力链接/)){
 							el.title = "点击复制磁力链接";
 							el.style.textDecoration= "underline #D9B412";
 							el.addEventListener("click",function(){
 								GM_setClipboard(el.href);
-								if(window.qxinQBit){
+								if(window.qxin.QBit){
 									// console.log("开始下载")
-									window.qxinQBit(el.href);
+									window.qxin.QBit(el.href);
 								}
 							});
 						}
 						return false
 					}
-					// 排除在链接内没有横杠的番号, 视为用户名, 排除	
+					// 排除在链接内的番号, 视为用户名, 排除	
 					if(el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}(\.torrent)?$/i)>-1){
 						// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
 							// console.log("------------------ 链接内没有横杠: ",el.innerText)
@@ -183,20 +183,16 @@
 				}
 
 				// 根据class排除
-				if(el.classList && el.classList.length){
-					// "pstatus" javbus修改帖子的用户名
-					// "au" javbus 发帖的用户名
-					// "tucao-author"  jandan 的用户名
-					if(el.classList.contains("pstatus") || el.classList.contains("au")){
-						return false
-					}
-					// class 中存在name, 且没有横杠
+				if(el.classList && el.classList.length
 					// 对于svg , classname 返回 SVGAnimatedString 的对象导致报错
-					if(typeof(el.className)=="string" && el.className.match(/name|auth|user|code/i) && el.innerText.match(/(?<!\w)[a-z|A-Z]{2,6}[-\s]?\d{2,5}(?!\w)/i) && el.innerHTML.search("magnet:?")<0){
+					&& typeof(el.className)=="string" 
+					&& el.className.match(window.qxin.RE_Exclude_className) 
+					&& el.innerText.match(/(?<!\w)[a-z|A-Z]{2,6}[-\s]?\d{2,5}(?!\w)/i) 
+					&& el.innerHTML.search("magnet:?")<0){
 						// console.log("------------------ 特殊class内没有横杠: ",el.className)
 						// console.log(el.innerText)
 						return false
-					}
+
 				}
 
 				return !hasOwn.call(exposed.NON_PROSE_ELEMENTS, el.nodeName.toLowerCase());

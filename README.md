@@ -31,6 +31,7 @@
 "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
 "dontGetInfoFc2":false, // 获取fc2的相关信息(从fc2hub获取)
 "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
+"getInfoFailToJavDB":false,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
 "dontCopyMagnet":false, // 旧, 弃用
 "dontMagnetDiscern":false,   // 将磁链转为链接
 "magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
@@ -61,8 +62,11 @@
 	"color":"chocolate",    // 颜色
 	"text-decoration":"underline dotted red",   // 下划线
 },
+"list":[],  // 普通番号的搜索列表
+"list_wuma":[], // 素人番号的搜索列表
+"list_all":[]   // 它俩共同的搜索, 会同时加在上面两个列表的后面
 ```
-在设置菜单中点击`供测试使用`按钮后, 会默认将上面所有选项添加进去, 并且影响脚本功能, 对于无用的信息直接删掉即可, 不过对于自带的`version`、`javdbTime`、`list`、`list_wuma`不要删。
+在设置菜单中点击`供测试使用`按钮后, 会默认将上面所有选项添加进去, 并且影响脚本功能, 对于无用的信息直接删掉即可。
 
 ### 3.设置内容具体介绍
  `"debug":false,`
@@ -106,8 +110,13 @@
 * 默认: `false`
 * `true`: 关闭从javdb中获取素人等相关信息, 且本地不会保存番号信息
 
+`"getInfoFailToJavDB":false,`   
+* 从javbus获取不到信息时, 是否从javdb中尝试获取
+* 默认: `false`
+*  `true` : 会尝试从javdb中获取信息, 这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险。如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验。
+
 `"dontCopyMagnet":false,`
-* 旧, 弃用。 停止使用
+* 旧, 弃用。 停止使用, 如果你的设置里存在该项, 请改成 `dontMagnetDiscern":false` 
 
 `"dontMagnetDiscern":false,`
 * 将网页中的文本磁链转为链接, 网页存在的 hash 也会被转为链接
@@ -171,7 +180,7 @@
 * `true`: 关闭弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
 
 设置页面中番号的相关颜色
-* 可以设置的项目不限于下面的举例, 还可以设置`border`, `background`等可以设置的css选项。
+* 可以设置的项目不限于下面的举例, 所有选项都是可选的, 还可以设置`border`, `background`等可以设置的css选项。
 ```
 "linkStyle":{   // 没浏览的番号  
 	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0)  
@@ -188,23 +197,31 @@
 ```
 
 自定义搜索列表
-* `list` 一般的发行番号
-* `list_wuma`  素人等番号
+* `"list":[]` 一般的发行番号
+* `"list_wuma":[]`  素人等番号
+* `list_all":[]`   它俩共同的搜索, 会同时加在上面两个列表的后面
 * 搜索列表两边用中括号, 第一项是搜索名称, 第二项是搜索链接。如果放在列表的最后, 后面不要加逗号, 如果是插入到列表中间, 最后需要加逗号。此处的列表顺序就是按钮的显示顺序。
 * 关于如何获得搜索链接: 可以查看这篇文章:[奔跑中的奶酪 ](https://www.runningcheese.com/browser-search)中: `一、关键字搜索 1、添加关键字` 这节的相关介绍。
 * 可以删掉所有搜索,仅仅保留`"list": [],`,  此时脚本会保留自带的javbus搜索。 `list_wuma` 会保留javdb搜索
-* 搜索词用`%s`替代, 下面的例子是百度搜索的写法  
+* 搜索词用`%s`替代, 下面的例子是百度搜索的写法  , 会将百度搜索加在 `list`和 `list_wuma` 列表后面
 ```
-[
-	"百度",
-	"https://www.baidu.com/s?ie=UTF-8&wd=%s"
+list_all":[
+	[
+		"百度",
+		"https://www.baidu.com/s?ie=UTF-8&wd=%s"
+	]
 ]
 ```
 
 
 ---
 
-# 二、注意事项
+# 二、排除网站
+脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。  
+![2022-09-18_20-45-28 排除-step.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4-step.png)
+
+---
+# 三、注意事项
 ### 1. 关于 javbus
 * 有时会遭到javbus的拒绝访问, 具体情况不明, 尤其是一些老番。
 * ~~通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。~~
@@ -230,11 +247,40 @@
  * ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
  * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
 
-# 三、排除网站
-脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。  
-![2022-09-18_20-45-28 排除-step.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4-step.png)
+---
+# 四、相关信息获取网站
+大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。
+* 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list` 加 `list_all`
+	* 一般的发行番号
+	* 东京热n、k系列
+	* 加勒比 的**月日年**数字命名系列 
+	* 一本道 的**月日年**数字命名系列
+	* MuraMura 的**月日年**数字命名系列
+	* Mesubuta メス豚 的**月日年**数字命名系列
+* 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list_wuma` 加 `list_all`
+	* mgstage系列
+	* HEYZO
+	* HEYDOUGA
+	* T28
+	* TMA
+	* 1000girl
+	* MUGEN Entertainmen: MKD-S  MKBD-S
+	* SHINKI:素人
+	* KITAIKE:北池袋盗撮倶楽部
+	* japornXXX
+	* xxx-av
+	* crazyasia
+	* PEWORLD
+	* 10Musume
+	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
+* 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list_wuma` 加 `list_all`
+	* FC2
 
-# 四、其他说明
+
+
+
+---
+# 五、其他说明
 * 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
 	* 番号前面是 `/` 或者 `=` 的将不会识别, 例:  ` =ssni-618`   `/ssni-618` 
 	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表
@@ -247,14 +293,25 @@
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
 
 
-# 五、更新历史
+---
+# 六、更新历史
+ > v0.15.0 2022-09-28
+ - 增加:  设置选项 `getInfoFailToJavDB` , 当javbus获取不到信息时, 自动从javdb获取, 默认关闭。开启后有被javDB封IP的风险。
+ - 增加: 浏览之前没有获取到信息的番号, 会尝试重新获取信息。前提是两次获取信息的时间间隔要相差一天以上。
+ - 增加: 设置选项 `list_all`, 也是搜索列表, 有码和无码的共同搜索列表可以放在这里。
+ - 修复: 版本`v0.14.1` 排除 `form`导致很多出现不识别的问题
+ - 修复: 当本地没有图片的时候, 会重新去获取, 不再提示本地没有图片。
+ - 修复: fc2番号没有tag信息, 还出现“标签”的问题。
+ - 正则: 无横杠的番号后面排除 / , 可能是文件地址
+ - 代码: 精简存储里面的相关信息, 如果值是`false`, 不再存储。增加获取番号信息时的时间`getInfo_Time`。
+ - 代码: `javdbTime` 和 `version` 挪走, 不在显示设置菜单中。
 
  > v0.14.3 2022-09-26
  - 修复:  熟女俱乐部的番号识别问题,之前会将其识别成club, 不过javdb上没有该系列的相关信息。 jukujo-club-514
  - 修复: 上个版本排除的关键字 `store`  加了回来, 修复了javstore.net网站上部的番号不识别的问题
  - 修复: 上个版本添加的设置选项 `qBitNoPopup` 默认值设置错误的问题
  - 修复: 后续加载的磁链无法识别的问题
- - 更改: 磁链识别后, 会将文本改为链接, 不再是复制功能, 可以在设置中改回复制 `magnetCopy`
+ - 调整: 磁链识别后, 会将文本改为链接, 不再是复制功能, 可以在设置中改回复制 `magnetCopy`
  - 代码: RE_className_Special 挪到主脚本中, 排除class可以直接从主脚本中调整。
  
  > v0.14.2 2022-09-24
@@ -587,12 +644,14 @@
 具体更新历史[Github](https://github.com/qxinGitHub/searchAV)
 
 
-# 六、相关资料
+---
+# 七、相关资料
 * emby中的API查询 [Swagger UI (emby.media)](http://swagger.emby.media/?staticview=true#/PlaylistService/postPlaylistsByIdItems)
 * emby中 API 使用 [API Key Authentication · MediaBrowser/Emby Wiki (github.com)](https://github.com/MediaBrowser/Emby/wiki/Api-Key-Authentication)
 * jellyfin中的API介绍 [Jellyfin - ReDoc](https://api.jellyfin.org/#tag/ApiKey/operation/CreateKey)
 * jellyfin 下载及其更新历史 [Releases · jellyfin/jellyfin (github.com)](https://github.com/jellyfin/jellyfin/releases/)
 
+---
 # 开源声明
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  

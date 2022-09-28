@@ -108,7 +108,7 @@
 		// Media / Source elements:
 		script:1, style:1, img:1, video:1, audio:1, canvas:1, svg:1, map:1, object:1,source:1,
 		// Input elements
-		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,form:1,
+		input:1, textarea:1, select:1, option:1, optgroup: 1, button:1,
 		// 自用添加
 		savdiv:1, avdiv:1,savmagnet:1,
 		// 添加的其他项目

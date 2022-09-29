@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.15.1
+// @version      0.16.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
 // @license      MIT
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1098688
+// @require     https://greasyfork.org/scripts/452219-md5-%E5%87%BD%E6%95%B0/code/MD5%20%E5%87%BD%E6%95%B0.js?version=1099124
 // @connect     *
 // @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
@@ -60,17 +61,13 @@
     var timerGetInfo;   // 延时获取信息
     var timerMouseLeave;    // 鼠标离开番号。鼠标进入菜单时的定时器, 超时不进入, 菜单消失
     var timerMouseLeaveMenu;    // 鼠标离开菜单
-    var timerImgLoading;    // 图片加载后 重新定位的定时器。 加载成功后, 清除该定时器
+    // var timerImgLoading;    // 图片加载后 重新定位的定时器。 加载成功后, 清除该定时器
     var avInfo = {};    // 临时存储相关信息
     var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在和存储信息时使用
     var Imgscall = 1.0; // 图片默认放大倍数, 在图片上滚动鼠标滚轮使用。
     var javdbTime = []; // 记录访问javdb的时间, 如果短时间内多次访问就限制访问, 默认是5分钟内限制为10次访问。
     var divTarget;  // 鼠标当前经过的番号节点
-    var Trans = {       // 临时存储翻译的相关信息
-        id:"",
-        transText:"",
-        trans:[]
-    }
+
     var allHTML = document.querySelector("body");   // 获取网页
     
     // 取出本地的信息 
@@ -153,7 +150,7 @@
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
     var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|http|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|ssd|status|tcp|the|to|top|than|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|hc|in|mk|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|hc|hours|in|mk|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找
@@ -394,7 +391,11 @@
     function addEventAndStyle(isExist,avID){
         // 添加事件
         var odiv = document.createElement('savdiv');
-        odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
+        if(setting.clickToMenu){
+            odiv.addEventListener("click",savIDMouseEnter);    // 点击鼠标 开启菜单
+        }else{
+            odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
+        }
         odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
         odiv.addEventListener("click",savIDClick);  // 点击番号复制
 
@@ -537,7 +538,7 @@
             }
             avInfo = {};
             clearTimeout(timerGetInfo);
-            clearInterval(timerImgLoading); // 重置位置的定时器
+            // clearInterval(timerImgLoading); // 重置位置的定时器
             observer.observe(observerTarget, observerConfig);     
         },10);
     }
@@ -756,7 +757,7 @@
 
     // 获取番号相关的信息, 添加图片,调用其他函数添加信息
     function getInfo(avID,oFirstBrowse){
-        if(debug){console.log("从网络获取信息中 getInfo: " + avID);}
+        if(debug){console.log("从javbus获取信息中 getInfo: " + avID);}
         if(setting.dontGetInfo){
             removeLoading();
             var otherInfo = document.createElement('avdivsInfo');
@@ -883,7 +884,7 @@
     }
     // 无码信息获取 - fc2
     function getInfo_fc2(avID,reloadGetInfo){
-        if(debug){console.log("从网络获取信息中 getInfo_fc2: " + avID);}
+        if(debug){console.log("从fc2hub获取信息中 getInfo_fc2: " + avID);}
 
         GM_xmlhttpRequest({
             method: 'get',
@@ -910,7 +911,7 @@
         });
     }
     function getInfo_fc2_openPage(avID,link){
-        if(debug){console.log("从网络获取信息中 getInfo_fc2_openPage: " + link);}
+        if(debug){console.log("从fc2hub获取信息中 getInfo_fc2_openPage: " + link);}
         GM_xmlhttpRequest({
             method: 'get',
             url: link,
@@ -953,7 +954,7 @@
     }
     // 无码信息获取 - 获取链接
     function getInfo_wuma_javdb1(avID,oFirstBrowse){
-        if(debug){console.log("从网络获取信息中 getInfo_wuma_javdb1: " + avID);}
+        if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb1: " + avID);}
 
         // 从javdb加一些限制, 防止ip被禁用。 目前是5分钟内限制10个。
         if(setting.closeJavdbLimit){
@@ -1041,7 +1042,7 @@
     }
     // 无码信息获取 - 具体内容
     function getInfo_wuma_javdb2(avID,link){
-        if(debug){console.log("从网络获取信息中 getInfo_wuma_javdb2: " + avID);}
+        if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb2: " + avID);}
         GM_xmlhttpRequest({
             method: 'get',
             url: link,
@@ -1061,22 +1062,21 @@
                 // avInfo.id = avID;
                 // 标题
                 // avInfo.title = htmlDoc.title.replace(avID,"").replace("  | JavDB 成人影片數據庫 ","");
-                avInfo.title = htmlDoc.title.replace(avID,"").slice(0,-17);
+                avInfo.title = htmlDoc.title.replace(avID,"").slice(0,-16).trim();
                 // 番号的链接
                 avInfo.link = link;
-
                 
                 // 获取相关信息, 匹配的具体的字。
                 var other = htmlDoc.querySelectorAll(".panel-block");
                 for(let i=0;i<other.length;i++){
                     if(other[i].innerHTML.search("日期:")>-1){
-                        avInfo.date = other[i].innerText;
+                        avInfo.date = other[i].innerText.trim();
                     }
                     if(other[i].innerHTML.search("系列")>-1){
-                        avInfo.series = other[i].innerText
+                        avInfo.series = other[i].innerText.trim();
                     }
                     if(other[i].innerHTML.search("類別")>-1){
-                        avInfo.tags = other[i].lastElementChild.innerText
+                        avInfo.tags = other[i].lastElementChild.innerText.trim();
                     }
                     if(other[i].innerHTML.search("演員")>-1){
                         var starNameList = other[i].querySelectorAll("a")
@@ -1114,15 +1114,32 @@
                     divTarget.classList.add("infoNonExistent");
                 }
                 
-        // }else if(setting.dontTransTitle){
-        }else if(true){
+        }else if(setting.dontTransTitle){
             if(debug){console.log("禁止翻译标题 ✖  ✖  ✖ : ", avInfo.title);}
             // avInfo.titleTrans = avInfo.title;
         }else if(!avInfo.titleTrans || avInfo.titleTrans.search("没有找到")>-1){   // 如果本地存在翻译, 就不再重复翻译
-            if(debug) console.log("开始翻译标题");
-            Trans.id = avID;
-            Trans.transText=avInfo.title;
-            googleTrans();
+            // 删除标题之后的演员名字
+            var title = avInfo.title;
+            var starName = avInfo.starName;
+            if(starName.length ==1){
+                var oLength = title.length-title.indexOf(starName[0]);
+                if( oLength == starName[0].length){
+                    title = title.slice(0,(oLength+1)*-1)
+                }
+            }
+            // 删除标题中的番号(这是第二次删除, getInfo中还有一次)
+            title = title.replace(avID,"");
+            // 删除奇奇怪怪的标点
+            var biaodian = /●|▲|[\s\……\——\-\】\』\}\、\|\；\‘\’\：\“\”\》\，\。\、\_\]\;\'\'\:\"\"\,\.\/]*$/
+            title = title.replace(biaodian,"")
+            
+            avInfo.title = title;
+
+            if(setting.baiduAppid && setting.baiduKey){
+                baiduTrans(avID,title);
+            } else{
+                googleTrans(avID,title);
+            }
         }
         
         localInfo[avID] = {};   // 重置,防止在一个页面重复划过番号导致系列、发行日期等重复显示。
@@ -1245,7 +1262,7 @@
         GM_setValue("avInfo2",localInfo);
 
         otherInfo.querySelector("img").onload = function(){
-            // console.log("getInfo_local: 图片加载完成")
+            if(debug){console.log("getInfo_local: 图片加载完成")}
             settingPostion()
         }
         // 每200毫秒检查1次, 1s后停止检查
@@ -1275,6 +1292,11 @@
         if(localInfo[avID] && localInfo[avID].noInfo){return ""};   // 如果没有信息就直接返回
         var actors = ""
         var str = "";
+        if(avInfo.titleTrans){
+            str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.titleTrans + "</avdiv>"
+        }else if(avInfo.title){
+            str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
+        }
         if(avInfo.starName && avInfo.starName.length>0){
             for(var i=0;i<avInfo.starName.length;i++){
                 actors += "<a class='sav-actors-"+ i + "' target='_blank' style='text-decoration:underline' title='' href='https://db.msin.jp/jp.search/actress?str=" + avInfo.starName[i] + "'>"+ avInfo.starName[i] + "</a>, ";
@@ -1282,11 +1304,6 @@
             }
             actors = actors.slice(0,actors.length-2);
             str += "<avdiv class='sav-actors'>演员: " + actors + "</avdiv>"
-        }
-        if(avInfo.titleTrans){
-            str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.titleTrans + "</avdiv>"
-        }else if(avInfo.title){
-            str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
         }
         if(avInfo.tags && avInfo.tags.length>0){
             str += "<avdiv class='avInfoTags'>标签: " + avInfo.tags + "</avdiv>"
@@ -1403,43 +1420,79 @@
     // version:1.2.9, 
     // https://greasyfork.org/zh-CN/scripts/389784 
     // 许可协议 MIT
-    function googleTrans() {
-        var h_url = "";
-        var googleTransApi = "https://translate.google.cn/translate_a/single?client=gtx&dt=t&dj=1&sl=auto&tl=zh-CN&hl=zh-CN";
-        h_url = googleTransApi + "&q=" + encodeURIComponent(Trans.transText);
+    function googleTrans(avID,transText) {
+        if(debug){console.log("谷歌翻译 googleTrans: ",transText);}
+
+        var translate_url = "";
+        var googleTransApi = "https://translate.google.com.hk/translate_a/single?client=gtx&dt=t&dj=1&sl=auto&tl=zh-CN&hl=zh-CN&q=";
+        translate_url = googleTransApi + encodeURIComponent(transText);
 
         GM_xmlhttpRequest({
             method: "GET",
-            url: h_url,
+            url: translate_url,
             onload: function (r) {
                 setTimeout(function () {
-                    console.log(r)
-                    console.log(r.responseText)
+                    // 如果返回结果不对
+                    if(r.responseText.indexOf("sentences")<0){
+                        console.log("谷歌翻译失败: ",r.responseText);
+                        return;
+                    } 
                     var data = JSON.parse(r.responseText);
                     var trans = "";
                     for (var i = 0; i < data.sentences.length; i++) {
                         var getransCont = data.sentences[i];
                         trans += getransCont.trans;
                     }
-                    Trans.trans = trans;
-                    console.log("翻译结果:");
-                    console.log(trans);
-
-                    localInfo[Trans.id].titleTrans = trans;
-                    GM_setValue("avInfo2",localInfo);
-                    if(document.querySelector("#searchAVMenuTitle")){
-                        document.querySelector("#searchAVMenuTitle").innerHTML = "标题: (译)" + trans;
-                    }
-                }, 300);
+                    trans_end(avID,trans)
+                }, 100);
             },
             onerror: function (e) {
                 console.error(e);
-                console.log("翻译失败");
-                localInfo[Trans.id].titleTrans = Trans.transText;
-                GM_setValue("avInfo2",localInfo);
+                console.log("谷歌翻译失败");
             }
         });
     }
+    // 百度翻译
+    function baiduTrans(avID,transText) {
+        if(debug){console.log("百度翻译 baiduTrans: ",transText);}
+        var appid = setting.baiduAppid;
+        var key = setting.baiduKey;
+        var salt = (new Date).getTime();
+        // var query = 'apple';
+        // 多个query可以用\n连接  如 query='apple\norange\nbanana\npear'
+        // var from = 'jp';
+        // var to = 'zh';
+        var str1 = appid + transText + salt +key;
+        var sign = MD5(str1);
+        var translate_url = "http://api.fanyi.baidu.com/api/trans/vip/translate?q="+ encodeURIComponent(transText) +"&from=jp&to=zh&appid="+appid+"&salt="+salt+"&sign="+sign;
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: translate_url,
+            onload: function (r) {
+                console.log(r)
+                if(r.responseText.indexOf("error_code")>0){
+                    console.log("百度翻译失败:",r.responseText)
+                    return;
+                } 
+                var data = JSON.parse(r.responseText);
+                trans_end(avID,data.trans_result[0].dst)
+            },
+            onerror: function (e) {
+                console.error(e);
+                console.log("百度翻译失败");
+            }
+        });
+    }
+    // 翻译结束
+    function trans_end(avID,result){
+        if(debug){console.log("翻译结束 trans_end: ",result)}
+        localInfo[avID].titleTrans = result;
+        GM_setValue("avInfo2",localInfo);
+        if(document.querySelector("#searchAVMenuTitle")){
+            document.querySelector("#searchAVMenuTitle").innerHTML = "标题: (译)" + result;
+        }
+    }
+
     // 防盗链
     function noReferrer(){
         // 相关代码地址 https://greasyfork.org/zh-CN/scripts/376884
@@ -1580,14 +1633,14 @@
         "<br>" +
         "<p>老司机共浏览了" + Object.keys(localInfo).length + "个番号！</p>" +
         "<button id='savDebug' >供测试使用</button> &nbsp;&nbsp;&nbsp;" +
-        "<button id='savSetting' >清空设置</button> &nbsp;&nbsp;&nbsp;" +
+        "<button id='savClearSetting' >清空设置</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savHistory' >清空浏览历史</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savEditBoxCloase' >关闭</button> &nbsp;&nbsp;&nbsp;" +
         "<button id='savEditBoxSave' >保存</button>" +
         "";
         editbox.innerHTML = innerH;
         editbox.querySelector("#savDebug").addEventListener("click",savDebug)
-        editbox.querySelector("#savSetting").addEventListener("click",clearSetting)
+        editbox.querySelector("#savClearSetting").addEventListener("click",clearSetting)
         editbox.querySelector("#savHistory").addEventListener("click",clearHistory)
         editbox.querySelector("#savEditBoxCloase").addEventListener("click",savBoxClose)
         editbox.querySelector("#savEditBoxSave").addEventListener("click",savBoxSave)
@@ -1619,6 +1672,7 @@
                                 // 设置更大的数字,例如16,可以应对一些超长的番号。实际使用中颇多的问题。
             "javbus":"https://www.javbus.com/", // 自定义javbus网站地址 "https://www.javsee.bid/"
             "javdb":"https://javdb.com/",    // 自定义javdb网站地址 "https://javdb004.com/"
+            "clickToMenu":false,    // 鼠标点击番号才会出现菜单
             "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
             "dontImgBig": false,    // 图片点击放大, 包括滚动放大
             "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
@@ -1639,6 +1693,8 @@
             "qBitHost":"http://localhost:8080/", //本地 qbit 的地址
             "qBitDownload":"",    // 在qbit中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
             "qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载
+            "baiduAppid":"",    // 百度翻译的 APP ID
+            "baiduKey":"",    // 百度翻译的 密钥
             "linkStyle":{   // 没浏览的番号
                 "color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0) 
                 "text-decoration":"underline green",  //下划线
@@ -1668,7 +1724,13 @@
         if(codevalue.length ==0){
             codevalue = "{}"
         }
-        return JSON.parse(codevalue);
+        var return_value ;
+        try{
+            return_value = JSON.parse(codevalue)
+        }catch(err){
+            alert("保存失败,请按照下方提示修改后重新保存\n"+err);
+        }
+        return return_value;
     }
     // 清空设置
     function clearSetting(){
@@ -1768,16 +1830,10 @@
                 "text-overflow: ellipsis;" +
                 "white-space: nowrap;" +
             "}" +
-            "avdiv.sav-menu savimgdiv{" +
-                // "display:block;" +
-                // "text-align:center;" +
-            "}" +
             "avdiv.sav-menu .avimg{" +
-                // "height: 100%;" +
                 "height: 400px;" +
                 "max-width: 100%;" +
                 "max-height: 500px;" +
-                // "width:100%;" +
                 "cursor: pointer;" +
                 "box-shadow: -2px -2px 4px rgb(230 230 230), 2px 2px 2px rgb(70 70 70 / 50%);" +
                 "border-top: 1px solid #fff;" +
@@ -1792,7 +1848,6 @@
                 "box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);" +
                 "}" +
             "avdiv.sav-menu img.avimg.imageBig{" +
-                // "max-width: 900px;" +
                 "max-height: 600px;" +
                 "transform: scale(1.3);" +
                 "border-radius: 10px;" +

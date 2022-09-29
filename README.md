@@ -25,6 +25,7 @@
 "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
 "selectLength":0,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
 "javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
+"clickToMenu":false,    // 鼠标点击番号才会出现菜单
 "javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
 "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
 "dontImgBig": false,    // 图片点击放大, 包括滚动放大
@@ -44,8 +45,10 @@
 "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
 "jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
 "qBitHost":"http://localhost:8080/", //本地 qBittorrent 的地址
-"qBitDownload":"",    // 在qBittorrent中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
+"qBitDownload":"",     // 在qBittorrent中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
 "qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载
+"baiduAppid":"",  // 百度翻译的 APP ID
+"baiduKey":"",    // 百度翻译的 密钥
 "linkStyle":{   // 没浏览的番号
 	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0) 
 	"text-decoration":"underline green",  //下划线
@@ -70,7 +73,7 @@
 
 ### 3.设置内容具体介绍
  `"debug":false,`
-* 在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
+* 测试模式, 在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
 * 默认`false`: 关闭
 * `true`: 开启。 开启会在菜单中添加两个额外的按钮: 1, `设置` 2, `番号` 。 会影响网页,在网页上添加额外信息。
 
@@ -84,6 +87,11 @@
 `"javdb":"https://javdb.com/",`    
 * 自定义javdb网址, 必须是正确的javdb, 否则脚本会错误
 * 默认:https://javdb.com/
+
+`"clickToMenu":false,`    
+* 默认鼠标滑过番号出现菜单
+* 默认 `false` 
+*  `true` :  需要点击番号才会出现菜单, 如果鼠标经常误触导致出现菜单, 可以改为点击后出现菜单。尤其是一个页面有几百上千个番号的情况, 全部聚拢在一起, 鼠标滑过就显示菜单 很影响操作。
 
 `"dontClearMenu": false,`
 * 鼠标移出后,菜单是否消失
@@ -179,6 +187,13 @@
 * 默认: `false` 
 * `true`: 关闭弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
 
+`"baiduAppid":"",`
+*  百度翻译的 APP ID [百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop)
+
+`"baiduKey":"",`
+* 百度翻译的 密钥  [百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop)
+* 设置完`baiduAppid` 和本选项`baiduKey`后, 翻译会更改为百度翻译。
+
 设置页面中番号的相关颜色
 * 可以设置的项目不限于下面的举例, 所有选项都是可选的, 还可以设置`border`, `background`等可以设置的css选项。
 ```
@@ -232,6 +247,7 @@ list_all":[
 * 如果你本身是直连用户, 那你可以用路由器重新拨号,  就能重新获得IP进行访问。
 
 ### 3. 关于 jellyfin 查询
+* 开启需要设置`jellyfinHost` 和`jellyfinApiKey` 
 * 理论上emby也可以使用, 因为相关API就是从emby中查询的。 
 * 查询结果仅供参考, 存在结果不对的情况, 尤其是jellyfin中存在两个相同番号的时候。
 * 使用的版本:  [jellyfin 10.8.3](https://github.com/jellyfin/jellyfin/releases/)
@@ -246,6 +262,43 @@ list_all":[
 * 下载地址可以直接复制你的下图位置这个地址, 你也可以自己输入, 没有的话qBittorrent会帮你创建:   
  * ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
  * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
+
+### 5. 关于翻译
+* 默认谷歌翻译, 可以设置 `baiduAppid` 和 `baiduKey` 改为调用百度翻译。
+* 网页谷歌翻译和脚本进行调用后, 翻译结果不同, 这种情况就离谱。
+* 百度相关api获取网址[百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop), [认证完成](http://api.fanyi.baidu.com/doc/13)每月享有100万字的翻译额度, [百度翻译认证的相关文档](https://fanyiapp.cdn.bcebos.com/api/doc/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E7%BF%BB%E8%AF%91API%E6%9C%8D%E5%8A%A1%E5%8D%87%E7%BA%A7%E8%AF%B4%E6%98%8E.pdf)
+
+<details>
+<summary>点击此处查看翻译的对比结果</summary>
+<pre>
+* 原文1: 夫には言えない… 义父に犯れ続けていることを…。 白花こう  
+* 色花堂翻译: 无法对老公说出口…我被公公持续侵犯…  
+* 网页谷歌: 我不能告诉我丈夫……我的岳父继续强奸我…… 白色的花  
+* 脚本调用:不能告诉我的丈夫……我被我的岳父操了……白色的花
+* 百度: 不能对丈夫说…继父持续被犯的事…。白花膏
+* 腾讯: 我不能对丈夫说...。一直被继父犯下的事。白花(白花)
+* 讯飞: 不能对丈夫说…一直被父亲犯下的事…。白花钢
+* 彩云: 不能对丈夫说... 继父不断侵犯我的事... 。白花吧
+	-
+* 原文2: 骗されて参加した乱交パーティーで媚薬渍け！家庭的で真面目だった姊が変わり果てた姿に…。姊を助け出すはずが、姊と强近亲相奸させられ…
+* 色花堂翻译: 骗去参加乱交派对的姐姐 本应该去救出姐姐却被强制要求近亲相奸...
+* 网页谷歌: 一个壮阳药在她被欺骗并参加的狂欢派对上淹死了！ 平时乖巧认真的姐姐，完全变了。 本来是要救姐姐的，可是姐姐和我却被逼着往来……
+* 脚本谷歌: 在被欺骗和参与的狂欢派对上腌制的春药！平时乖巧认真的姐姐，完全变了。本来是要救姐姐的，却被强行和姐姐乱伦……
+* 百度: 被欺骗参加了的乱交聚会媚药腌！对家庭认真的姐姐彻底改变了的身姿…。本应该救出姐姐的，却被姐姐和强近亲相奸…
+* 腾讯: 在被骗参加的乱交聚会上用春药腌制！家庭式的认真的姐姐变得面目全非…。姐姐应该会被救出来的，但被逼与姐姐强近亲相奸…
+* 讯飞: 在被骗参加的乱交派对上献上春药！虽然是家庭式的真目，但却变成了奇怪的样子…。本应该救出他的，却被强迫与他近距离通奸…
+* 彩云: 在被骗参加的乱交派对上腌制春药！我曾经很家庭化，很严肃，现在却变了样子..。近亲相奸近亲相奸近亲相奸近亲相奸近亲相奸..
+	-
+* 原文3: 巨乳で可爱い幼驯染みが元担任の俺の亲父に寝取られ种付けプレスされていた。 绫瀬こころ
+* 色花堂翻译: 巨乳可爱的青梅竹马，被我从前是班导的父亲给播种抽插。 绫瀬こころ
+* 网页谷歌: 一个可爱的大胸孩子叫咪咪，被我以前的班主任抱到床上，然后她被迫逼迫她。 绫濑心
+* 脚本谷歌: 青梅竹马的萌萌巨乳小伙伴被前任班主任拿下播种压榨。绫濑心
+* 百度: 巨乳可爱的青梅竹马被原班主任的我的父亲夺走了种子。绫濑心
+* 腾讯: 巨乳可爱的青梅竹马被作为原班主任的我的父亲睡着了，被种下了。绫濑心之心
+* 讯飞: 巨乳可爱的青梅竹马被原班主任的我的父亲睡着了，被压制了。绫濑心
+* 彩云: 巨乳可爱的青梅竹马被原班主任的我的父亲睡着了被播种压迫着。绫濑心
+	</pre>
+</details>
 
 ---
 # 四、相关信息获取网站
@@ -295,8 +348,22 @@ list_all":[
 
 ---
 # 六、更新历史
+ > v0.16.0 2022-09-29
+ - 增加: 设置中可以更改为点击番号才出现菜单, 现在默认是滑过就出现菜单:`clickToMenu:true,`
+ - 增加: 设置中增加百度翻译, 设置好 `baiduAppid` 和 `baiduKey` 这两项会调用百度翻译
+ - 更改: 谷歌翻译由 `translate.google.cn` 替换成 `translate.google.com.hk`
+ - 修复: 标题相关, 因为谷歌翻译出现问题导致的更新
+	 - 如果翻译失败, 无法保存标题的问题
+	 - 去除末尾的演员名称; 
+	 - 去除末尾的番号;
+	 - 去除末尾的各种符号;
+	 - 去除标题中间的符号`●`和`▲`; 
+	 - 从javdb获取信息, 标题会将最后一个字符也删掉的问题; 
+	 - 菜单调整为先标题,后演员。
+
  > v0.15.1 2022-09-29
- - 问题: 谷歌翻译加了验证, 所以翻译失效, 现在翻译是强制关闭状态, 等到有合适的翻译会更新开启这个功能
+ - 问题: 谷歌翻译加了验证, 所以翻译失效, 现在翻译是强制关闭状态, 等到有合适的翻译会重新开启这个功能
+ - 代码: 图片重置位置由 `image.onload` 来触发
 
  > v0.15.0 2022-09-28
  - 增加:  设置选项 `getInfoFailToJavDB` , 当javbus获取不到信息时, 自动从javdb获取, 默认关闭。开启后有被javDB封IP的风险。
@@ -655,8 +722,14 @@ list_all":[
 * jellyfin 下载及其更新历史 [Releases · jellyfin/jellyfin (github.com)](https://github.com/jellyfin/jellyfin/releases/)
 
 ---
+
+# 八、感谢
+感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
+
+---
 # 开源声明
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
+- 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
 - 还有各种搜索后随手复制的

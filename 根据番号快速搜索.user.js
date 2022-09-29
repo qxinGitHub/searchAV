@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.15.0
+// @version      0.15.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -728,10 +728,10 @@
     // 调整距离底部的距离,以防越界
     function settingPostion(image){
         if(debug){console.log("正在重置位置");};
-        if(image && image.complete){
-            if(debug){console.log("图片加载情况: " + image.complete)};
-            clearInterval(timerImgLoading);
-        }
+        // if(image && image.complete){
+        //     if(debug){console.log("图片加载情况: " + image.complete)};
+        //     clearInterval(timerImgLoading);
+        // }
         var odiv = document.querySelector(".sav-menu");
         if(!odiv)  return;
         var oClient = odiv.getBoundingClientRect()
@@ -1105,7 +1105,8 @@
         if(debug){console.log("从网络获取信息结束 end: " + avID);}
         // 标题翻译
         if(data.status==404){
-                avInfo.titleTrans = "没有找到 " + avID +" 相关页面";
+                // avInfo.titleTrans = "没有找到 " + avID +" 相关页面";
+                avInfo.title = "没有找到 " + avID +" 相关页面";
                 avInfo.noInfo = true;
 
                 if(divTarget){
@@ -1113,20 +1114,22 @@
                     divTarget.classList.add("infoNonExistent");
                 }
                 
-        }else if(setting.dontTransTitle){
-            if(debug){console.log("禁止翻译标题 ✖  ✖  ✖ ");}
-            avInfo.titleTrans = avInfo.title;
+        // }else if(setting.dontTransTitle){
+        }else if(true){
+            if(debug){console.log("禁止翻译标题 ✖  ✖  ✖ : ", avInfo.title);}
+            // avInfo.titleTrans = avInfo.title;
         }else if(!avInfo.titleTrans || avInfo.titleTrans.search("没有找到")>-1){   // 如果本地存在翻译, 就不再重复翻译
             if(debug) console.log("开始翻译标题");
             Trans.id = avID;
             Trans.transText=avInfo.title;
             googleTrans();
         }
-
+        
         localInfo[avID] = {};   // 重置,防止在一个页面重复划过番号导致系列、发行日期等重复显示。
         if(localInfo[avID].noInfo){
             localInfo[avID].noInfo = true;
         }else{
+            localInfo[avID].title = avInfo.title
             localInfo[avID].titleTrans = avInfo.titleTrans;
             localInfo[avID].starName = avInfo.starName;
             
@@ -1165,11 +1168,16 @@
             let imageDiv = document.createElement('savimgdiv');
             imageDiv.appendChild(image)
             otherInfo.appendChild(imageDiv);
+            image.onload = function(){
+                console.log("getInfo_end: 图片加载完成")
+                settingPostion()
+            }
+            settingPostion()
             // 每200毫秒检查1次, 3s后停止检查
-            timerImgLoading = setInterval(settingPostion,200,image);
-            setTimeout(() => { 
-                clearInterval(timerImgLoading);
-            }, 3000)
+            // timerImgLoading = setInterval(settingPostion,200,image);
+            // setTimeout(() => { 
+            //     clearInterval(timerImgLoading);
+            // }, 3000)
         };
         document.querySelector(".sav-menu").appendChild(otherInfo);
 
@@ -1236,11 +1244,15 @@
         localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
         GM_setValue("avInfo2",localInfo);
 
+        otherInfo.querySelector("img").onload = function(){
+            // console.log("getInfo_local: 图片加载完成")
+            settingPostion()
+        }
         // 每200毫秒检查1次, 1s后停止检查
-        const interval = setInterval(settingPostion,100);
-        setTimeout(() => { 
-            clearInterval(interval)
-        }, 500)
+        // const interval = setInterval(settingPostion,100);
+        // setTimeout(() => { 
+        //     clearInterval(interval)
+        // }, 500)
     }
     // 重新获取信息, 通常是在本地信息不完整的情况下会调用该函数。例:noInfo为true, 或者缺少图片
     function reloadGetInfo(avID){
@@ -1401,6 +1413,8 @@
             url: h_url,
             onload: function (r) {
                 setTimeout(function () {
+                    console.log(r)
+                    console.log(r.responseText)
                     var data = JSON.parse(r.responseText);
                     var trans = "";
                     for (var i = 0; i < data.sentences.length; i++) {
@@ -1408,8 +1422,8 @@
                         trans += getransCont.trans;
                     }
                     Trans.trans = trans;
-                    // console.log("翻译结果:");
-                    // console.log(trans);
+                    console.log("翻译结果:");
+                    console.log(trans);
 
                     localInfo[Trans.id].titleTrans = trans;
                     GM_setValue("avInfo2",localInfo);

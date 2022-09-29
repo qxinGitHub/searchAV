@@ -154,6 +154,8 @@
 						// 如果允许复制, 且不含有特定title
 						// console.log("链接内含有磁链")
 						if(window.qxin.CopyMagnet && !el.title.match(/点击复制磁力链接/)){
+							// var odiv = document.createElement('savmagnet');
+							// el.outerHTML = "<savmagnet>" + el.outerHTML + "</savmagnet>";
 							el.title = "点击复制磁力链接";
 							el.style.textDecoration= "underline #D9B412";
 							el.addEventListener("click",function(){

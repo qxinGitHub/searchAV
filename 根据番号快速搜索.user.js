@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.16.0
+// @version      0.16.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -566,10 +566,7 @@
 
         // 信息加载时的动画
         if(!setting.closeLoadingAnimation && (setting.infoReload || !localInfo[avid])){
-            var savLoading = document.createElement('avdiv');
-            savLoading.classList.add("savLoading");
-            savLoading.innerHTML='<div class="savcontainer"><div class="savwrap hr-animation"><savhr class="savcolored"></savhr><savhr class="savcolored"></savhr> </div></div>';
-            odiv.appendChild(savLoading);
+            addLoading(odiv)
         }
 
         document.body.appendChild(odiv);
@@ -774,6 +771,7 @@
             data: "",
             onload: function (data) {
                 noReferrer();   // 针对防盗链问题
+                javbusloading();
 
                 // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
                 if(data.status==404){
@@ -912,6 +910,7 @@
     }
     function getInfo_fc2_openPage(avID,link){
         if(debug){console.log("从fc2hub获取信息中 getInfo_fc2_openPage: " + link);}
+        fc2loading();
         GM_xmlhttpRequest({
             method: 'get',
             url: link,
@@ -1043,6 +1042,7 @@
     // 无码信息获取 - 具体内容
     function getInfo_wuma_javdb2(avID,link){
         if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb2: " + avID);}
+        javdbloading()
         GM_xmlhttpRequest({
             method: 'get',
             url: link,
@@ -1101,7 +1101,7 @@
     }
     // 将获取到的信息进行展示和保存
     function getInfo_end(avID,data,image){
-        removeLoading()
+        // removeLoading()
         if(debug){console.log("从网络获取信息结束 end: " + avID);}
         // 标题翻译
         if(data.status==404){
@@ -1121,7 +1121,7 @@
             // 删除标题之后的演员名字
             var title = avInfo.title;
             var starName = avInfo.starName;
-            if(starName.length ==1){
+            if(starName && starName.length ==1){
                 var oLength = title.length-title.indexOf(starName[0]);
                 if( oLength == starName[0].length){
                     title = title.slice(0,(oLength+1)*-1)
@@ -1187,7 +1187,8 @@
             otherInfo.appendChild(imageDiv);
             image.onload = function(){
                 console.log("getInfo_end: 图片加载完成")
-                settingPostion()
+                removeLoading();
+                settingPostion();
             }
             settingPostion()
             // 每200毫秒检查1次, 3s后停止检查
@@ -1321,6 +1322,40 @@
         return str;
     }
 
+    // 添加信息加载时的动画
+    function addLoading(odiv){
+        var savLoading = document.createElement('avdiv');
+        savLoading.classList.add("savLoading");
+        var savhr = '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" version="1.1">' +
+                        '<linearGradient xmlns="http://www.w3.org/2000/svg" id="grad4" x1="0%" y1="50%" x2="100%" y2="50%">' +
+                            '<stop class="stop1" offset="30%" />' +
+                            '<stop class="stop2" offset="50%" />' +
+                            '<stop class="stop3" offset="70%" />' +
+                        '</linearGradient>' +
+                        '<rect xmlns="http://www.w3.org/2000/svg" width="600" height="5" style="fill:url(#grad4)"/> ' +
+                    '</svg>'
+        savLoading.innerHTML='<div class="savLoadingContainer"><div class="savLoading">' + savhr +savhr + '</div></div>';
+        odiv.appendChild(savLoading);
+    }
+    function javbusloading(){
+        var stop2 = document.querySelector(".stop2");
+        if(stop2){
+            stop2.classList.toggle("javbusloading")
+        }
+    }
+    function javdbloading(){
+        var stop2 = document.querySelector(".stop2");
+        if(stop2){
+            stop2.classList.remove("javbusloading")
+            stop2.classList.toggle("javdbloading")
+        }
+    }
+    function fc2loading(){
+        var stop2 = document.querySelector(".stop2");
+        if(stop2){
+            stop2.classList.toggle("fc2loading")
+        }
+    }
     // 移除信息加载时的动画
     function removeLoading(){
         var loading = document.querySelector(".savLoading");
@@ -1904,38 +1939,51 @@
             "}"+
             // 加载动画
             // 来源: Loading line https://codepen.io/gsound/pen/yVPVGQ
-            "@keyframes hr-animation {" +
+            "@keyframes sav-loading-animation {" +
                 "from{ transform: translate(0, 0); }" +
                 "to{ transform: translate(50%, 0); }" +
             "}" +
-            ".hr-animation {" +
-                "-webkit-animation: hr-animation 3s linear infinite;" +
-                "animation: hr-animation 3s linear infinite;" +
-            "}" +
-            ".savcolored {" +
-                "background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, from(#6dc4ed), to(#fff));" +
-            "}" +
-            ".savcontainer {" +
+            ".savLoading {" +
+                "animation: sav-loading-animation 3s linear infinite;" +
+             "}" +
+             ".savLoadingContainer {" +
                 "overflow: hidden;" +
                 "width: 100%;" +
                 "transition: all .5s;" +
                 "height: 3px;" +
                 "margin-top: 5px;" +
             "}" +
-            ".savwrap {" +
+            ".savLoading {" +
                 "font-size: 0;" +
                 "height: 100%;" +
                 "width: 200%;" +
                 "position: relative;" +
             "}" +
-            ".savwrap savhr {" +
+            ".savLoading svg {" +
                 "border: none;" +
                 "height: 100%;" +
                 "width: 50%;" +
                 "position: absolute;" +
             "}" +
-            ".savwrap savhr:last-child {" +
+            ".savLoading svg:last-child {" +
                 "left: -50%;" +
+            "}" +
+            ".stop1," +
+            ".stop3{" +
+                "stop-color:#fff;" +
+            "}" +
+            ".stop2{" +
+                "stop-color:#6dc4ed;" +
+                "transition: 1s;" +
+            "}" +
+            ".stop2.javbusloading{" +
+                "stop-color:#71d99b;" +
+            "}" +
+            ".stop2.javdbloading{" +
+                "stop-color:#cccc00;" +
+            "}" +
+            ".stop2.fc2loading{" +
+                "stop-color:#F8A01C;" +
             "}" +
             "";
         styleText += styleAVID;

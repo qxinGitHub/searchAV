@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.16.1
+// @version      0.16.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -10,7 +10,6 @@
 // @require     https://greasyfork.org/scripts/447533-findandreplacedomtext-v-0-4-6/code/findAndReplaceDOMText%20v%20046.js?version=1098688
 // @require     https://greasyfork.org/scripts/452219-md5-%E5%87%BD%E6%95%B0/code/MD5%20%E5%87%BD%E6%95%B0.js?version=1099124
 // @connect     *
-// @exclude	    *://www.52pojie.cn/*
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
 // @exclude	    *://www.v2ex.com/*
@@ -27,14 +26,17 @@
 // @exclude	    *://weibo.com/*
 // @exclude	    *.qq.com/*
 // @exclude	    *.live.com/*
+// @exclude	    *.mi.com/*
 // @exclude	    *docs.google.com/*
-// @exclude	    *.kdocs.cn/*
 // @exclude	    *baike.baidu.com//*
 // @exclude	    *.wikipedia.org/*
 // @exclude     *://*.amazon.tld/*
 // @exclude	    *.flightradar24.com/*
 // @exclude	    *.obsidian.md/*
 // @exclude	    https://regex101.com/
+// @exclude	    https://discord.com/*
+// @exclude	    https://web.telegram.org/*
+// @exclude	    *.cn/*
 // @exclude     *mall*
 // @exclude     *shop*
 // @exclude     /.*(?<!jav)store.*/
@@ -42,6 +44,7 @@
 // @exclude     *product*
 // @exclude     *detail*
 // @exclude     *tools*
+// @exclude     *translate*
 // @exclude     *:8080*
 // @grant       GM_addStyle
 // @grant       GM_getValue
@@ -148,17 +151,17 @@
     //                     | 排除非 fx-0xx          | 数字部分全是0     |
     var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|http|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|ssd|status|tcp|the|to|top|than|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|http|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|ssd|status|tcp|the|to|top|than|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|hc|hours|in|mk|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|has|hc|hours|in|mk|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找
     var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CCDV|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDN|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|pow|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSDV|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}|(?:k|n)\d{4}/i
     // 磁力链接
-    var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\||=)[0-9a-fA-F]{40}(?!\w|-)/i
+    var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\||=)[0-9a-fA-F]{40}(?!\w|-)/ig
     // 特别的className,在这些class中不识别番号。 /name|auth|user|code/i; pstatus:javbus修改帖子的用户名;
-    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$/i
+    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|editor|time|sav-id/gi
 
     // 对动态添加的dom进行检测
     var observerTarget = document.querySelector('body');    // 选择目标节点
@@ -168,6 +171,7 @@
             // if(debug){console.log("节点发生变化");console.log(mutation.target)}
             allHTML = mutation.target
             if(mutation.target.nodeType==1 && mutation.target.querySelector("savdiv")) return;
+            if(checkParentClass(mutation.target))return;
             findAVID()
         }); 
     }); 
@@ -204,6 +208,18 @@
         }
     }
 
+    // 动态添加的元素, 检查所有父元素的class是否是排除项
+    function checkParentClass(startDom){
+        if(startDom.classList && startDom.classList.length && startDom.className.match(window.qxin.RE_Exclude_className)){
+            if(debug)console.log("checkParentClass: 父元素存在相关class, 已排除: ",startDom.className);
+            return true;
+        }
+        if(startDom.parentElement && "body" !== startDom.parentElement.nodeName){
+            return checkParentClass(startDom.parentElement)
+        } else {
+            return false
+        }
+    }
 
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
@@ -937,7 +953,14 @@
                 }
 
                 // 图片
-                let imgSrc = htmlDoc.querySelector(".col-xl-4 .card-body .row a").href;
+                let img = htmlDoc.querySelector(".main-video")
+                let imgSrc;
+                if(img){
+                    imgSrc = img.getAttribute("poster")
+                }else{
+                    if(debug){console.log("通过第二种方式获取fc2图片: .col-xl-4 .card-body .row a")}
+                    imgSrc = htmlDoc.querySelector(".col-xl-4 .card-body .row a").href;
+                }
                 // 加载缩略图
                 if(setting.fc2Thumbnail){
                     imgSrc = imgSrc.replace("https://","https://contents-thumbnail2.fc2.com/w500/");
@@ -1450,11 +1473,7 @@
         return false;
     }
 
-    // 脚本 “网页翻译助手” 
-    // 作者 Johnny Li 
-    // version:1.2.9, 
-    // https://greasyfork.org/zh-CN/scripts/389784 
-    // 许可协议 MIT
+    // 谷歌翻译
     function googleTrans(avID,transText) {
         if(debug){console.log("谷歌翻译 googleTrans: ",transText);}
 
@@ -1713,7 +1732,7 @@
             "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
             "dontGetInfoFc2":false, // 获取fc2的相关信息(从javmenu获取)
             "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
-            "getInfoFailToJavDB":false,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
+            "getInfoFailToJavDB":true,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
             "dontMagnetDiscern":false,   // 将磁链转为链接
             "magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
             // "avLinkMagnet":false,       // 链接是磁链的番号是否添加复制功能
@@ -1737,13 +1756,13 @@
                 "text-shadow":"rgb(177 177 177 / 70%) 1px 1px",    // 字体阴影
             },
             "visitStyle":{  // 已经浏览过的番号
-                "color":"red",  // 颜色
-                "text-decoration":"underline dotted red",   // 下划线
+                "color":"chocolate",  // 颜色
+                "text-decoration":"underline dotted chocolate",   // 下划线
                 "font-weight":"normal", // 加粗
                 "text-shadow":"rgb(177 177 177 / 65%) 1px 1px", // 字体阴影
             },
             "noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号
-                "color":"chocolate",    // 颜色
+                "color":"red",    // 颜色
                 "text-decoration":"underline dotted red",   // 下划线
             },
             "list":[],  // 普通番号的搜索列表
@@ -1970,7 +1989,7 @@
             "}" +
             ".stop1," +
             ".stop3{" +
-                "stop-color:#fff;" +
+                "stop-color:#fff0;" +
             "}" +
             ".stop2{" +
                 "stop-color:#6dc4ed;" +

@@ -208,19 +208,6 @@
         }
     }
 
-    // 动态添加的元素, 检查所有父元素的class是否是排除项
-    function checkParentClass(startDom){
-        if(startDom.classList && startDom.classList.length && startDom.className.match(window.qxin.RE_Exclude_className)){
-            if(debug)console.log("checkParentClass: 父元素存在相关class, 已排除: ",startDom.className);
-            return true;
-        }
-        if(startDom.parentElement && "body" !== startDom.parentElement.nodeName){
-            return checkParentClass(startDom.parentElement)
-        } else {
-            return false
-        }
-    }
-
     // 查找番号, 匹配最基础的番号
     function findAndReplaceDOMTextFun(){
         // console.log(allHTML);
@@ -1473,6 +1460,19 @@
         return false;
     }
 
+    // 动态添加的元素, 检查所有父元素的class是否是排除项
+    function checkParentClass(startDom){
+        if(startDom.classList && startDom.classList.length && startDom.className.match(window.qxin.RE_Exclude_className)){
+            if(debug)console.log("checkParentClass: 父元素存在相关class, 已排除: ",startDom.className);
+            return true;
+        }
+        if(startDom.parentElement && "body" !== startDom.parentElement.nodeName){
+            return checkParentClass(startDom.parentElement)
+        } else {
+            return false
+        }
+    }
+    
     // 谷歌翻译
     function googleTrans(avID,transText) {
         if(debug){console.log("谷歌翻译 googleTrans: ",transText);}

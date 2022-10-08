@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.16.2
+// @version      0.16.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -775,9 +775,10 @@
             onload: function (data) {
                 noReferrer();   // 针对防盗链问题
                 javbusloading();
-
-                // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
-                if(data.status==404){
+                if(data.status==403){
+                    getInfo_end(avID,data);
+                }else if(data.status==404){
+                    // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
                     if( avID.length - avID.indexOf("-") ==3){
                         // 将错误番号存储到本地
                         // localInfo[avID] = {};   
@@ -976,14 +977,12 @@
                 GM_setValue("_setting2",setting2);
             }else{
                 javdbTime = GM_getValue("_setting2").javdbTime;
-                if(debug){console.log(javdbTime);};
                 if(oTime-javdbTime[0]>300000){
                     if(debug){console.log("javdb时间保护机制: 正在更新");};
                     javdbTime.shift();
                     javdbTime.push(oTime)
                     setting2.javdbTime = javdbTime;
                     GM_setValue("_setting2",setting2);
-                    if(debug){console.log(javdbTime)};
                 } else {
                     if(debug){console.log("触发保护机制, 停止获取信息")};
                     var otherInfo = document.createElement('avdivsInfo');
@@ -1008,7 +1007,7 @@
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
                 // console.log("data.status:");
-                var searchResult = htmlDoc.querySelectorAll(".movie-list  .item")
+                var searchResult = htmlDoc.querySelectorAll(".movie-list .item")
 
                 // 番号
                 // avInfo.id = avID;
@@ -1112,9 +1111,11 @@
     // 将获取到的信息进行展示和保存
     function getInfo_end(avID,data,image){
         // removeLoading()
-        if(debug){console.log("从网络获取信息结束 end: " + avID);}
+        if(debug){console.log("从网络获取信息结束 end: " + avID, data);}
         // 标题翻译
-        if(data.status==404){
+        if(data.status==403){
+            avInfo.title = "403错误, javBus 拒绝了您的访问!";
+        }else if(data.status==404){
                 // avInfo.titleTrans = "没有找到 " + avID +" 相关页面";
                 avInfo.title = "没有找到 " + avID +" 相关页面";
                 avInfo.noInfo = true;
@@ -1153,7 +1154,7 @@
         }
         
         localInfo[avID] = {};   // 重置,防止在一个页面重复划过番号导致系列、发行日期等重复显示。
-        if(localInfo[avID].noInfo){
+        if(avInfo.noInfo){
             localInfo[avID].noInfo = true;
         }else{
             localInfo[avID].title = avInfo.title
@@ -1206,7 +1207,9 @@
             // setTimeout(() => { 
             //     clearInterval(timerImgLoading);
             // }, 3000)
-        };
+        }else{
+            removeLoading();
+        }
         document.querySelector(".sav-menu").appendChild(otherInfo);
 
     }
@@ -1472,7 +1475,7 @@
             return false
         }
     }
-    
+
     // 谷歌翻译
     function googleTrans(avID,transText) {
         if(debug){console.log("谷歌翻译 googleTrans: ",transText);}

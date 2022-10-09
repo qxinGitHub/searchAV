@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.16.3
+// @version      0.17.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -138,8 +138,8 @@
     
     // 一般发行番号: 从javbus获取信息
     // var oRegExp = /[a-zA-Z]{2,6}[-\s]?\d{2,5}/gi; 
-    //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------|------------------------------------------------------------普通番号, 不带横杠-----------------------------------------------------------------------------|-------------字母特别的番号-------------------------|---------字母超长的番号----------------------|     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        |
-    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\.|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|％|%|@|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
+    //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------|--------------------------------------------------------------普通番号, 不带横杠-----------------------------------------------------------------------------|-------------字母特别的番号-------------------------|---------字母超长的番号----------------------|     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        |
+    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
     var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
@@ -153,7 +153,7 @@
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
     var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|http|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|row|rush|rx|sale|scp|sdm|shp|sn|snh|Socket|ssd|status|tcp|the|to|top|than|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|has|hc|hours|in|mk|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|has|hc|hours|in|mk|mini|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找
@@ -534,7 +534,13 @@
                 if(setting.dontClearMenu){
                     console.log("移除");
                 } else {
-                    odiv.parentNode.removeChild(odiv);
+                    // odiv.parentNode.removeChild(odiv);
+                    odiv.classList.add("savCloseAnim")
+                    setTimeout(function(){
+                        if(odiv){
+                            odiv.parentNode.removeChild(odiv);
+                        }
+                    },100)
                 }
                 Imgscall = 1.0;
                 divTarget = null;
@@ -572,10 +578,15 @@
             addLoading(odiv)
         }
 
+        var posRight =630 - (document.documentElement.clientWidth-divTarget.getBoundingClientRect().x);
+        if(posRight<15){
+            posRight = 15
+        }
+        odiv.style.transformOrigin = posRight + "px 5px";
+
         document.body.appendChild(odiv);
         odiv.style.left = oPosition.x + "px";
         odiv.style.top = oPosition.y + oPosition.height - 2 + "px";
-        odiv.style.position = "fixed";
 
         // return;  // 停止一切信息获取
 
@@ -624,7 +635,13 @@
             GM_setClipboard(e.target.dataset.av)
         } else if(e.target.classList.contains("savCloseMenu")){
             var odiv = document.querySelector(".sav-menu");
-            odiv.parentNode.removeChild(odiv);
+            
+            odiv.classList.add("savCloseAnim")
+            setTimeout(function(){
+                odiv.parentNode.removeChild(odiv);
+
+            },100)
+
             Imgscall = 1.0;
             avInfo = {};
             divTarget = null;
@@ -743,9 +760,14 @@
         var winWidth = document.documentElement.clientWidth;    //可视窗口宽度
         if(oTop + oHeight > winHeight){ // 越出了屏幕底边
             odiv.style.position = "fixed";
-            odiv.style.top = "unset";
-            odiv.style.bottom = "4px";
-        }else if(oClient.x<0){   //左边
+            odiv.style.top = winHeight-oHeight - 16 +"px";
+            var posBottom =oHeight - (document.documentElement.clientHeight-divTarget.getBoundingClientRect().y) +30;
+            if(posBottom<5){
+                posBottom = 5
+            }
+            odiv.style.transformOrigin = odiv.style.transformOrigin.replace(" 5px"," "+posBottom+"px")
+        }
+        if(oClient.x<0){   //左边
             odiv.style.position = "fixed";
             odiv.style.left = 0;
         }else if(winWidth-oClient.x<600){  // 越出了屏幕右边
@@ -1581,6 +1603,7 @@
             onload: function (r) {
                 var data = JSON.parse(r.responseText);
                 var div_jellyfin = document.querySelector(".jellyfin");
+                if(!div_jellyfin){return};
                 if(data.SearchHints[0]){
                     if(debug){console.log("jellyfin中的标题: ", data.SearchHints[0].Name)};
                     div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/details?id=" + data.SearchHints[0].Id;
@@ -1839,6 +1862,7 @@
         styleText = "" +
             ".sav-menu{" +
                 "font-family: Microsoft YaHei,sans-serif;" +
+                "position:fixed;" +
                 "display: block;" +
                 "text-align: left;" +
                 "color: #000;" +
@@ -1855,6 +1879,32 @@
                 "border-left: 2px solid #fff;" +
                 "transition:0.2s;" +
                 "transition-timing-function: ease-out;" +
+                "animation: savOpenAnim 0.15s;" +
+            "}" +
+            ".savCloseAnim{" +
+                "animation: savCloseAnim 0.15s;" +
+            "}" +
+            "@keyframes savOpenAnim {" +
+                "0% {" +
+                    "opacity: 0;" +
+                    "transform:scale(0.5);" +
+                    "background:rgba(255,255,255,.1);" +
+                "}" +
+                "100% {" +
+                    "opacity: 1;" +
+                    "transform:scale(1);" +
+                    "background:rgba(255,255,255,.8);" +
+                "}" +
+            "}" +
+            "@keyframes savCloseAnim {" +
+                "0% {" +
+                    "opacity: 1;" +
+                    "transform:scale(1);" +
+                "}" +
+                "100% {" +
+                    "opacity: 0;" +
+                    "transform:scale(0.5);" +
+                "}" +
             "}" +
             ".savlink{" +
                 "margin: 4px 10px 4px 5px;" +
@@ -1873,6 +1923,7 @@
             "avdivsinfo{" +
                 "text-indent: -2.5em;" +
                 "line-height: normal;" +
+                "animation: savOpenAnim 0.15s;" +
             "}" +
             "avdivsinfo avdiv{" +
                 "display:block;" +

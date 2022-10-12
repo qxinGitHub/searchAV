@@ -2,7 +2,7 @@
 在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
 ### 功能
 * 标记网页所有番号, 未浏览过的显示绿色下划线, 浏览过的显示蓝色虚线,浏览过且没找到相关信息的显示红色虚线。颜色可以在设置中更改
-* 鼠标滑过可以激活搜索菜单, 搜索选项可以在设置中更改
+* 鼠标滑过可以激活搜索菜单, 激活方式和搜索选项可以在设置中更改
 * 标记网页中的磁链文本, 改为链接, 可以在设置中关闭
 * 点击番号复制
 * 默认没有启用的其他功能, 需要在设置中开启:  
@@ -37,6 +37,7 @@
 "dontMagnetDiscern":false,   // 将磁链转为链接
 "magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
 "dontTransTitle":false, // 翻译标题
+"dontTransTags":false,  // 翻译标签
 "fc2Thumbnail":false,   // fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
 "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
 "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
@@ -91,7 +92,7 @@
 `"clickToMenu":false,`    
 * 菜单触发的方式, 默认鼠标滑过, 可改为点击
 * 默认 `false` :鼠标滑过番号出现菜单
-*  `true` :  需要点击番号才会出现菜单, 如果鼠标经常误触导致出现菜单, 可以改为点击后出现菜单。尤其是一个页面有几百上千个番号的情况, 全部聚拢在一起, 鼠标滑过就显示菜单 很影响操作。
+*  `true` :  需要点击番号才会出现菜单, 如果鼠标经常误触导致出现菜单, 可以改为点击后出现菜单。尤其是一个页面有几百上千个番号的情况, 全部聚拢在一起, 鼠标滑过就显示菜单 很影响操作。推荐开启。
 
 `"dontClearMenu": false,`
 * 鼠标移出后,菜单是否消失
@@ -121,7 +122,7 @@
 `"getInfoFailToJavDB":false,`   
 * 从javbus获取不到信息时, 是否从javdb中尝试获取
 * 默认: `false`: 仅仅从javbus中获取信息, 失败后会提示找不到相关番号的信息
-*  `true` : 当从javbus中查不到相关番号信息, 会尝试从javdb中获取信息, 这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险。如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验。
+*  `true` : 当从javbus中查不到相关番号信息, 会尝试从javdb中获取信息, 这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险; 如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验; 开启后会占用javdb搜索的次数。
 
 `"dontCopyMagnet":false,`
 * 旧, 弃用。 停止使用, 如果你的设置里存在该项, 请改成 `dontMagnetDiscern":false` 
@@ -140,6 +141,11 @@
 * 翻译标题
 * 默认: `false`: 默认使用谷歌翻译标题 `translate.google.com.hk`, 如果设置完百度翻译相关api, 将会调用百度翻译
 * `true`: 不再翻译标题, 显示原本的标题, 通常是日语
+
+` "dontTransTags":false,`  
+* 翻译标签, 使用的是内置列表进行替换。存在替换不完全的问题。仅针对javbus和javdb, fc2的标签无法替换
+* 默认: `false`:  将标签翻译为简体中文
+* `true`: 不再翻译标签, 显示原本的标签, 通常是繁体汉字,(fc2是日语)
 
 `"fc2Thumbnail":false,`
 * fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
@@ -310,14 +316,14 @@ list_all":[
 ---
 # 四、相关信息获取网站
 大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。
-* 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list` 加 `list_all`
+* 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表: `javbus` + 设置中的 `list` + `list_all`
 	* 一般的发行番号
 	* 东京热n、k系列
 	* 加勒比 的**月日年**数字命名系列 
 	* 一本道 的**月日年**数字命名系列
 	* MuraMura 的**月日年**数字命名系列
 	* Mesubuta メス豚 的**月日年**数字命名系列
-* 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list_wuma` 加 `list_all`
+* 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表: `javdb` + 设置中的 `list_wuma` + `list_all`
 	* mgstage系列
 	* HEYZO
 	* HEYDOUGA
@@ -333,7 +339,7 @@ list_all":[
 	* PEWORLD
 	* 10Musume
 	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
-* 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表是设置中的 `list_wuma` 加 `list_all`
+* 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
 	* FC2
 
 
@@ -355,6 +361,17 @@ list_all":[
 
 ---
 # 六、更新历史
+
+> v0.18.0 2022-10-12
+- 增加: 增加标签翻译为简体中文的功能 `"dontTransTags":false,`,  默认开启翻译功能
+- 增加: 模糊搜索功能。仅对javdb搜索的第一个结果有效, 如果两个英文字母错位或者只有一个字母错误的情况下有效, 好处是能够识别一些网友写错的番号, 带来的问题就是一些不是番号却能返回信息并保存。
+- 增加: 图片加载失败时, 显示内置的图片
+- 修复: fc2 空白标签依旧会显示的问题
+- 修复: 当设置为禁止从javdb获取信息, 但是如果开启`getInfoFailToJavDB`, 依旧可以从javdb获取信息的问题。
+- 修复: 当开启`getInfoFailToJavDB`, 如果javbus获取图片403错误时, 不会从javdb获取信息的问题
+- 修复: 由于javdb禁止日本ip访问, 导致脚本误以为IP地址被封的问题
+- 修复: 动画展开时, 背景会闪白色的问题
+- 调整: 搜索fc2时, 添加默认搜索按钮: `fc2hub`
 
  > v0.17.0 2022-10-09
 - 增加: 增加打开和关闭动画效果
@@ -756,10 +773,17 @@ list_all":[
 # 八、感谢
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
+
+# 九、计划
+- [ ] 错误图片处理 2022-10-11
+- [ ] fc2 显示图片筛选, 优先动图 2022-10-11
+- [ ] fc2 标签翻译, 目前缺少汇总,也缺少翻译(日译中) 2022-10-11
+
 ---
 # 开源声明
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
 - 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
+- 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者早已跑路
 - 还有各种搜索后随手复制的

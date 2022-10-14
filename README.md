@@ -362,6 +362,12 @@ list_all":[
 ---
 # 六、更新历史
 
+> v0.18.1 2022-10-14
+- 修复: 浏览已有的fc2番号, 图片概率无法加载的问题
+- 修复: 作品名中特殊符号无法删除的问题
+- 调整: 增加了部分fc2标签的翻译, 因为结果是对照翻译网站, 所以可能不准
+- 调整: 存储fc2链接时, 进行截取, 删除链接后跟的作品名
+
 > v0.18.0 2022-10-12
 - 增加: 增加标签翻译为简体中文的功能 `"dontTransTags":false,`,  默认开启翻译功能
 - 增加: 模糊搜索功能。仅对javdb搜索的第一个结果有效, 如果两个英文字母错位或者只有一个字母错误的情况下有效, 好处是能够识别一些网友写错的番号, 带来的问题就是一些不是番号却能返回信息并保存。
@@ -767,6 +773,7 @@ list_all":[
 * emby中 API 使用 [API Key Authentication · MediaBrowser/Emby Wiki (github.com)](https://github.com/MediaBrowser/Emby/wiki/Api-Key-Authentication)
 * jellyfin中的API介绍 [Jellyfin - ReDoc](https://api.jellyfin.org/#tag/ApiKey/operation/CreateKey)
 * jellyfin 下载及其更新历史 [Releases · jellyfin/jellyfin (github.com)](https://github.com/jellyfin/jellyfin/releases/)
+* 日语词典: 翻译为英语 [英辞郎 on the WEB (alc.co.jp)](https://eow.alc.co.jp/)
 
 ---
 

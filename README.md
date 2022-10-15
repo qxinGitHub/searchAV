@@ -246,7 +246,8 @@ list_all":[
 ---
 # 三、注意事项
 ### 1. 关于 javbus
-* 有时会遭到javbus的拒绝访问, 具体情况不明, 尤其是一些老番。
+* 有时会遭到javbus的拒绝访问, 具体情况不明。本人的网络环境就无法访问 `STARS-145`相关信息, 在一些老番号上尤其明显。
+* 如果番号发生重复,  脚本会无法从javbus这获取信息, 例如 `NTRD-047`, 有两个视频都用此番号。
 * ~~通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。~~
 
 ### 2. 关于 javdb
@@ -271,8 +272,50 @@ list_all":[
  * ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
  * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
 
-### 5. 关于翻译
-* 默认谷歌翻译, 可以设置 `baiduAppid` 和 `baiduKey` 改为调用百度翻译。
+
+
+---
+
+---
+
+# 四、相关信息获取网站
+大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。
+* 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表: `javbus` + 设置中的 `list` + `list_all`
+	* 一般的发行番号
+	* 东京热n、k系列
+	* 加勒比 的**月日年**数字命名系列 
+	* 一本道 的**月日年**数字命名系列
+	* MuraMura 的**月日年**数字命名系列
+	* Mesubuta メス豚 的**月日年**数字命名系列
+* 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表: `javdb` + 设置中的 `list_wuma` + `list_all`
+	* mgstage系列
+	* HEYZO
+	* HEYDOUGA
+	* T28
+	* TMA
+	* 1000girl
+	* MUGEN Entertainmen: MKD-S  MKBD-S
+	* SHINKI:素人
+	* KITAIKE:北池袋盗撮倶楽部
+	* japornXXX
+	* xxx-av
+	* crazyasia
+	* PEWORLD
+	* 10Musume
+	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
+* 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
+	* FC2
+
+---
+# 五、其他说明
+### 1. 关于模糊搜索
+- 针对一些网友手误打错番号的情况, 比如这个[分享](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=106356),前三个番号错了两个。
+- 使用javdb搜索才会触发模糊搜索,  javbus只有在开启 `getInfoFailToJavDB`后, javbus搜索不到相关信息, javdb中也没有相关信息时, 才会触发。
+- 就是用的的javdb返回的第一个结果, 与你搜索的结果做比较, 如果字母部分大差不差, 就用网站返回的番号相关信息。
+-  举例: `ASW-242` 这个番号javbus中没有收录, javdb中也没有收录, 所有当浏览这个番号的时候, 脚本会给你番号 `ABW-242` 的相关信息, 因为javdb返回的第一个结果就是它, 并且和搜索的番号只有一个英文字母的差别。(javlibary中有收录该番号)
+
+### 2. 关于翻译
+* 默认谷歌翻译,需要科学上网; 如果设置 `baiduAppid` 和 `baiduKey` , 则改为调用百度翻译。
 * 网页谷歌翻译和脚本进行调用后, 翻译结果不同, 这种情况就离谱。
 * 百度相关api获取网址[百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop), [认证完成](http://api.fanyi.baidu.com/doc/13)每月享有100万字的翻译额度, [百度翻译认证的相关文档](https://fanyiapp.cdn.bcebos.com/api/doc/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E7%BF%BB%E8%AF%91API%E6%9C%8D%E5%8A%A1%E5%8D%87%E7%BA%A7%E8%AF%B4%E6%98%8E.pdf)
 
@@ -308,45 +351,12 @@ list_all":[
 	</pre>
 </details>
 
-### 6. 关于科学上网
+### 3. 关于科学上网
 * 默认情况下是需要科学上网的
 * 不具备科学上网条件, 可以通过设置相关选项来达到差不多的效果, 除了fc2的图片无法获取。
 * 需要设置的项目有:`"javbus":"https://www.javsee.men/",`、`"javdb":"https://javdb005.com/",`  、`"baiduAppid":"",`、`"baiduKey":"",`, 设置好javbus和javdb可以获取到番号的相关信息, 设置好百度翻译的api能对标题进行翻译, 具体设置看上方的`一、设置 3.设置内容具体介绍`中的相关介绍。
 
----
-# 四、相关信息获取网站
-大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。
-* 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表: `javbus` + 设置中的 `list` + `list_all`
-	* 一般的发行番号
-	* 东京热n、k系列
-	* 加勒比 的**月日年**数字命名系列 
-	* 一本道 的**月日年**数字命名系列
-	* MuraMura 的**月日年**数字命名系列
-	* Mesubuta メス豚 的**月日年**数字命名系列
-* 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表: `javdb` + 设置中的 `list_wuma` + `list_all`
-	* mgstage系列
-	* HEYZO
-	* HEYDOUGA
-	* T28
-	* TMA
-	* 1000girl
-	* MUGEN Entertainmen: MKD-S  MKBD-S
-	* SHINKI:素人
-	* KITAIKE:北池袋盗撮倶楽部
-	* japornXXX
-	* xxx-av
-	* crazyasia
-	* PEWORLD
-	* 10Musume
-	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
-* 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
-	* FC2
-
-
-
-
----
-# 五、其他说明
+### 4.番号不识别的情况
 * 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
 	* 番号前面是 `/` 或者 `=` 的将不会识别, 例:  ` =ssni-618`   `/ssni-618` 
 	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表
@@ -356,11 +366,18 @@ list_all":[
 * 缺少 `-` 不识别的情况
 	* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。(此处仅举例, v0.14.1 已经不在将 `618` 设置为关键字)
 	* 如果番号所在dom的class名字中含有 `/name|auth|user|code/` 且无横杠,将不会识别
+
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
 
 
 ---
 # 六、更新历史
+
+> v0.18.2 2022-10-15
+- 增加: “系列”也可以点击, 和获取信息的网站同源。
+- 修复: 当标题名比演员名短的时候, 无法显示标题的问题
+- 优化: 当 fc2hub 右侧的Gallery中图片无法打开时, 会尝试使用文章中的第一张图片
+- 优化: 当触发了模糊搜索时, 不在将第一个搜索按钮改为页面。
 
 > v0.18.1 2022-10-14
 - 修复: 浏览已有的fc2番号, 图片概率无法加载的问题

@@ -38,6 +38,8 @@
 "magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
 "dontTransTitle":false, // 翻译标题
 "dontTransTags":false,  // 翻译标签
+"dontGetVideo":false,   // 关闭视频预览
+"videoVolume":0.2, // 视频播放时的音量
 "fc2Thumbnail":false,   // fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
 "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
 "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
@@ -147,10 +149,20 @@
 * 默认: `false`:  将标签翻译为简体中文
 * `true`: 不再翻译标签, 显示原本的标签, 通常是繁体汉字,(fc2是日语)
 
+`"dontGetVideo":false, `
+-  视频预览, 只支持Dmm和fc2
+- 默认: `false`:  开启视频预览功能
+- `true`: 关闭视频预览功能
+
+`"videoVolume":0.2,` 
+- 视频播放的音量, 可设置选项为数字0-1之间,1为音量100%, 0是关闭声音。**注意**:只能设置从DMM获取视频的音量, FC2的音量不受控制。
+- 默认: 0.2
+
 `"fc2Thumbnail":false,`
 * fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
 * 默认:`false`: 使用原图, 图片较大
 * `true`: 使用缩略图, 原图大概4兆左右, 开启后会使用缩略图, 大小只有原来的1/10, 点击放大会不清晰
+* 2022-10-20 v0.19.0注: fc2的图片获取有问题, 尽量别碰这个选项 , 未来可能会删掉
 
 ` "infoReload": false, `
 * 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
@@ -246,7 +258,7 @@ list_all":[
 ---
 # 三、注意事项
 ### 1. 关于 javbus
-* 有时会遭到javbus的拒绝访问, 具体情况不明。本人的网络环境就无法访问 `STARS-145`相关信息, 在一些老番号上尤其明显。
+* 有时会遭到javbus的拒绝访问, 具体情况不明。本人的网络环境就无法访问 `STARS-145`相关信息, 在一些老番号上尤为明显。
 * 如果番号发生重复,  脚本会无法从javbus这获取信息, 例如 `NTRD-047`, 有两个视频都用此番号。
 * ~~通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。~~
 
@@ -272,14 +284,16 @@ list_all":[
  * ![2022-09-18_21-20-05 qbit.png (496×646) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_21-20-05%20qbit.png)
  * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
 
-
-
----
+### 5.关于FC2
+* 经常会遇到500错误, 尤其是在晚上
+* FC2的视频音量无法控制, 各位播放FC2预览视频的时候注意点。
+* 获取的FC2发行时间仅供参考, 并不是准确时间
+* 2022-10-20注: 目前还不知道fc2视频链接的有效期是多久。10.19加入, 10.20测试还有效
 
 ---
 
 # 四、相关信息获取网站
-大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。
+大家是双赢, 脚本拿到了信息,方便了用户, 也留下了跳转链接给网站引流。参考购物网站都官方下场制作插件引流使用,  各位站长, 格局呢。
 * 从 [JavBus](https://www.javbus.com/) 获取信息的番号, 显示的搜索列表: `javbus` + 设置中的 `list` + `list_all`
 	* 一般的发行番号
 	* 东京热n、k系列
@@ -305,6 +319,10 @@ list_all":[
 	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
 * 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
 	* FC2
+* 从[DMM](https://www.dmm.co.jp/top/)获取视频的番号: 
+	* 只有目前还在DMM中售卖的可以
+* 从[FC2](https://adult.contents.fc2.com/)获取视频的番号:
+	* 只有目前还在FC2电子市场中售卖的可以
 
 ---
 # 五、其他说明
@@ -372,6 +390,13 @@ list_all":[
 
 ---
 # 六、更新历史
+
+> v0.19.0 2022-10-20
+- 增加: 部分番号增加预览视频, 相关代码[JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740) 。dmm和fc2的视频可以预览, 增加相关设置选项: `dontGetVideo` 和 `videoVolume`
+- 修复: javbus的图片网址变动导致之前获取的图片全部出错的问题
+- 修复: fc2 标签无法获取的问题
+- 优化: fc2的标签获取, 增加时间获取, 时间并不准确, 只是大概值
+- 其他: 本想去[JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740)的脚本感谢一下, 结果 sleazyfork.org 无法登录, 在此先记录一下。
 
 > v0.18.3 2022-10-16
 - 修复: 获取不到信息时, 提示不会显示的问题
@@ -794,6 +819,8 @@ list_all":[
 * jellyfin中的API介绍 [Jellyfin - ReDoc](https://api.jellyfin.org/#tag/ApiKey/operation/CreateKey)
 * jellyfin 下载及其更新历史 [Releases · jellyfin/jellyfin (github.com)](https://github.com/jellyfin/jellyfin/releases/)
 * 日语词典: 翻译为英语 [英辞郎 on the WEB (alc.co.jp)](https://eow.alc.co.jp/)
+* 视频预览相关: [番号黑科技，在线看预览【教程】 – Telegraph](https://telegra.ph/%E7%95%AA%E5%8F%B7%E9%BB%91%E7%A7%91%E6%8A%80%E5%9C%A8%E7%BA%BF%E7%9C%8B%E9%A2%84%E8%A7%88%E6%95%99%E7%A8%8B-04-21)
+* 视频预览相关: [抛砖引玉，关于AV预览视频的获取方法。 - 老司機福利討論區 - 老司機論壇 (javbus.com)](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374)
 
 ---
 
@@ -801,16 +828,12 @@ list_all":[
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
 
-# 九、计划
-- [ ] 错误图片处理 2022-10-11
-- [ ] fc2 显示图片筛选, 优先动图 2022-10-11
-- [ ] fc2 标签翻译, 目前缺少汇总,也缺少翻译(日译中) 2022-10-11
-
 ---
-# 开源声明
+# 开源代码许可
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
 - 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
 - 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者早已跑路
+- [JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740) version:0.5, 作者: bigwolf99, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - 还有各种搜索后随手复制的

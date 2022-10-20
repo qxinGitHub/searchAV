@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.18.3
+// @version      0.19.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -9,7 +9,7 @@
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/447533.js?version=1098688
 // @require     https://greasyfork.org/scripts/452219.js?version=1099124
-// @require     https://greasyfork.org/scripts/452792.js?version=1105500
+// @require     https://greasyfork.org/scripts/452792.js?version=1107185
 // @connect     *
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
@@ -151,9 +151,9 @@
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
     //                     | 排除非 fx-0xx          | 数字部分全是0     |
-    var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13/i
+    var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|tcp|the|to|top|than|thread|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
     var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|gb|girl|jd|has|hc|hours|in|mk|mini|mx|no|open|of|over|part|pdd|pt|tv|tb|sb|sex|zd)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
@@ -163,7 +163,7 @@
     // 磁力链接
     var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\||=)[0-9a-fA-F]{40}(?!\w|-)/ig
     // 特别的className,在这些class中不识别番号。 /name|auth|user|code/i; pstatus:javbus修改帖子的用户名;
-    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|editor|time|sav-id/gi
+    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|(?<!_tl_|ql-)editor|time|sav-id/gi
 
     // 对动态添加的dom进行检测
     var observerTarget = document.querySelector('body');    // 选择目标节点
@@ -663,6 +663,15 @@
         } else if(e.target.classList.contains("jellyfin")){
             window.open(e.target.dataset.url, "_blank");
             return;
+        } else if(e.target.classList.contains("savVideoClose")){
+            let videoDiv = document.querySelector("avdivVideo");
+            if(videoDiv){
+                videoDiv.classList.add("savCloseAnim2");
+                setTimeout(()=>{
+                    videoDiv.parentNode.removeChild(videoDiv);
+                },200)
+            }
+            return;
         }
 
 
@@ -794,6 +803,7 @@
             getInfo_end_error(`<avdiv>已经设置为禁止获取番号信息</avdiv>`);
             return;
         };
+
         GM_xmlhttpRequest({
             method: 'get',
             url: javbusLink + avID,
@@ -900,11 +910,65 @@
                 return
             };
             getInfo_fc2(avID);
+            // getInfo_fc2_market(avID);
         }else{
             getInfo_wuma_javdb1(avID);
         }
     }
     // 无码信息获取 - fc2
+    function getInfo_fc2_market(avID){
+        if(debug){console.log("从fc2hub获取信息中 getInfo_fc2_market: " + avID);}
+        
+        let IDnum = avID.slice(4)
+        let link = `https://adult.contents.fc2.com/article/${IDnum}/`
+        console.log(link)
+
+        GM_xmlhttpRequest({
+            method: 'get',
+            // https://contents.fc2.com/article/3107706/
+            url: link,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            data: "",
+            onload: function (data) {
+                console.log(data);
+                let parser=new DOMParser();
+                let htmlDoc=parser.parseFromString(data.responseText, "text/html");
+                console.log(htmlDoc)
+                let info = htmlDoc.querySelector(".items_article_headerInfo");
+
+                // 标题
+                let title = htmlDoc.title.replace("PPV-","").replace(avID,"").trim();
+                // 番号的链接
+                // let link = link;
+                // 获取名字
+                // 获取标签
+                let tags = info.querySelector(".items_article_TagArea div").innerText
+                // 获取日期
+                let d = info.querySelector(".items_article_Releasedate").innerText.slice(7).replaceAll("/","-");
+                
+                // 获取图片
+                let img = htmlDoc.querySelector(".items_article_SampleImages a").href;
+                // 获取视频
+                let video = htmlDoc.querySelector(".fc2-video-container video");
+                console.log(video);
+                if(video){
+                    console.log(video);
+                    var videoURL = video.src;
+                    var img2 = video.poster;
+                }
+
+                console.log(link)
+                console.log(title)
+                console.log(tags)
+                console.log(d)
+                console.log(img)
+                console.log(img2)
+                console.log(videoURL)
+            }
+        });
+    }
     function getInfo_fc2(avID){
         if(debug){console.log("从fc2hub获取信息中 getInfo_fc2: " + avID);}
 
@@ -946,10 +1010,16 @@
                 let parser=new DOMParser();
                 let htmlDoc=parser.parseFromString(data.responseText, "text/html");
 
+                var iframe = htmlDoc.querySelector("iframe.lazy")
+                // 视频
+                avInfo.fc2Video = iframe.dataset.src
+                // return
+
                 // 番号
                 // avInfo.id = avID;
                  // 番号的链接
                 avInfo.link = link.match(/http.*id\d{5,7}/)[0];
+                // 标题
                 avInfo.title = htmlDoc.querySelector(".fc2-title");
                 if(!avInfo.title){
                     data.status = 404
@@ -957,15 +1027,10 @@
                     return
                 }
                 avInfo.title = avInfo.title.innerText
-
-                // 标签
-                var tags_r = htmlDoc.querySelector("p.card-text")
-                if(tags_r && tags_r.innerHTML.search("Tags")>-1 && tags_r.querySelector("a")){
-                    if(tags_r.innerText.trim().length>6){
-                        avInfo.tags = tags_r.innerText.replace("Tags :","").replace(/\n/g," ")
-                    }
-                }
-
+                //标签
+                avInfo.tags = htmlDoc.body.querySelector("meta[name~='keywords']")?.content.replaceAll(", "," ");
+                // 日期
+                avInfo.date = "日期: " + htmlDoc.body.querySelector("meta[property~='videos:published_time']")?.content.slice(0,10);
                 // 图片
                 let imgSrc;
                 let img = htmlDoc.querySelector(".col-xl-4 .card-body .row a")
@@ -1204,6 +1269,7 @@
             localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
             localInfo[avID].tips = avInfo.tips;
             localInfo[avID].correctID = avInfo.correctID;
+            localInfo[avID].fc2Video = avInfo.fc2Video;
         }
         localInfo[avID].getInfo_Time = new Date().getTime();
 
@@ -1214,7 +1280,7 @@
 
         if(!document.querySelector(".sav-menu")){return};
         // 判断是否重复加载图片
-        if(document.querySelector(".avimg")){return};
+        // if(document.querySelector(".avimg")){return};
 
         // console.log("获取到的所有信息: ");
         // console.log(avInfo);
@@ -1232,7 +1298,7 @@
             imageDiv.appendChild(image)
             otherInfo.appendChild(imageDiv);
             image.onload = function(){
-                console.log("getInfo_end: 图片加载完成")
+                if(debug)console.log("getInfo_end: 图片加载完成");
                 removeLoading();
                 settingPostion();
             }
@@ -1252,6 +1318,12 @@
         }
         document.querySelector(".sav-menu").appendChild(otherInfo);
 
+        if(localInfo[avID].fc2Video){
+            getVideoURLFC2();
+        }else{
+            getVideoURL(avID);
+        }
+
     }
     function getInfo_end_error(errorText){
         if(debug){console.log("getInfo_end_error : ", errorText);}
@@ -1263,7 +1335,7 @@
 
     // 从本地加载信息
     function getInfo_local(avID){
-        if(debug){console.log("从本地加载信息 local: " + avID);}
+        if(debug){console.log("从本地加载信息 local: " , localInfo[avID]);}
         if(!document.querySelector(".sav-menu")){return};
         // 判断是否重复加载图片
         if(document.querySelector(".avimg")){return};
@@ -1320,6 +1392,14 @@
         image.onerror = ()=>{
             image.classList.add('savImgError');
             image.src = imgErrorSVG;
+            // 图片无法加载, 视为网站更换了网址, 重新获取
+            reloadGetInfo(avID)
+        }
+        
+        if(localInfo[avID].fc2Video){
+            getVideoURLFC2();
+        }else{
+            getVideoURL(avID);
         }
     }
 
@@ -1337,6 +1417,7 @@
     // 重新获取信息, 通常是在本地信息不完整的情况下会调用该函数。例:noInfo为true, 或者缺少图片
     function reloadGetInfo(avID){
         if(debug){console.log("重新获取信息 reloadGetInfo: ",avID)};
+        avInfo = {};
         let nowTime = new Date().getTime();
         if(!localInfo[avID].getInfo_Time || nowTime-localInfo[avID].getInfo_Time > 43200000){
             if(avID.match(oRegExp)){
@@ -1362,7 +1443,7 @@
         }
         if(avInfo.starName && avInfo.starName.length>0){
             for(var i=0;i<avInfo.starName.length;i++){
-                actors += "<a class='sav-actors-"+ i + "' target='_blank' style='text-decoration:underline' title='' href='https://db.msin.jp/jp.search/actress?str=" + avInfo.starName[i] + "'>"+ avInfo.starName[i] + "</a>, ";
+                actors += "<a class='sav-actors-"+ i + "' target='_blank' title='' href='https://db.msin.jp/jp.search/actress?str=" + avInfo.starName[i] + "'>"+ avInfo.starName[i] + "</a>, ";
                 getJellyfin_Actor(avInfo.starName[i],i)
             }
             actors = actors.slice(0,actors.length-2);
@@ -1678,6 +1759,255 @@
         meta.content = "no-referrer";
         document.getElementsByTagName('head')[0].appendChild(meta);
     }
+        
+    // 预览视频 项目名称: "JAVBUS影片预告" 作者:"bigwolf99"  相关代码: https://sleazyfork.org/zh-CN/scripts/450740
+    async function getVideoURL(avID) {
+        if(setting.dontGetVideo) return;
+        if(avID.search(/^[A-Z]{2,7}-\d{2,6}$/i)<0) return;
+        if(debug) console.log("getVideoURL  开始");
+
+        let videoURL;
+        if(!localInfo[avID].video){
+            videoURL = await queryDMMVideoURL(avID);
+            if(!videoURL){
+                return;
+            }else{
+                if(debug)console.log("最终url: ", videoURL);
+                localInfo[avID].video = videoURL;
+                GM_setValue("avInfo2",localInfo);
+            }
+        }else{
+            videoURL = localInfo[avID].video;
+            if(debug)console.log("本地存在视频链接: ", videoURL)
+        }
+
+
+        let videoButton = document.createElement("savdiv");
+        videoButton.classList.add("avimg-preview-button");
+
+        let avimg = document.querySelector(".avimg")
+        avimg.parentNode.insertBefore(videoButton,avimg);
+
+        videoButton.addEventListener("click",addVideoDiv(videoURL));
+
+        return videoURL;
+    }
+    // 获取播放地址
+    async function queryDMMVideoURL(avID, host = "cc3001.dmm.co.jp") {
+        const corporations = {
+            abp: ["118"],
+            aed: [""],
+            akdl: ["1", "00"],
+            anb: [""],
+            apaa: [""],
+            apns: [""],
+            aran: [""],
+            awd: [""],
+            bazx: [""],
+            cmv: [""],
+            dandy: ["1"],
+            dldss: ["1"],
+            drpt: ["1"],
+            dtvr: ["24", "00"],
+            dv: ["53"],
+            dvaj: [""],
+            dvdes: ["1"],
+            ekdv: [""],
+            fera: ["h_086", "00"],
+            fgan: ["h_1440", "00"],
+            fone: ["h_491"],
+            fsdss: ["1"],
+            fset: ["1"],
+            fsvr: ["h_955", "00"],
+            ftht: ["1", "00"],
+            fuga: ["h_086", "00"],
+            gvg: ["13"],
+            haru: ["h_687"],
+            hkd: [""],
+            hoks: [""],
+            hz: ["h_113"],
+            hzgb: ["h_1100"],
+            jrze: ["h_086", "00"],
+            jukf: ["h_227"],
+            ktra: ["h_094", "00"],
+            lol: ["12", "00"],
+            mdbk: [""],
+            mds: ["84"],
+            mdtm: [""],
+            meko: ["h_1160", "00"],
+            mesu: ["h_086", "00"],
+            mkmp: [""],
+            mogi: ["1"],
+            mtall: ["1", "00"],
+            nhdtb: ["1"],
+            nsfs: ["", "00"],
+            nsfs: [""],
+            ofku: ["h_254"],
+            ovg: [""],
+            piyo: ["1"],
+            ppt: ["118"],
+            pydvr: ["h_1321", "00"],
+            pym: ["h_283"],
+            rct: ["1"],
+            rctd: ["1"],
+            real: [""],
+            rebd: ["h_346"],
+            rvg: [""],
+            saba: [""],
+            scd: [""],
+            scop: [""],
+            scpx: ["84"],
+            sdab: ["1"],
+            sdde: ["1"],
+            sdjs: ["1"],
+            sdmf: ["1"],
+            sdmm: ["1"],
+            sdmu: ["1"],
+            sdmua: ["1"],
+            sdnm: ["1"],
+            sdth: ["1"],
+            shh: ["1", "00"],
+            shind: ["h_1560", "00"],
+            shn: ["1", "00"],
+            silkc: ["1", "00"],
+            sinn: [""],
+            skmj: ["h_1324"],
+            spro: ["h_1594", "00"],
+            spz: ["h_254"],
+            sqis: [""],
+            star: ["1"],
+            stars: ["1"],
+            stcv: ["h_1616", "00"],
+            sun: ["1"],
+            svdvd: ["1"],
+            sw: ["1"],
+            t28: ["55"],
+            udak: ["h_254"],
+            umd: ["125"],
+            urkk: [""],
+            vema: [""],
+            venx: [""],
+            wo: ["1"],
+            zex: ["h_720"],
+            // 自行添加
+            bbtu:[""],
+            bjd:[""],
+            blb:[""],
+            bskc:[""],
+            fbos:[""],
+            jsop:[""],
+            tppn:[""],
+            xvsr:[""],
+            ymdd:[""],
+            mxgs:["h_068"],
+            shic:["h_839"],
+            bf:["","0","0"]
+            //番号中的英文:[英文前缀,数字前面补零,英文后缀]
+        };
+        // if (movieInfo.isUncensored)
+        //   return Promise.reject("DMM server not support uncensored movie.");
+        //see https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374
+        //see https://bit.ly/3wXLj6T
+        let infix = "litevideo/freepv";
+        //1500kbps = _dmb_w || 3000kbps = _mhb_w || vrlite
+        let postfix = "_dmb_w";
+        // if (movieInfo.isVR) {
+        //   postfix = "vrlite";
+        //   infix = "vrsample";
+        // }
+    
+        // 提取番号中的英文和数字
+        let movieIdSplit = avID.toLowerCase().split("-");
+        let corp = movieIdSplit[0];  // 番号中的英文
+        let idNum = movieIdSplit[1];    // 返回中的数字
+        let idNum_Ori = idNum;
+    
+        // 是否需要特殊处理
+        if (corporations[corp]) {
+            idNum = corporations[corp][1] ? corporations[corp][1] + idNum : idNum;
+            corp = corporations[corp][0] + corp + (corporations[corp][2] ?? "");
+        } else {
+            idNum = "00" + idNum;
+        }
+    
+        // https://cc3001.dmm.co.jp/litevideo/freepv/b/bf/bf00674/bf00674_dmb_w.mp4
+        //         cc3001.dmm.co.jp/litevideo/freepv/b/bf0/bf00674/bf00674_mhb_w.mp4
+
+        //  https:// cc3001.dmm.co.jp / litevideo/freepv /  s         / ssn                    / ssni00378       / ssni00378       _dmb_w    .mp4    
+        //  https:// ${host}          / ${infix}         / ${corp[0]} / ${corp.substring(0,3)} / ${corp}${idNum} / ${corp}${idNum} ${postfix}.mp4`;
+        let videoURL = `https://${host}/${infix}/${corp[0]}/${corp.substring(0,3)}/${corp}${idNum}/${corp}${idNum}${postfix}.mp4`;
+
+        return await fetch(videoURL)
+          .then((res) => {
+            if (res.ok) {
+                if(debug) console.log("DMM server result video url: " + videoURL);
+                return videoURL;
+            }
+        })
+        .catch((e) => {
+            if(debug) console.log("报错",videoURL);
+            // return Promise.reject(e);
+            let videoURL2 = `https://${host}/${infix}/${corp[0]}/${corp.substring(0,3)}/${corp}${idNum_Ori}/${corp}${idNum_Ori}${postfix}.mp4`;
+            return fetch(videoURL2)
+            .then((res) => {
+              if (res.ok) {
+                  if(debug) console.log("第二次查看链接: " + videoURL2);
+                  return videoURL2;
+                }
+            })
+            .catch((e) => {
+                if(debug) console.log("链接还是错误");
+                return false
+            });
+        });
+    }
+    // 添加视频
+    function addVideoDiv(videoURL){
+        return function(){
+            let videoDiv = document.createElement("avdivVideo");
+            videoDiv.innerHTML = `
+                <video class="avVideo" controls autoplay >
+                    <source src="${videoURL}" type="video/mp4">
+                </video>
+                <avidv class="savVideoClose"> X </avdiv>
+                `
+            let imgDiv = document.querySelector("avdivimg");
+            imgDiv.appendChild(videoDiv)
+
+            let videoSelect = document.querySelector(".avVideo");
+            if(videoSelect){
+                videoSelect.volume = setting.videoVolume??0.2;
+            }
+        }
+    }
+    // fc2 预览视频
+    function getVideoURLFC2(avID) {
+        if(setting.dontGetVideo) return;
+        if(debug) console.log("getVideoURLFC2  开始");
+
+        let videoButton = document.createElement("savdiv");
+        videoButton.classList.add("avimg-preview-button");
+
+        let avimg = document.querySelector(".avimg")
+        avimg.parentNode.insertBefore(videoButton,avimg);
+
+        videoButton.addEventListener("click",addVideoDivFc2(avInfo.fc2Video));
+
+        return 
+    }
+    // 添加fc2视频
+    function addVideoDivFc2(videoURL){
+        return function(){
+            let videoDiv = document.createElement("avdivVideo");
+            videoDiv.innerHTML = `
+                <iframe src="${videoURL}"></iframe>
+                <avidv class="savVideoClose"> X </avdiv>
+                `
+            let imgDiv = document.querySelector("avdivimg");
+
+            imgDiv.appendChild(videoDiv)
+        }
+    }
 
     // 查看本地 jellyfin 中是否存在
     function getJellyfin(avID){
@@ -1860,6 +2190,8 @@
             // "avLinkMagnet":false,       // 链接是磁链的番号是否添加复制功能
             "dontTransTitle":false, // 翻译标题
             "dontTransTags":false,  // 翻译标签
+            "dontGetVideo":false,   // 关闭视频预览
+            "videoVolume":0.2, // 视频播放音量,取值0-1, 对fc2的预览视频无效
             "fc2Thumbnail":false,   // fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
             "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
             "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
@@ -1967,13 +2299,14 @@
                 backdrop-filter: blur(5px);
                 border-radius: 4px;
                 padding:6px 12px 10px 9px;
-                // margin-top: -2px; 
+                /* margin-top: -2px; */
                 z-index: 99999; 
                 font-size: 14px;
                 max-width: 600px;
                 box-shadow: 4px 4px 12px #ccc, -1px -1px 5px #eee;
                 border-top: 2px solid #fff;
                 border-left: 2px solid #fff;
+                transform:scale(1);
                 transition:0.2s;
                 transition-timing-function: ease-out;
                 animation: savOpenAnim 0.15s;
@@ -2001,6 +2334,7 @@
                     transform:scale(0.5);
                 }
             }
+            /* 链接相关 */
             .savlink{
                 margin: 4px 4px 4px 4px;
                 border-radius: 4px;
@@ -2010,15 +2344,33 @@
                 transition: 0.2s;
                 transition-timing-function: ease-out;
                 box-shadow: -2px -2px 4px rgb(240 240 240), 2px 2px 4px rgb(70 70 70 / 50%);
+                cursor: pointer;
             }
             .savlink:hover{
                 background: aliceblue;
                 box-shadow: -2px -2px 6px rgb(255 255 255 / 50%), 1px 1px 2px rgb(70 70 70 / 50%), inset -2px -2px 6px rgb(255 255 255 / 50%),inset 2px 2px 6px rgb(100 100 100 / 50%);
             }
+            .sav-menu .savlink a{
+                color:#459df5;
+                text-decoration:none;
+            }
+            .sav-menu .savlink:hover a {
+                color: #039cff;
+                text-shadow: 0 0 #7cfb80;
+            }
+            avdivsinfo a,
+            avdivsinfo a:visited,
+            avdivsinfo a:link{
+                color: #000;
+                transition:0.2s;
+            }
+            avdivsinfo a:hover{
+                color: #850000; 
+            }
+
             avdivsinfo{
                 text-indent: -2.5em;
                 line-height: normal;
-                animation: savOpenAnim 0.15s;
             }
             avdivsinfo avdiv{
                 display:block;
@@ -2056,10 +2408,11 @@
                 transition:0.2s;
                 transition-timing-function: ease-out;
             }
+            /* .avimg-preview-button:hover + .avimg,
             avdiv .avimg:hover{
                 scale:1.01;
                 box-shadow: -2px -2px 4px rgb(160 160 160), 4px 4px 4px rgb(70 70 70 / 60%);
-                }
+            } */
             avdiv .imageBig{
                 max-height: 600px;
                 transform: scale(1.3);
@@ -2071,21 +2424,7 @@
             avdiv .imageBig:hover{
                 box-shadow: -4px -4px 8px rgb(160 160 160), 6px 6px 8px rgb(70 70 70 / 60%);
             }
-            avdiv.savlink {
-                cursor: pointer;
-            }
-            avdiv.sav-menu .savlink a{
-                color:#459df5;
-                text-decoration:none;
-            }
-            avdiv.sav-menu .savlink:hover a {
-                color: #039cff;
-                text-shadow: 0 0 #7cfb80;
-            }
-            .sav-menu a:link,
-            .sav-menu a:visited{
-                color: #000
-            }
+
             savdiv,
             savmagnet {
                 cursor: pointer;
@@ -2104,21 +2443,17 @@
                 position: relative;
                 top: 0.1em;
                 opacity:0.8;
-                transition:0.2s
+                transition:0.2s;
+                display: inline-block;
+                vertical-align: baseline;
             }
             avspan svg:hover {
                 opacity:1;
             }
-            a[class^=sav-actors]{
-                transition:0.2s;
-            }
-            a[class^=sav-actors]:hover {
-                color: #850000; 
-            }
             avdiv.sav-menu .avimg.savImgError{
                 height:200px;
             }
-
+            /* 动画: 横线加载时的动画 */
             @keyframes sav-loading-animation {
                 from{ transform: translate(0, 0); }
                 to{ transform: translate(50%, 0); }
@@ -2165,6 +2500,120 @@
             }
             .stop2.fc2loading{
                 stop-color:#F8A01C;
+            }
+            /* 预览视频 */
+            avdivimg{
+                position: relative;
+                display: block;
+                text-indent: initial;
+                user-select: none;
+
+            }
+            .avimg-preview-button{
+                width: 40px;
+                height: 40px;
+                border-radius: 40px;
+                background:#00e7ff00;
+                opacity: 0.8;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                z-index:1;
+                transition:0.4s;
+                animation: savOpenAnim2 0.15s;
+                
+            }
+            @keyframes huerotate{
+                0%{
+                    filter:hue-rotate(0deg);
+                }
+                100%{
+                    filter:hue-rotate(360deg);
+                }
+            }
+            .avimg-preview-button:hover{
+                opacity: 1;
+                background:#00e7ff;
+            }
+            .avimg-preview-button:after {
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'  viewBox='0 0 512 512'%3E%3Cpath d='M448 255c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z' fill=''  fill-opacity='0.8' stroke='none'/%3E%3Cpath fill='white' d='M216.32  334.44l114.45-69.14a10.89 10.89 0 000-18.6l-114.45-69.14a10.78 10.78 0 00-16.32 9.31v138.26a10.78 10.78 0 0016.32 9.31z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: 50%;
+                background-size: 48px 48px;
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                /* border: 2px solid;
+                border-image:linear-gradient(45deg,gold,deeppink)1; */
+            }
+            .savCloseAnim2,
+            avdivimg:has(avdivVideo) .avimg-preview-button,
+            avdivimg:has(.imageBig) .avimg-preview-button{
+                animation: savCloseAnim2 0.15s;
+                animation-fill-mode: forwards;
+            }
+            avdivVideo{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                animation: savOpenAnim2 0.15s;
+            }
+            avdivimg video{
+                width: 100%;
+                height: 100%;
+                object-fit: scale-down;
+                background: #fff9;
+                backdrop-filter: blur(5px);
+            }
+            .savVideoClose {
+                position: absolute;
+                right: 0;
+                top: 0;
+                padding: 8px 8px 8px 97%;
+                border-radius: 4px;
+                cursor: pointer;
+                transition:0.4s;
+            }
+            iframe + .savVideoClose{
+                color:#fff;
+            }
+            .savVideoClose:hover {
+                color:red;
+                background: #fff8;
+            }
+            avdivvideo iframe{
+                width:100%;
+                height:100%;
+                border: none;
+            }
+            @keyframes savOpenAnim2 {
+                0% {
+                    opacity: 0;
+                    transform:scale(0);
+                }
+                100% {
+                    opacity: 1;
+                    transform:scale(1);
+                }
+            }
+            @keyframes savCloseAnim2 {
+                0% {
+                    opacity: 1;
+                    transform:scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform:scale(0);
+                }
             }
             `;
         styleText += styleAVID;

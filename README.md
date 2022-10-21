@@ -320,9 +320,9 @@ list_all":[
 * 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
 	* FC2
 * 从[DMM](https://www.dmm.co.jp/top/)获取视频的番号: 
-	* 只有目前还在DMM中售卖的可以
+	* 只有还在DMM中售卖, 且官方有预告视频的可以
 * 从[FC2](https://adult.contents.fc2.com/)获取视频的番号:
-	* 只有目前还在FC2电子市场中售卖的可以
+	* 只有还在FC2电子市场中售卖, 且官方有预告视频的可以
 
 ---
 # 五、其他说明
@@ -335,6 +335,7 @@ list_all":[
 ### 2. 关于翻译
 * 默认谷歌翻译,需要科学上网; 如果设置 `baiduAppid` 和 `baiduKey` , 则改为调用百度翻译。
 * 网页谷歌翻译和脚本进行调用后, 翻译结果不同, 这种情况就离谱。
+* 谷歌翻译偶尔会返回英文, 例如这句话“デリヘルでみつけたドM天使-実写版- 辻井ほのか 松本いちか 椿りか”, 它给的中文翻译结果是“De Masochist Angel Found At Deriheru - Live Action Version - Honoka Tsujii Ichika Matsumoto Rika Tsubaki”。
 * 百度相关api获取网址[百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop), [认证完成](http://api.fanyi.baidu.com/doc/13)每月享有100万字的翻译额度, [百度翻译认证的相关文档](https://fanyiapp.cdn.bcebos.com/api/doc/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E7%BF%BB%E8%AF%91API%E6%9C%8D%E5%8A%A1%E5%8D%87%E7%BA%A7%E8%AF%B4%E6%98%8E.pdf)
 
 <details>
@@ -371,7 +372,7 @@ list_all":[
 
 ### 3. 关于科学上网
 * 默认情况下是需要科学上网的
-* 不具备科学上网条件, 可以通过设置相关选项来达到差不多的效果, 除了fc2的图片无法获取。
+* 不具备科学上网条件, 可以通过设置相关选项来实现获取信息,  除了fc2的图片无法获取和预览视频无法使用。
 * 需要设置的项目有:`"javbus":"https://www.javsee.men/",`、`"javdb":"https://javdb005.com/",`  、`"baiduAppid":"",`、`"baiduKey":"",`, 设置好javbus和javdb可以获取到番号的相关信息, 设置好百度翻译的api能对标题进行翻译, 具体设置看上方的`一、设置 3.设置内容具体介绍`中的相关介绍。
 
 ### 4.番号不识别的情况
@@ -390,6 +391,10 @@ list_all":[
 
 ---
 # 六、更新历史
+
+> v0.19.1 2022-10-21
+- 修复: 重新获取信息后, 失败的提示信息依旧显示的问题
+- 优化: 提高视频的获取准确度,  极大的提高
 
 > v0.19.0 2022-10-20
 - 增加: 部分番号增加预览视频, 相关代码[JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740) 。dmm和fc2的视频可以预览, 增加相关设置选项: `dontGetVideo` 和 `videoVolume`

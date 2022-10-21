@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.19.0
+// @version      0.19.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -9,7 +9,7 @@
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/447533.js?version=1098688
 // @require     https://greasyfork.org/scripts/452219.js?version=1099124
-// @require     https://greasyfork.org/scripts/452792.js?version=1107185
+// @require     https://greasyfork.org/scripts/452792.js?version=1107751
 // @connect     *
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
@@ -72,6 +72,7 @@
     var javdbTime = []; // 记录访问javdb的时间, 如果短时间内多次访问就限制访问, 默认是5分钟内限制为10次访问。
     var divTarget;  // 鼠标当前经过的番号节点
     var imgErrorSVG = "data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M304.128 456.192c48.64 0 88.064-39.424 88.064-88.064s-39.424-88.064-88.064-88.064-88.064 39.424-88.064 88.064 39.424 88.064 88.064 88.064zm0-116.224c15.36 0 28.16 12.288 28.16 28.16s-12.288 28.16-28.16 28.16-28.16-12.288-28.16-28.16 12.288-28.16 28.16-28.16z' fill='%23999'/%3E%3Cpath d='M887.296 159.744H136.704C96.768 159.744 64 192 64 232.448v559.104c0 39.936 32.256 72.704 72.704 72.704h198.144L500.224 688.64l-36.352-222.72 162.304-130.56-61.44 143.872 92.672 214.016-105.472 171.008h335.36C927.232 864.256 960 832 960 791.552V232.448c0-39.936-32.256-72.704-72.704-72.704zm-138.752 71.68v.512H857.6c16.384 0 30.208 13.312 30.208 30.208v399.872L673.28 408.064l75.264-176.64zM304.64 792.064H165.888c-16.384 0-30.208-13.312-30.208-30.208v-9.728l138.752-164.352 104.96 124.416-74.752 79.872zm81.92-355.84l37.376 228.864-.512.512-142.848-169.984c-3.072-3.584-9.216-3.584-12.288 0L135.68 652.8V262.144c0-16.384 13.312-30.208 30.208-30.208h474.624L386.56 436.224zm501.248 325.632c0 16.896-13.312 30.208-29.696 30.208H680.96l57.344-93.184-87.552-202.24 7.168-7.68 229.888 272.896z' fill='%23999'/%3E%3C/svg%3E";
+    var corporations = {};  // 用于预告视频的链接转换 
 
     var allHTML = document.querySelector("body");   // 获取网页
     
@@ -141,7 +142,7 @@
     // 一般发行番号: 从javbus获取信息
     // var oRegExp = /[a-zA-Z]{2,6}[-\s]?\d{2,5}/gi; 
     //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------|--------------------------------------------------------------普通番号, 不带横杠--------------------------------------------------------------------------------------|-------------字母特别的番号-------------------------|---------字母超长的番号----------------------|     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        |
-    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 發表|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
+    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 發表|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
     var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
@@ -151,7 +152,7 @@
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
     //                     | 排除非 fx-0xx          | 数字部分全是0     |
-    var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256/i
+    var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
     var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|df|ds|dx|er|ecma|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|usc|utf|utc|via|vol|win|with|width|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
@@ -163,7 +164,155 @@
     // 磁力链接
     var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\||=)[0-9a-fA-F]{40}(?!\w|-)/ig
     // 特别的className,在这些class中不识别番号。 /name|auth|user|code/i; pstatus:javbus修改帖子的用户名;
-    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|(?<!_tl_|ql-)editor|time|sav-id/gi
+    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|(?<!_tl_|ql-)editor|time|sav-id|sidebar/gi
+
+    // 用于预告视频的链接转换 
+    if(!setting.dontGetVideo){
+        corporations = {
+            abp: ["118abp"],
+            aed: ["aed"],
+            akdl: ["1akdl00"],
+            anb: ["anb"],
+            apaa: ["apaa"],
+            apns: ["apns"],
+            aran: ["aran"],
+            awd: ["awd"],
+            bazx: ["bazx"],
+            cmv: ["cmv"],
+            dandy: ["1dandy"],
+            dldss: ["1dldss"],
+            drpt: ["1drpt"],
+            dtvr: ["24dtvr00"],
+            dv: ["53dv"],
+            dvaj: ["dvaj"],
+            dvdes: ["1dvdes"],
+            ekdv: ["ekdv"],
+            fera: ["h_086fera00"],
+            fgan: ["h_1440fgan00"],
+            fone: ["h_491fone"],
+            fsdss: ["1fsdss"],
+            fset: ["1fset"],
+            fsvr: ["h_955fsvr00"],
+            ftht: ["1ftht00"],
+            fuga: ["h_086fuga00"],
+            gvg: ["13gvg"],
+            haru: ["h_687haru"],
+            hkd: ["hkd"],
+            hoks: ["hoks"],
+            hz: ["h_113hz"],
+            hzgb: ["h_1100hzgb"],
+            jrze: ["h_086jrze00"],
+            jukf: ["h_227jukf"],
+            ktra: ["h_094ktra00"],
+            lol: ["12lol00"],
+            mdbk: ["mdbk"],
+            mds: ["84mds"],
+            mdtm: ["mdtm"],
+            meko: ["h_1160meko00"],
+            mesu: ["h_086mesu00"],
+            mkmp: ["mkmp"],
+            mogi: ["1mogi"],
+            mtall: ["1mtall00"],
+            nhdtb: ["1nhdtb"],
+            nsfs: ["nsfs00"],
+            nsfs: ["nsfs"],
+            ofku: ["h_254ofku"],
+            ovg: ["ovg"],
+            piyo: ["1piyo"],
+            ppt: ["118ppt"],
+            pydvr: ["h_1321pydvr00"],
+            pym: ["h_283pym"],
+            rct: ["1rct"],
+            rctd: ["1rctd"],
+            real: ["real"],
+            rebd: ["h_346rebd"],
+            rvg: ["rvg"],
+            saba: ["saba"],
+            scd: ["scd"],
+            scop: ["scop"],
+            scpx: ["84scpx"],
+            sdab: ["1sdab"],
+            sdde: ["1sdde"],
+            sdjs: ["1sdjs"],
+            sdmf: ["1sdmf"],
+            sdmm: ["1sdmm"],
+            sdmu: ["1sdmu"],
+            sdmua: ["1sdmua"],
+            sdnm: ["1sdnm"],
+            sdth: ["1sdth"],
+            shh: ["1shh00"],
+            shind: ["h_1560shind00"],
+            shn: ["1shn00"],
+            silkc: ["1silkc00"],
+            sinn: ["sinn"],
+            skmj: ["h_1324skmj"],
+            spro: ["h_1594spro00"],
+            spz: ["h_254spz"],
+            sqis: ["sqis"],
+            star: ["1star"],
+            stars: ["1stars"],
+            stcv: ["h_1616stcv00"],
+            sun: ["1sun"],
+            svdvd: ["1svdvd"],
+            sw: ["1sw"],
+            t28: ["55t28"],
+            udak: ["h_254udak"],
+            umd: ["125umd"],
+            urkk: ["urkk"],
+            vema: ["vema"],
+            venx: ["venx"],
+            wo: ["1wo"],
+            zex: ["h_720zex"],
+            // 自行添加
+            aczd:["h_019aczd00"],
+            ako: ["ako"],
+            bank: ["h_1495bank"],
+            bbtu:["bbtu"],
+            bfd: ["24bfd00"],
+            bfkb: ["h_1285bfkb00"],
+            bjd:["bjd"],
+            bkynb: ["1bkynb00"],
+            blb:["blb"],
+            bskc:["bskc"],
+            clot: ["h_237clot"],
+            davk:["55davk"],
+            erofc:["erofc"],
+            fbos:["fbos"],
+            fneo: ["h_491fneo"],
+            gar: ["1gar00"],
+            gas: ["71gas"],
+            gone: ["h_1133gone"],
+            havd: ["1havd00"],
+            jsop:["jsop"],
+            mct: ["118mct"],
+            moko: ["h_254moko"],
+            mxgs:["h_068mxgs"],
+            neo:["433neo"],
+            omhd: ["omhd"],
+            pako:["h_1133pako"],
+            shic:["h_839shic"],
+            sma:["sma"],
+            tkol:["tkol"],
+            tmhp: ["h_452tmhp"],
+            tmvi: ["h_452tmvi00"],
+            tppn:["tppn"],
+            vagu: ["vagu"],
+            venu: ["venu"],
+            xvsr:["xvsr"],
+            ymdd:["ymdd"],
+            zeaa: ["h_086zeaa00"],
+            keed:["h_086keed00"],
+            // 多个
+            // h_139doks571   36doks00567
+            doks:["h_139doks","36doks00"],
+            arso: ["h_1378arso","1arso"],
+            // 末尾补零
+            bf:["bf00"],
+            // 末尾截断
+            // n_1445thni088
+            thnib:["n_1445thni"],
+        };
+    }
 
     // 对动态添加的dom进行检测
     var observerTarget = document.querySelector('body');    // 选择目标节点
@@ -896,6 +1045,25 @@
                 }
                 // 链接
                 avInfo.link = javbusLink + avID;
+
+                // 视频链接部分
+                let avIDsplit = avID.toLowerCase().split("-");
+                if(!setting.dontGetVideo && !corporations[avIDsplit[0]]){
+                    let videoURL = htmlDoc.querySelector("#sample-waterfall a")?.href;
+                    if(videoURL?.includes("dmm.co.jp")){
+                        videoURL = videoURL.match(/(?<=.*video\/).*?(?=\/)/)
+                        // 1bkynb00008
+                        let corp_finish = videoURL[0].slice(0,-avIDsplit[1].length);
+                        if(corp_finish.replace("00","").length != avIDsplit[0].length){
+                            let setting2 = GM_getValue("_setting2");
+                            setting2.corporations_user = setting2.corporations_user ?? {};
+                            setting2.corporations_user[avIDsplit[0]] = corp_finish;
+                            //       corporations_user[bkynb]        = 1bkynb00
+                            GM_setValue("_setting2",setting2);
+                        }
+                    }
+                }
+                
                 getInfo_end(avID,data,image);
             }
         });
@@ -1207,6 +1375,11 @@
     function getInfo_end(avID,data,image){
         // removeLoading()
         if(debug){console.log("从网络获取信息结束 end: " + avID, avInfo);}
+        let errorDiv = document.querySelector("avdiverror");
+        if(errorDiv){
+            errorDiv.parentNode.removeChild(errorDiv);
+        }
+
         // 标题翻译
         if(data.status==403){
             avInfo.title = "403错误, javBus 拒绝了您的访问!";
@@ -1510,7 +1683,7 @@
             loading.style.height = "0px";
             loading.style.marginTop = "0px";
             setTimeout(()=>{
-                loading.parentNode.removeChild(loading);
+                loading.parentNode?.removeChild(loading);
             },200)
         }
     }
@@ -1569,23 +1742,23 @@
 
         // 排除 特别的番号
         if(otext.match(oRegExp_Exclude_ID)){
-            if(debug) {console.log(searchTimes-avIDTimes," 特别的番号,略过: " + otext);}
+            if(debug) {console.log(searchTimes-avIDTimes,` 特别的番号,略过:  ${otext} `);}
             return true;
         }
         // 包含关键词的情况下
         if(oOnlyText.match(oRegExp_Exclude_en)){    
-            if(debug) {console.log(searchTimes-avIDTimes," 存在排除词,略过: " + oOnlyText);}
+            if(debug) {console.log(searchTimes-avIDTimes,` 存在排除词 ${oOnlyText} ,略过 ${otext} `);}
             return true;
         }
         if(otext.match((/^[a-z|A-Z]{2,8}\s?\d{2,5}$/i))){
             // 没有横杠的情况下, 含有需要排除的数字
             if(oOnlyNum.match(oRegExp_Special_num)){
-                if(debug) {console.log(searchTimes-avIDTimes," 无横杠,且存在需要排除的数字,略过: " + oOnlyNum);}
+                if(debug) {console.log(searchTimes-avIDTimes,` 无横杠,且存在需要排除的数字 ${oOnlyNum},略过 ${otext} `)};
                 return true;
             }
             // 没有横杠的情况下, 并且含有关键词
             if(oOnlyText.match(oRegExp_Special_en)){
-                if(debug) {console.log(searchTimes-avIDTimes," 无横杠,且有关键词,略过: " + oOnlyText);}
+                if(debug) {console.log(searchTimes-avIDTimes,` 无横杠,且有关键词 ${oOnlyText},略过 ${otext} `)} ;
                 return true;
             }
         }
@@ -1763,6 +1936,7 @@
     // 预览视频 项目名称: "JAVBUS影片预告" 作者:"bigwolf99"  相关代码: https://sleazyfork.org/zh-CN/scripts/450740
     async function getVideoURL(avID) {
         if(setting.dontGetVideo) return;
+        if(avInfo.noInfo) return;
         if(avID.search(/^[A-Z]{2,7}-\d{2,6}$/i)<0) return;
         if(debug) console.log("getVideoURL  开始");
 
@@ -1773,6 +1947,7 @@
                 return;
             }else{
                 if(debug)console.log("最终url: ", videoURL);
+                localInfo = GM_getValue("avInfo2")
                 localInfo[avID].video = videoURL;
                 GM_setValue("avInfo2",localInfo);
             }
@@ -1794,116 +1969,6 @@
     }
     // 获取播放地址
     async function queryDMMVideoURL(avID, host = "cc3001.dmm.co.jp") {
-        const corporations = {
-            abp: ["118"],
-            aed: [""],
-            akdl: ["1", "00"],
-            anb: [""],
-            apaa: [""],
-            apns: [""],
-            aran: [""],
-            awd: [""],
-            bazx: [""],
-            cmv: [""],
-            dandy: ["1"],
-            dldss: ["1"],
-            drpt: ["1"],
-            dtvr: ["24", "00"],
-            dv: ["53"],
-            dvaj: [""],
-            dvdes: ["1"],
-            ekdv: [""],
-            fera: ["h_086", "00"],
-            fgan: ["h_1440", "00"],
-            fone: ["h_491"],
-            fsdss: ["1"],
-            fset: ["1"],
-            fsvr: ["h_955", "00"],
-            ftht: ["1", "00"],
-            fuga: ["h_086", "00"],
-            gvg: ["13"],
-            haru: ["h_687"],
-            hkd: [""],
-            hoks: [""],
-            hz: ["h_113"],
-            hzgb: ["h_1100"],
-            jrze: ["h_086", "00"],
-            jukf: ["h_227"],
-            ktra: ["h_094", "00"],
-            lol: ["12", "00"],
-            mdbk: [""],
-            mds: ["84"],
-            mdtm: [""],
-            meko: ["h_1160", "00"],
-            mesu: ["h_086", "00"],
-            mkmp: [""],
-            mogi: ["1"],
-            mtall: ["1", "00"],
-            nhdtb: ["1"],
-            nsfs: ["", "00"],
-            nsfs: [""],
-            ofku: ["h_254"],
-            ovg: [""],
-            piyo: ["1"],
-            ppt: ["118"],
-            pydvr: ["h_1321", "00"],
-            pym: ["h_283"],
-            rct: ["1"],
-            rctd: ["1"],
-            real: [""],
-            rebd: ["h_346"],
-            rvg: [""],
-            saba: [""],
-            scd: [""],
-            scop: [""],
-            scpx: ["84"],
-            sdab: ["1"],
-            sdde: ["1"],
-            sdjs: ["1"],
-            sdmf: ["1"],
-            sdmm: ["1"],
-            sdmu: ["1"],
-            sdmua: ["1"],
-            sdnm: ["1"],
-            sdth: ["1"],
-            shh: ["1", "00"],
-            shind: ["h_1560", "00"],
-            shn: ["1", "00"],
-            silkc: ["1", "00"],
-            sinn: [""],
-            skmj: ["h_1324"],
-            spro: ["h_1594", "00"],
-            spz: ["h_254"],
-            sqis: [""],
-            star: ["1"],
-            stars: ["1"],
-            stcv: ["h_1616", "00"],
-            sun: ["1"],
-            svdvd: ["1"],
-            sw: ["1"],
-            t28: ["55"],
-            udak: ["h_254"],
-            umd: ["125"],
-            urkk: [""],
-            vema: [""],
-            venx: [""],
-            wo: ["1"],
-            zex: ["h_720"],
-            // 自行添加
-            bbtu:[""],
-            bjd:[""],
-            blb:[""],
-            bskc:[""],
-            fbos:[""],
-            jsop:[""],
-            tppn:[""],
-            xvsr:[""],
-            ymdd:[""],
-            mxgs:["h_068"],
-            shic:["h_839"],
-            bf:["","0","0"]
-            //番号中的英文:[英文前缀,数字前面补零,英文后缀]
-        };
         // if (movieInfo.isUncensored)
         //   return Promise.reject("DMM server not support uncensored movie.");
         //see https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374
@@ -1917,46 +1982,63 @@
         // }
     
         // 提取番号中的英文和数字
-        let movieIdSplit = avID.toLowerCase().split("-");
-        let corp = movieIdSplit[0];  // 番号中的英文
-        let idNum = movieIdSplit[1];    // 返回中的数字
-        let idNum_Ori = idNum;
+        const movieIdSplit = avID.toLowerCase().split("-");
+        const corp = movieIdSplit[0];  // 番号中的英文
+        const idNum = movieIdSplit[1];    // 返回中的数字
+        let urlPart;
     
+        let corporations_user = GM_getValue("_setting2").corporations_user ?? {};
+
         // 是否需要特殊处理
         if (corporations[corp]) {
-            idNum = corporations[corp][1] ? corporations[corp][1] + idNum : idNum;
-            corp = corporations[corp][0] + corp + (corporations[corp][2] ?? "");
+            if(debug) console.log("视频加载: 在默认URL规则中: ",corporations[corp])
+            urlPart = corporations[corp][0] + idNum;
+        } else if (corporations_user[corp]){
+            if(debug) console.log("视频加载: 在用户学习URL规则中: ",corporations_user[corp])
+            urlPart = corporations_user[corp] + idNum;
         } else {
-            idNum = "00" + idNum;
+            if(debug) console.log("视频加载: URL规则,默认添加00");
+            urlPart = corp + "00" + idNum;
         }
-    
-        // https://cc3001.dmm.co.jp/litevideo/freepv/b/bf/bf00674/bf00674_dmb_w.mp4
-        //         cc3001.dmm.co.jp/litevideo/freepv/b/bf0/bf00674/bf00674_mhb_w.mp4
 
         //  https:// cc3001.dmm.co.jp / litevideo/freepv /  s         / ssn                    / ssni00378       / ssni00378       _dmb_w    .mp4    
         //  https:// ${host}          / ${infix}         / ${corp[0]} / ${corp.substring(0,3)} / ${corp}${idNum} / ${corp}${idNum} ${postfix}.mp4`;
-        let videoURL = `https://${host}/${infix}/${corp[0]}/${corp.substring(0,3)}/${corp}${idNum}/${corp}${idNum}${postfix}.mp4`;
+        let videoURL = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
 
         return await fetch(videoURL)
           .then((res) => {
             if (res.ok) {
-                if(debug) console.log("DMM server result video url: " + videoURL);
+                if(debug) console.log("视频加载: 第 1 次测试链接: " + videoURL);
                 return videoURL;
             }
         })
         .catch((e) => {
-            if(debug) console.log("报错",videoURL);
-            // return Promise.reject(e);
-            let videoURL2 = `https://${host}/${infix}/${corp[0]}/${corp.substring(0,3)}/${corp}${idNum_Ori}/${corp}${idNum_Ori}${postfix}.mp4`;
+            if(debug) console.log("视频加载: 报错",videoURL);
+
+            if (corporations[corp] && corporations[corp][2]) {
+                if(debug) console.log("视频加载: 默认URL规则,第二种")
+                urlPart = corporations[corp][1] + idNum;
+            }else{
+                // todo: 可以用 includes()判断是否有 00 , 有就删除, 没有就添加。
+                urlPart = urlPart.replace("00","");
+            }
+            let videoURL2 = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
             return fetch(videoURL2)
             .then((res) => {
               if (res.ok) {
-                  if(debug) console.log("第二次查看链接: " + videoURL2);
+                  if(debug) console.log("视频加载: 第 2 次测试链接: " + videoURL2);
+
+                  let setting2 = GM_getValue("_setting2");
+                  setting2.corporations_user = setting2.corporations_user ?? {};
+                  setting2.corporations_user[corp] = urlPart.slice(0,-idNum.length);
+                  // corporations_user[bkynb] = 1bkynb00
+                  GM_setValue("_setting2",setting2);
+
                   return videoURL2;
                 }
             })
             .catch((e) => {
-                if(debug) console.log("链接还是错误");
+                if(debug) console.log("视频加载: 链接还是错误");
                 return false
             });
         });
@@ -2345,6 +2427,7 @@
                 transition-timing-function: ease-out;
                 box-shadow: -2px -2px 4px rgb(240 240 240), 2px 2px 4px rgb(70 70 70 / 50%);
                 cursor: pointer;
+                user-select: none;
             }
             .savlink:hover{
                 background: aliceblue;
@@ -2578,7 +2661,7 @@
                 position: absolute;
                 right: 0;
                 top: 0;
-                padding: 8px 8px 8px 97%;
+                padding: 7px 10px 7px 97%;
                 border-radius: 4px;
                 cursor: pointer;
                 transition:0.4s;

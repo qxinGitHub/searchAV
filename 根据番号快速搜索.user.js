@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.19.1
+// @version      0.19.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -10,7 +10,6 @@
 // @require     https://greasyfork.org/scripts/447533.js?version=1098688
 // @require     https://greasyfork.org/scripts/452219.js?version=1099124
 // @require     https://greasyfork.org/scripts/452792.js?version=1107751
-// @connect     *
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
 // @exclude	    *://www.v2ex.com/*
@@ -47,6 +46,25 @@
 // @exclude     *tools*
 // @exclude     *translate*
 // @exclude     *:8080*
+
+// @connect     *
+// @connect      javbus.com
+// @connect      javdb.com
+// @connect      fc2hub.com
+// @connect      dmm.co.jp
+// @connect      1pondo.tv
+// @connect      mgstage.com
+// @connect      fc2.com
+// @connect      translate.google.com.hk
+// @connect      fanyi.baidu.com
+// @connect      self
+// @connect      localhost
+
+// @connect      r18.com
+// @connect      mgstage.com
+// @connect      prestige-av.com
+// @connect      javspyl.tk
+// @connect      heyzo.com
 // @grant       GM_addStyle
 // @grant       GM_getValue
 // @grant       GM_setValue
@@ -72,7 +90,7 @@
     var javdbTime = []; // 记录访问javdb的时间, 如果短时间内多次访问就限制访问, 默认是5分钟内限制为10次访问。
     var divTarget;  // 鼠标当前经过的番号节点
     var imgErrorSVG = "data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M304.128 456.192c48.64 0 88.064-39.424 88.064-88.064s-39.424-88.064-88.064-88.064-88.064 39.424-88.064 88.064 39.424 88.064 88.064 88.064zm0-116.224c15.36 0 28.16 12.288 28.16 28.16s-12.288 28.16-28.16 28.16-28.16-12.288-28.16-28.16 12.288-28.16 28.16-28.16z' fill='%23999'/%3E%3Cpath d='M887.296 159.744H136.704C96.768 159.744 64 192 64 232.448v559.104c0 39.936 32.256 72.704 72.704 72.704h198.144L500.224 688.64l-36.352-222.72 162.304-130.56-61.44 143.872 92.672 214.016-105.472 171.008h335.36C927.232 864.256 960 832 960 791.552V232.448c0-39.936-32.256-72.704-72.704-72.704zm-138.752 71.68v.512H857.6c16.384 0 30.208 13.312 30.208 30.208v399.872L673.28 408.064l75.264-176.64zM304.64 792.064H165.888c-16.384 0-30.208-13.312-30.208-30.208v-9.728l138.752-164.352 104.96 124.416-74.752 79.872zm81.92-355.84l37.376 228.864-.512.512-142.848-169.984c-3.072-3.584-9.216-3.584-12.288 0L135.68 652.8V262.144c0-16.384 13.312-30.208 30.208-30.208h474.624L386.56 436.224zm501.248 325.632c0 16.896-13.312 30.208-29.696 30.208H680.96l57.344-93.184-87.552-202.24 7.168-7.68 229.888 272.896z' fill='%23999'/%3E%3C/svg%3E";
-    var corporations = {};  // 用于预告视频的链接转换 
+    var cid = {};  // 用于预告视频的链接转换 
 
     var allHTML = document.querySelector("body");   // 获取网页
     
@@ -168,7 +186,7 @@
 
     // 用于预告视频的链接转换 
     if(!setting.dontGetVideo){
-        corporations = {
+        cid = {
             abp: ["118abp"],
             aed: ["aed"],
             akdl: ["1akdl00"],
@@ -301,7 +319,13 @@
             xvsr:["xvsr"],
             ymdd:["ymdd"],
             zeaa: ["h_086zeaa00"],
-            keed:["h_086keed00"],
+            keed:["h_086keed"],
+            // 1svmgm003
+            svmgm:["1svmgm"],
+            // 未验证
+            moko: ["h_254moko"],
+            dbzc: ["dbzc"],
+            ddhg: ["h_175ddhg00"],
             // 多个
             // h_139doks571   36doks00567
             doks:["h_139doks","36doks00"],
@@ -1048,7 +1072,7 @@
 
                 // 视频链接部分
                 let avIDsplit = avID.toLowerCase().split("-");
-                if(!setting.dontGetVideo && !corporations[avIDsplit[0]]){
+                if(!setting.dontGetVideo && !cid[avIDsplit[0]]){
                     let videoURL = htmlDoc.querySelector("#sample-waterfall a")?.href;
                     if(videoURL?.includes("dmm.co.jp")){
                         videoURL = videoURL.match(/(?<=.*video\/).*?(?=\/)/)
@@ -1056,9 +1080,10 @@
                         let corp_finish = videoURL[0].slice(0,-avIDsplit[1].length);
                         if(corp_finish.replace("00","").length != avIDsplit[0].length){
                             let setting2 = GM_getValue("_setting2");
-                            setting2.corporations_user = setting2.corporations_user ?? {};
-                            setting2.corporations_user[avIDsplit[0]] = corp_finish;
-                            //       corporations_user[bkynb]        = 1bkynb00
+                            setting2.cid_user = setting2.cid_user ?? {};
+                            setting2.cid_user[avIDsplit[0]] = [corp_finish,avID];
+                            //       cid_user[bkynb]        = 1bkynb00
+                            if(debug) console.log("更新用户规则 cid: ",corp_finish,avID );
                             GM_setValue("_setting2",setting2);
                         }
                     }
@@ -1366,6 +1391,14 @@
                 // 封面
                 var image = htmlDoc.querySelector(".video-meta-panel img");
                 image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
+
+                // 预览视频相关
+                if(!setting.dontGetVideo){
+                    let videoURL = htmlDoc.querySelector("video source")?.src;
+                    if(videoURL?.includes("mp4")){
+                        avInfo.video = videoURL;
+                    }
+                }
                 
                 getInfo_end(avID,data,image);
             }
@@ -1442,10 +1475,12 @@
             localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
             localInfo[avID].tips = avInfo.tips;
             localInfo[avID].correctID = avInfo.correctID;
+            localInfo[avID].video = avInfo.video;
             localInfo[avID].fc2Video = avInfo.fc2Video;
         }
         localInfo[avID].getInfo_Time = new Date().getTime();
 
+        if(debug) console.log("保存相关信息: localInfo[avID] : ", localInfo[avID]);
         // 第一次浏览番号,将信息保存到本地
         // if(oFirstBrowse){
             GM_setValue("avInfo2",localInfo);
@@ -1508,7 +1543,7 @@
 
     // 从本地加载信息
     function getInfo_local(avID){
-        if(debug){console.log("从本地加载信息 local: " , localInfo[avID]);}
+        if(debug){console.log("从本地加载信息 local: " ,avID, localInfo[avID]);}
         if(!document.querySelector(".sav-menu")){return};
         // 判断是否重复加载图片
         if(document.querySelector(".avimg")){return};
@@ -1937,11 +1972,11 @@
     async function getVideoURL(avID) {
         if(setting.dontGetVideo) return;
         if(avInfo.noInfo) return;
-        if(avID.search(/^[A-Z]{2,7}-\d{2,6}$/i)<0) return;
         if(debug) console.log("getVideoURL  开始");
-
+        
         let videoURL;
         if(!localInfo[avID].video){
+            if(avID.search(/^[A-Z]{2,7}-\d{2,6}$/i)<0) return;
             videoURL = await queryDMMVideoURL(avID);
             if(!videoURL){
                 return;
@@ -1987,15 +2022,15 @@
         const idNum = movieIdSplit[1];    // 返回中的数字
         let urlPart;
     
-        let corporations_user = GM_getValue("_setting2").corporations_user ?? {};
+        let cid_user = GM_getValue("_setting2").cid_user ?? {};
 
         // 是否需要特殊处理
-        if (corporations[corp]) {
-            if(debug) console.log("视频加载: 在默认URL规则中: ",corporations[corp])
-            urlPart = corporations[corp][0] + idNum;
-        } else if (corporations_user[corp]){
-            if(debug) console.log("视频加载: 在用户学习URL规则中: ",corporations_user[corp])
-            urlPart = corporations_user[corp] + idNum;
+        if (cid[corp]) {
+            if(debug) console.log("视频加载: 在默认URL规则中: ",cid[corp])
+            urlPart = cid[corp][0] + idNum;
+        } else if (cid_user[corp]){
+            if(debug) console.log("视频加载: 在用户学习URL规则中: ",cid_user[corp])
+            urlPart = cid_user[corp][0] + idNum;
         } else {
             if(debug) console.log("视频加载: URL规则,默认添加00");
             urlPart = corp + "00" + idNum;
@@ -2015,9 +2050,9 @@
         .catch((e) => {
             if(debug) console.log("视频加载: 报错",videoURL);
 
-            if (corporations[corp] && corporations[corp][2]) {
+            if (cid[corp] && cid[corp][2]) {
                 if(debug) console.log("视频加载: 默认URL规则,第二种")
-                urlPart = corporations[corp][1] + idNum;
+                urlPart = cid[corp][1] + idNum;
             }else{
                 // todo: 可以用 includes()判断是否有 00 , 有就删除, 没有就添加。
                 urlPart = urlPart.replace("00","");
@@ -2029,9 +2064,9 @@
                   if(debug) console.log("视频加载: 第 2 次测试链接: " + videoURL2);
 
                   let setting2 = GM_getValue("_setting2");
-                  setting2.corporations_user = setting2.corporations_user ?? {};
-                  setting2.corporations_user[corp] = urlPart.slice(0,-idNum.length);
-                  // corporations_user[bkynb] = 1bkynb00
+                  setting2.cid_user = setting2.cid_user ?? {};
+                  setting2.cid_user[corp] = [urlPart.slice(0,-idNum.length),avID];
+                  // cid_user[bkynb] = 1bkynb00
                   GM_setValue("_setting2",setting2);
 
                   return videoURL2;
@@ -2048,7 +2083,7 @@
         return function(){
             let videoDiv = document.createElement("avdivVideo");
             videoDiv.innerHTML = `
-                <video class="avVideo" controls autoplay >
+                <video class="avVideo" controls autoplay loop >
                     <source src="${videoURL}" type="video/mp4">
                 </video>
                 <avidv class="savVideoClose"> X </avdiv>
@@ -2653,7 +2688,7 @@
             avdivimg video{
                 width: 100%;
                 height: 100%;
-                object-fit: scale-down;
+                object-fit: contain;
                 background: #fff9;
                 backdrop-filter: blur(5px);
             }

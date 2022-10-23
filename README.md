@@ -7,7 +7,7 @@
 * 点击番号复制
 * 默认没有启用的其他功能, 需要在设置中开启:  
 	* 划词搜索默认处于关闭状态  
-	* 查看本地 jellyfin 是否存在,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
+	* 查询本地 jellyfin/EMBY 中是否存在相关番号,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
 
 ![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
@@ -25,9 +25,10 @@
 "debug":false,   // 会在番号上额外添加一些信息, 不建议开启
 "selectLength":0,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
 "javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
-"clickToMenu":false,    // 鼠标点击番号才会出现菜单
 "javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
+"clickToMenu":false,    // 鼠标点击番号才会出现菜单
 "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
+"includeIDinLinks":true,    // 番号本身是个链接的情况下是否识别
 "dontImgBig": false,    // 图片点击放大, 包括滚动放大
 "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
 "dontGetInfoFc2":false, // 获取fc2的相关信息(从fc2hub获取)
@@ -35,7 +36,7 @@
 "getInfoFailToJavDB":false,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
 "dontCopyMagnet":false, // 旧, 弃用
 "dontMagnetDiscern":false,   // 将磁链转为链接
-"magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板
+"magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板 
 "dontTransTitle":false, // 翻译标题
 "dontTransTags":false,  // 翻译标签
 "dontGetVideo":false,   // 关闭视频预览
@@ -78,7 +79,7 @@
  `"debug":false,`
 * 测试模式, 在番号上额外添加的信息, 控制台中也会输出额外信息,  用来测试脚本使用
 * 默认`false`: 关闭
-* `true`: 开启。 开启会在菜单中添加两个额外的按钮: 1, `设置` 2, `番号` 。 会影响网页,在网页上添加额外信息。
+* `true`: 开启。 开启会在菜单中添加额外的搜索和两个按钮: 1, `设置` 2, `番号` 。 会影响网页,在网页上添加额外信息。
 
 `"selectLength":0,`
 * 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。设置更大的数字,例如16,可以应对一些超长的番号。实际使用中颇多的问题。
@@ -101,6 +102,11 @@
 * 默认: `false` 。 鼠标离开菜单, 菜单消失
 * `true`: 鼠标离开菜单, 菜单不会消失, 会自动在菜单添加一个 `关闭` 按钮。(用来测试脚本使用, 开启会影响脚本使用)
 
+`"includeIDinLinks":true,`    
+*  番号本身是个链接的情况下是否识别
+* 默认: `true`,  识别, 会导致链接原有的跳转功能失败。
+* `false`: 当番号是个链接时, 不再识别
+
 `"dontImgBig": false,`    
 * 图片放大功能
 * 默认: `false`:图片点击放大, 包括鼠标滚轮放大
@@ -122,9 +128,9 @@
 * `true`: 关闭从javdb中获取素人等相关信息, 且本地不会保存番号信息
 
 `"getInfoFailToJavDB":false,`   
-* 从javbus获取不到信息时, 是否从javdb中尝试获取
-* 默认: `false`: 仅仅从javbus中获取信息, 失败后会提示找不到相关番号的信息
-*  `true` : 当从javbus中查不到相关番号信息, 会尝试从javdb中获取信息, 这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险; 如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验; 开启后会占用javdb搜索的次数。
+* 从javbus获取不到信息时, 是否从javdb中尝试获取。这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险; 如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验; 开启后会占用javdb搜索的次数。
+* 默认: `true`:当从javbus中查不到相关番号信息, 会尝试从javdb中获取信息。
+*  `false` :  仅仅从javbus中获取信息, 失败后会提示找不到相关番号的信息。 
 
 `"dontCopyMagnet":false,`
 * 旧, 弃用。 停止使用, 如果你的设置里存在该项, 请改成 `dontMagnetDiscern":false` 
@@ -155,8 +161,9 @@
 - `true`: 关闭视频预览功能
 
 `"videoVolume":0.2,` 
-- 视频播放的音量, 可设置选项为数字0-1之间,1为音量100%, 0是关闭声音。**注意**:只能设置从DMM获取视频的音量, FC2的音量不受控制。
+- 视频播放的音量, 可设置选项为数字0-1之间,1为音量100%, 0是关闭声音。
 - 默认: 0.2
+- **注意**: FC2的音量不受控制。
 
 `"fc2Thumbnail":false,`
 * fc2 的预览图是否用缩略图, 用低画质换取快速加载图片
@@ -230,8 +237,8 @@
 ```
 
 自定义搜索列表
-* `"list":[]` 一般的发行番号
-* `"list_wuma":[]`  素人等番号
+* `"list":[]` 一般的发行番号, 从javbus获取信息的番号后面跟的搜索列表, 建议直接用 `list_all` 代替, 此列表只保留javdb搜索。
+* `"list_wuma":[]`  素人等番号, 从javdb获取信息的番号后面跟的搜索列表, 建议直接用 `list_all` 代替, 此列表只保留javbus搜索。
 * `list_all":[]`   它俩共同的搜索, 会同时加在上面两个列表的后面
 * 搜索列表两边用中括号, 第一项是搜索名称, 第二项是搜索链接。如果放在列表的最后, 后面不要加逗号, 如果是插入到列表中间, 最后需要加逗号。此处的列表顺序就是按钮的显示顺序。
 * 关于如何获得搜索链接: 可以查看这篇文章:[奔跑中的奶酪 ](https://www.runningcheese.com/browser-search)中: `一、关键字搜索 1、添加关键字` 这节的相关介绍。
@@ -285,10 +292,12 @@ list_all":[
  * 因为使用习惯是我自身的, 可能并不适合你。在v0.14.3 2022-09-25,意识到一个问题, 正常人的电脑应该是将磁链识别成链接, 点击后会跳转到下载软件进行跳转, 而不是我这种电脑上没有磁链下载软件, 要下载磁链只能从nas下载的情况。所以在此版本之前, 点击磁链是复制, 这之后是将磁链视为链接。
 
 ### 5.关于FC2
-* 经常会遇到500错误, 尤其是在晚上
-* FC2的视频音量无法控制, 各位播放FC2预览视频的时候注意点。
+* 经常会遇到500错误, 尤其是在晚上(也可能是我网络的问题)
 * 获取的FC2发行时间仅供参考, 并不是准确时间
-* 2022-10-20注: 目前还不知道fc2视频链接的有效期是多久。10.19加入, 10.20测试还有效
+* 视频相关
+	* FC2的视频音量无法控制, 各位播放FC2预览视频的时候注意点。
+	* 无法判断视频是否已经被官方删除, 所以视频可能无法播放, 但是依旧有播放按钮
+	* 2022-10-20注: 目前还不知道fc2视频链接的有效期是多久。10.19加入, 10.23测试还有效
 
 ---
 
@@ -301,9 +310,9 @@ list_all":[
 	* 一本道 的**月日年**数字命名系列
 	* MuraMura 的**月日年**数字命名系列
 	* Mesubuta メス豚 的**月日年**数字命名系列
+	* HEYZO
 * 从 [JavDB](https://javdb.com/) 获取信息的番号, 显示的搜索列表: `javdb` + 设置中的 `list_wuma` + `list_all`
 	* mgstage系列
-	* HEYZO
 	* HEYDOUGA
 	* T28
 	* TMA
@@ -319,10 +328,15 @@ list_all":[
 	* Jukujo-Club:熟女俱乐部 (虽然分类在此, 但是javdb并没有这个番号的相关信息)
 * 从 [Fc2hub](https://fc2hub.com/) 获取信息的番号, 显示的搜索列表: `fc2hub` + `javdb` + 设置中的 `list_wuma` + `list_all`
 	* FC2
-* 从[DMM](https://www.dmm.co.jp/top/)获取视频的番号: 
-	* 只有还在DMM中售卖, 且官方有预告视频的可以
-* 从[FC2](https://adult.contents.fc2.com/)获取视频的番号:
-	* 只有还在FC2电子市场中售卖, 且官方有预告视频的可以
+  
+
+* 关于视频的相关源: 
+	* 普通番号: 从[DMM](https://www.dmm.co.jp/top/)获取视频
+	* FC2: 从[FC2](https://adult.contents.fc2.com/)获取视频
+	* 加勒比: 从 [カリビアンコム ](https://www.caribbeancom.com/) 获取视频, 规则 `/[01]\d{5}\-(?:1)?\d{2,3}/i`
+	* 一本道: 从[トップページ | 一本道 (1pondo.tv)](https://www.1pondo.tv/) 获取视频, 规则 `/[01]\d{5}\_(?:1)?\d{2,3}/i`
+	* HEYZO: 从[HEYZO](https://en.heyzo.com) 获取视频
+	* 东京热: 从[Tokyo-Hot　東京熱　無修正オリジナル徹底凌辱動画](https://my.tokyo-hot.com/)获取视频
 
 ---
 # 五、其他说明
@@ -335,7 +349,7 @@ list_all":[
 ### 2. 关于翻译
 * 默认谷歌翻译,需要科学上网; 如果设置 `baiduAppid` 和 `baiduKey` , 则改为调用百度翻译。
 * 网页谷歌翻译和脚本进行调用后, 翻译结果不同, 这种情况就离谱。
-* 谷歌翻译偶尔会返回英文, 例如这句话“デリヘルでみつけたドM天使-実写版- 辻井ほのか 松本いちか 椿りか”, 它给的中文翻译结果是“De Masochist Angel Found At Deriheru - Live Action Version - Honoka Tsujii Ichika Matsumoto Rika Tsubaki”。
+* 谷歌翻译偶尔会返回英文, 例如这句话“デリヘルでみつけたドM天使-実写版- 辻井ほのか 松本いちか 椿りか”, 它给的中文翻译结果是“De Masochist Angel Found At Deriheru - Live Action Version - Honoka Tsujii Ichika Matsumoto Rika Tsubaki”。(有可能是我网络的问题)
 * 百度相关api获取网址[百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop), [认证完成](http://api.fanyi.baidu.com/doc/13)每月享有100万字的翻译额度, [百度翻译认证的相关文档](https://fanyiapp.cdn.bcebos.com/api/doc/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0%E9%80%9A%E7%94%A8%E7%BF%BB%E8%AF%91API%E6%9C%8D%E5%8A%A1%E5%8D%87%E7%BA%A7%E8%AF%B4%E6%98%8E.pdf)
 
 <details>
@@ -385,12 +399,26 @@ list_all":[
 * 缺少 `-` 不识别的情况
 	* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。(此处仅举例, v0.14.1 已经不在将 `618` 设置为关键字)
 	* 如果番号所在dom的class名字中含有 `/name|auth|user|code/` 且无横杠,将不会识别
+### 5. 预览视频的相关情况
+* 普通番号没有预览视频: 
+	* 一些老番不显示预览视频正常, 尤其是14年之前的。官方有, 但是我这没有
+	* 新番也存在官方没有预览视频的情况
+* 预览视频的获取都是从售卖网站或者官方网站取得, 必须售卖网站或者官网目前还存在视频才可以播放
+* 对于素人、无码的预览视频, 看运气
 
+其他: 
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口
 
 
 ---
 # 六、更新历史
+
+> v0.19.2 2022-10-22
+-  增加: 设置选项中增加: 番号本身是个链接的情况下是否识别。 `"includeIDinLinks":true, `  
+- 增加: 尝试获取`caribbeancom`、`1pondo`、`heyzo` 和 `tokyo-hot`的预览视频。
+- 调整: 当从javbus获取信息失败时, 会尝试从javdb获取, 之前默认关闭。相关设置: `getInfoFailToJavDB`
+- 调整:  `heyzo` 番号优先从javbus中获取
+- 更新: 排除规则、视频的cid
 
 > v0.19.2 2022-10-22
 - 优化: 当从javdb获取信息时, 如果有预览视频, 则添加到预览中
@@ -829,6 +857,7 @@ list_all":[
 * 日语词典: 翻译为英语 [英辞郎 on the WEB (alc.co.jp)](https://eow.alc.co.jp/)
 * 视频预览相关: [番号黑科技，在线看预览【教程】 – Telegraph](https://telegra.ph/%E7%95%AA%E5%8F%B7%E9%BB%91%E7%A7%91%E6%8A%80%E5%9C%A8%E7%BA%BF%E7%9C%8B%E9%A2%84%E8%A7%88%E6%95%99%E7%A8%8B-04-21)
 * 视频预览相关: [抛砖引玉，关于AV预览视频的获取方法。 - 老司機福利討論區 - 老司機論壇 (javbus.com)](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374)
+* [[油猴脚本开发指南]包装异步代码为同步代码 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/427913027)
 
 ---
 

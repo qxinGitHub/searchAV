@@ -169,7 +169,12 @@
 						return false
 					}
 					// 排除在链接内的番号, 视为用户名, 排除	
-					if(el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}(\.torrent)?$/i)>-1){
+					if(!window.qxin.includeIDinLinks && el.innerText.search(/^[a-z|A-Z]{2,6}-?\d{2,5}(\.torrent)?$/i)>-1){
+						// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
+							// console.log("------------------ 链接内没有横杠: ",el.innerText)
+							return false
+					}
+					if(el.innerText.search(/^[a-z|A-Z]{2,6}\d{2,5}(\.torrent)?$/i)>-1){
 						// if(el.innerHTML.indexOf("-")<0){	// 导致链接中的 fc2 也会无法识别
 							// console.log("------------------ 链接内没有横杠: ",el.innerText)
 							return false

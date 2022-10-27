@@ -413,7 +413,12 @@ list_all":[
 ---
 # 六、更新历史
 
-> v0.19.2 2022-10-22
+> v0.19.4 2022-10-27
+-  更新: 
+	- 增加排除规则
+	- 增加视频的cid
+
+> v0.19.3 2022-10-22
 -  增加: 设置选项中增加: 番号本身是个链接的情况下是否识别。 `"includeIDinLinks":true, `  
 - 增加: 尝试获取`caribbeancom`、`1pondo`、`heyzo` 和 `tokyo-hot`的预览视频。
 - 调整: 当从javbus获取信息失败时, 会尝试从javdb获取, 之前默认关闭。相关设置: `getInfoFailToJavDB`

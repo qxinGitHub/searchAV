@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.19.6
+// @version      0.19.7
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -9,7 +9,7 @@
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/447533.js?version=1108523
 // @require     https://greasyfork.org/scripts/452219.js?version=1099124
-// @require     https://greasyfork.org/scripts/452792.js?version=1107751
+// @require     https://greasyfork.org/scripts/452792.js?version=1120736
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
 // @exclude	    *://www.v2ex.com/*
@@ -173,7 +173,7 @@
     //                     | 排除非 fx-0xx          | 数字部分全是0     |
     var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|jp-18|rs[\s-]?(232|422|485)/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nc|next|note|number|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|usc|utf|utc|via|vkffsc|vol|win|with|width|wikis|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|usa|usc|utf|utc|via|vkffsc|vol|win|with|width|wikis|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
     var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|pt|sb|sex|tv|tb|ver|zd)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
@@ -203,7 +203,7 @@
             drpt: ["1drpt"],
             dtvr: ["24dtvr00"],
             dv: ["53dv"],
-            dvaj: ["dvaj"],
+            dvaj: ["dvaj00"],
             dvdes: ["1dvdes"],
             ekdv: ["ekdv"],
             fera: ["h_086fera00"],
@@ -282,6 +282,7 @@
             wo: ["1wo"],
             zex: ["h_720zex"],
             // 自行添加
+            atid:["atid00"],
             aczd:["h_019aczd00"],
             ako: ["ako"],
             bank: ["h_1495bank"],
@@ -340,6 +341,8 @@
             hnd:["hnd00"],
             pppd:["pppd00"],
             hez:["59hez"],
+            vrtm:["h_910vrtm"],
+            sprd:["18sprd"],
             // 未验证
             moko: ["h_254moko"],
             dbzc: ["dbzc"],
@@ -1369,7 +1372,7 @@
                 var avLink = searchResult[0].querySelector("a").href;
                 avLink = javDBLink.slice(0,-1) + avLink.slice(avLink.search(/\/v\//i));
 
-                changeBasiceSearch(avLink, "javDB 页面")
+                changeBasiceSearch(avLink, "JavDB 页面")
 
                 getInfo_wuma_javdb2(avID,avLink)
             }
@@ -2319,6 +2322,7 @@
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
+            timeout:1000,
             data:"urls=" + torrent + "&autoTMM=false&savepath=" + download + "&cookie=&rename=&category=&paused=false&contentLayout=Original&dlLimit=NaN&upLimit=NaN" ,
             onload: function (response) {
                 console.log("qBittorrent 返回消息: " ,response);
@@ -2336,7 +2340,7 @@
             },
             ontimeout: function (response) {
                 console.log(response)
-                alert("调用 qBittorrent 出现超时");
+                alert("调用 qBittorrent 出现超时 \n请检查是否已经打开相关软件");
             },
             onerror: function (response) {
                 console.log(response)

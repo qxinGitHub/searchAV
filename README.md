@@ -413,6 +413,12 @@ list_all":[
 ---
 # 六、更新历史
 
+> v0.19.7 2022-11-24
+- 更新: 
+	- 更新了标签翻译
+	- 更新了预览视频的cid
+	- 排除一些单词
+
 > v0.19.6 2022-11-15
 - 更新: 排除一些单词
 
@@ -877,12 +883,20 @@ list_all":[
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
 
+<!-- %%
+# 九、待做
+1. [ ] [k1400 餌食牝 -- 西田結菜 - JavBus](https://www.javbus.com/K1400) 标题中依旧有番号, 原因是内部将番号大写, 所以无法匹配到标题中的小写番号
+2. [ ] [HMDN-078 いずみ | JavDB 成人影片數據庫](https://javdb.com/v/a44M4) 预览视频无法播放的问题, 原因是javdb中显示有预览视频, 但是视频早已失效
+3. [ ] [ACZD-062 アナル拡張実験室 - JavBus](https://www.javbus.com/ACZD-062) 标签内容会有重复的问题, 原因是部分相似的标签, 在翻译后会使用同一个标签
+5. [ ] 将信息显示的部分用表格展现, 进而点击前面可以复制后面的内容
+4. [ ] 显示的信息能够自定义排序,  进而可以自定义显示内容
+%% -->
 ---
 # 开源代码许可
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
 - [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
 - 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
-- 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者早已跑路
+- 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者已经跑路
 - [JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740) version:0.5, 作者: bigwolf99, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - 还有各种搜索后随手复制的

@@ -6,6 +6,7 @@
 * 标记网页中的磁链文本, 改为链接, 可以在设置中关闭
 * 点击番号复制
 * 默认没有启用的其他功能, 需要在设置中开启:  
+	* 开启`色花堂` 搜索按钮, 需要在设置中开启 `"sehuatang":true,`
 	* 划词搜索默认处于关闭状态  
 	* 查询本地 jellyfin/EMBY 中是否存在相关番号,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
 
@@ -18,7 +19,7 @@
 
 
 ### 2. 设置总览
-设置一般不需要改动, 改动错误会导致脚本无法运行。  
+有很高的自由度, 但是改动错误可能导致脚本无法运行。  
 如果突然之前设置好的选项没有效果了, 通常是设置有所变动, 你可以来此查询。
 目前可以设置的选项:
 ```
@@ -46,6 +47,7 @@
 "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
 "closeLoadingAnimation":false,  // 关闭信息加载时的动画
 "addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
+"sehuatang":false,  // 添加色花堂的搜索按钮
 "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
 "jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
 "qBitHost":"http://localhost:8080/", //本地 qBittorrent 的地址
@@ -190,6 +192,11 @@
 * 额外的按钮
 * 默认:`false`: 不会添加额外的按钮
 * `true`: 添加3个额外的按钮: 1, `设置` 按钮; 2, `番号` 按钮,点击复制; 3, `关闭` 按钮
+
+`"sehuatang":false,`  
+- 添加色花堂的搜索按钮
+- 默认:`false`
+* `true`:  将色花堂的搜索添加到列表中。点击后, 由于需要解析地址, 所以新开网页会慢一些。
 
 `"jellyfinHost":"http://localhost:8096/",`
 * 本地的jellyfin的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
@@ -389,7 +396,7 @@ list_all":[
 * 不具备科学上网条件, 可以通过设置相关选项来实现获取信息,  除了fc2的图片无法获取和预览视频无法使用。
 * 需要设置的项目有:`"javbus":"https://www.javsee.men/",`、`"javdb":"https://javdb005.com/",`  、`"baiduAppid":"",`、`"baiduKey":"",`, 设置好javbus和javdb可以获取到番号的相关信息, 设置好百度翻译的api能对标题进行翻译, 具体设置看上方的`一、设置 3.设置内容具体介绍`中的相关介绍。
 
-### 4.番号不识别的情况
+### 4. 番号不识别的情况
 * 完整的番号带有横杠 `-` 不识别的情况( 下面几种情况仅举例, 实际还有其他限制)
 	* 番号前面是 `/` 或者 `=` 的将不会识别, 例:  ` =ssni-618`   `/ssni-618` 
 	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表
@@ -413,12 +420,16 @@ list_all":[
 ---
 # 六、更新历史
 
+
+  > v0.20.0  2022-12-14
+- 增加: 增加色花堂搜索, 需要在设置中开启 `"sehuatang":true,` 
+
 > v0.19.7 2022-11-24
 - 更新: 
 	- 更新了标签翻译
 	- 更新了预览视频的cid
 	- 排除一些单词
-
+ 
 > v0.19.6 2022-11-15
 - 更新: 排除一些单词
 
@@ -885,16 +896,24 @@ list_all":[
 
 <!-- %%
 # 九、待做
-1. [ ] [k1400 餌食牝 -- 西田結菜 - JavBus](https://www.javbus.com/K1400) 标题中依旧有番号, 原因是内部将番号大写, 所以无法匹配到标题中的小写番号
-2. [ ] [HMDN-078 いずみ | JavDB 成人影片數據庫](https://javdb.com/v/a44M4) 预览视频无法播放的问题, 原因是javdb中显示有预览视频, 但是视频早已失效
-3. [ ] [ACZD-062 アナル拡張実験室 - JavBus](https://www.javbus.com/ACZD-062) 标签内容会有重复的问题, 原因是部分相似的标签, 在翻译后会使用同一个标签
-5. [ ] 将信息显示的部分用表格展现, 进而点击前面可以复制后面的内容
-4. [ ] 显示的信息能够自定义排序,  进而可以自定义显示内容
+## 1. 已知问题
+1. [ ] [k1400 餌食牝 -- 西田結菜 - JavBus](https://www.javbus.com/K1400) 标题中依旧有番号, 原因是内部将番号大写, 所以无法匹配到标题中的小写番号。解决方法: 转为正则
+2. [ ] [HMDN-078 いずみ | JavDB 成人影片數據庫](https://javdb.com/v/a44M4) 预览视频无法播放的问题, 原因是javdb中显示有预览视频, 但是视频早已失效。解决方法: 加个判断
+3. [ ] [ACZD-062 アナル拡張実験室 - JavBus](https://www.javbus.com/ACZD-062) 标签内容会有重复的问题, 原因是部分相似的标签, 在翻译后会使用同一个标签。  解决方法: 利用 new Set() 去重
+4. [ ] [分享几部霓虹萝莉 - 老司机福利讨论区 - 老司机论坛 (javbus.com)](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=109333&extra=page%3D1) 第一个番号 1PONDO-032214_777 识别错误的问题, 原因是将 1PONDO 也识别成番号的一部分。具体是哪个正则识别到的并未排查。
+## 2.用户反馈
+1. [ ] 支持下用alist搭建的站点[根据番号快速搜索 - 反馈 (greasyfork.org)](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/discussions/160849)
+## 3.新添加内容
+1. [ ] 将信息显示的部分用表格展现, 进而点击前面标签可以复制后面的内容
+2. [ ] 显示的信息能够自定义排序,  进而可以自定义显示内容
+3. [ ] 页面多个相同的番号, 浏览过一个番号, 其他相同番号不会变色的问题 [露出勾引/公共使用题材汇总，长期更新，悬赏补充 - JAVLibrary](https://www.javlibrary.com/cn/publictopic.php?id=122596)
+4. [ ] setting2 里的内容现在无法删除, 应当在用户删除 setting1 的内容时, 同步删除setting2 的内容。
+5. [ ] 链接后台打开
 %% -->
 ---
 # 开源代码许可
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  
-- [“网页翻译助手”](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
+- [网页翻译助手](https://greasyfork.org/zh-CN/scripts/389784)version:1.2.9, 作者: Johnny Li, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
 - [显示防盗链图片 for Inoreader](https://greasyfork.org/zh-CN/scripts/376884) version:0.1, 作者: maboloshi  
 - 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
 - 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者已经跑路

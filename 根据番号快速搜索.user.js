@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.19.7
+// @version      0.20.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -166,16 +166,16 @@
     var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
     //                  ;--------- mgstage 字母 + 数字 + 字母 -----------------------|--------- FC2 ----------------|     HEYDOUGA                |      T28       | TMA 5位,6位,3位(没匹配)   |         1000girl   数字 + 字母             |MUGEN Entertainmen: MKD-S  MKBD-S |    素人 | 北池袋盗撮倶楽部            | japornXXX: JPNXXX       | xxx-av                   |    crazyasia               | PEWORLD                   |   10Musume  6位数字_01          |熟女俱乐部
-    var oRegExp_wuma = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-|.torrent)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)T28-\d{3}|(?<!\w)T-2\d{4,5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w)MK(?:B)?D-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)[01]\d{5}[-_]?_01(?=-10mu)?|Jukujo-Club-\d{3}/gi;
+    var oRegExp_wuma = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-|.torrent|年)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)T28-\d{3}|(?<!\w)T-2\d{4,5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w)MK(?:B)?D-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)[01]\d{5}[-_]?_01(?=-10mu)?|Jukujo-Club-\d{3}/gi;
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
-    //                     | 排除非 fx-0xx          | 数字部分全是0     |
-    var oRegExp_Exclude_ID = /fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|jp-18|rs[\s-]?(232|422|485)/i
+    //                     | 排除非 fx-0xx          | 数字部分全是0     |                                                                               | 一些国家简称 + 两位数字                                 |卡西欧
+    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de)[\s-]\d{2}|(gm|ga)-\d{4})$/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jsr|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|usa|usc|utf|utc|via|vkffsc|vol|win|with|width|wikis|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|page|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|win|with|width|wikis|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|pt|sb|sex|tv|tb|ver|zd)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找. 2022-10-23 v0.19.3注: 可能会被弃用
@@ -343,6 +343,7 @@
             hez:["59hez"],
             vrtm:["h_910vrtm"],
             sprd:["18sprd"],
+            emth:["h_1638emth"],
             // 未验证
             moko: ["h_254moko"],
             dbzc: ["dbzc"],
@@ -654,6 +655,12 @@
             }
         }
 
+        // 添加色花堂搜索
+        if(setting.sehuatang){
+            aPattern += "<avdiv class='savlink savsehuatang'> 色花堂 </avdiv>"
+            sehuatang_getFormHash();
+        }
+
         // 添加jellyfin按钮
         if(setting.jellyfinHost && setting.jellyfinApiKey){
             aPattern += "<avdiv class='savlink jellyfin'> Jellyfin </avdiv>"
@@ -874,7 +881,12 @@
         } else if(e.target.classList.contains("jellyfin")){
             window.open(e.target.dataset.url, "_blank");
             return;
-        } else if(e.target.classList.contains("savVideoClose")){
+        } else if(e.target.classList.contains("savsehuatang")){
+            // 防止多次点击导致重复发送请求
+            e.target.classList.remove("savsehuatang");
+            sehuatang();
+            return;
+        }  else if(e.target.classList.contains("savVideoClose")){
             let videoDiv = document.querySelector("avdivVideo");
             if(videoDiv){
                 videoDiv.classList.add("savCloseAnim2");
@@ -2236,6 +2248,76 @@
         }
     }
 
+    // 获取色花堂的formhash
+    function sehuatang_getFormHash(){
+        let setting2 = GM_getValue("_setting2");
+        let sehuatang_getTime = setting2.sehuatang_getTime;
+
+        let nowTime = new Date().getTime();
+        
+        // 不确定这个值会不会变动, 12小时获取一次
+        if(!sehuatang_getTime || nowTime-sehuatang_getTime > 43200000){
+            GM_xmlhttpRequest({
+            method:"get",
+            url:"https://www.sehuatang.org",
+            onload:function(data){
+                // console.log(data);
+                var parser=new DOMParser();
+                let htmlDoc=parser.parseFromString(data.responseText, "text/html");
+                let odom = htmlDoc.querySelector('input[name="formhash"]');
+                // console.log(odom);
+                let formhash_value = odom.value;
+                // console.log(formhash_value);
+    
+                let setting2 = GM_getValue("_setting2");
+                setting2.sehuatang_formhash = formhash_value;
+                setting2.sehuatang_getTime = nowTime;
+                GM_setValue("_setting2",setting2);
+                }
+            })
+            if(debug){console.log(`重新获取色花堂的formhash`)};
+        }else{
+            if(debug){console.log(`没有重新获取色花堂的formhash`)}
+        }
+        
+    }
+    // 色花堂搜索
+    function sehuatang(){
+        // console.log(divTarget);
+        let avID= divTarget.dataset.av;
+        let formhash = GM_getValue("_setting2").sehuatang_formhash;
+
+        if(formhash){
+            GM_xmlhttpRequest({
+                method: "post",
+                url: "https://www.sehuatang.org/search.php?mod=forum",
+                data: `formhash=${formhash}&srchtxt=${avID}&searchsubmit=yes`,
+                headers:  {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Origin":`https://www.sehuatang.org`,
+                    "Referer":`https://www.sehuatang.org`
+                },
+                onload: function(data){
+                    // console.log(data);
+                    // console.log(data.finalUrl);
+                    if(data.finalUrl){
+                        window.open(data.finalUrl);
+                    }else{
+                        GM_setClipboard(`avID`)
+                        window.open(`https://www.sehuatang.org/search.php`);
+                    }
+                },
+                onerror : function(err){
+                    console.log('error')
+                    console.log(err)
+                }
+            });
+        }else{
+            GM_setClipboard(`avID`)
+            window.open(`https://www.sehuatang.org/search.php`);
+        }
+    }
+
     // 查看本地 jellyfin 中是否存在
     function getJellyfin(avID){
         if(setting.jellyfinHost && setting.jellyfinApiKey){
@@ -2426,6 +2508,7 @@
             "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
             "closeLoadingAnimation":false,  // 关闭信息加载时的动画
             "addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
+            "sehuatang":false,  // 添加色花堂的搜索按钮
             "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
             "jellyfinApiKey":"",    // 外部程序需要密钥才能和jellyfin通信。  “设置 - 控制台 - API密钥” 点击加号生成一个
             "qBitHost":"http://localhost:8080/", //本地 qbit 的地址

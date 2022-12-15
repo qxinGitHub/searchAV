@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.20.0
+// @version      0.20.1
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -593,13 +593,13 @@
     function addEventAndStyle(isExist,avID){
         // 添加事件
         var odiv = document.createElement('savdiv');
+        odiv.addEventListener("click",savIDClick);  // 点击番号复制
         if(setting.clickToMenu){
             odiv.addEventListener("click",savIDMouseEnter);    // 点击鼠标 开启菜单
         }else{
             odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
         }
         odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
-        odiv.addEventListener("click",savIDClick);  // 点击番号复制
 
         if(isExist){
             // 添加浏览次数
@@ -708,9 +708,14 @@
 
     // 点击番号复制
     function savIDClick(e){
+        if(!document.querySelector(".sav-menu")){
+            return;
+        }
+
         var avid = e.target.dataset.av
         if(avid){
-            GM_setClipboard(avid)
+            GM_setClipboard(avid);
+            if(debug) console.log("粘贴成功: ", avid);
         }
         e.preventDefault();
         return false;
@@ -789,8 +794,13 @@
         var avid = e.target.dataset.av;
 
         if(e.target.classList.contains("infoFirst")){
-            e.target.classList.remove("infoFirst");
-            e.target.classList.add("infoExistent");
+            // e.target.classList.remove("infoFirst");
+            // e.target.classList.add("infoExistent");
+            let allDoms = document.querySelectorAll(`savdiv.infoFirst[data-av='${avid}']`)
+            for( let i=0; i<allDoms.length; i++){
+                allDoms[i].classList.remove("infoFirst");
+                allDoms[i].classList.add("infoExistent");
+            }
         }
 
         var avdiv = document.querySelector(".sav-menu")
@@ -2738,6 +2748,9 @@
                 box-shadow: -4px -4px 8px rgb(160 160 160), 6px 6px 8px rgb(70 70 70 / 60%);
             }
 
+            savdiv.sav-id{
+                transition: 0.5s;
+            }
             savdiv,
             savmagnet {
                 cursor: pointer;

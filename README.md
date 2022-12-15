@@ -197,6 +197,7 @@
 - 添加色花堂的搜索按钮
 - 默认:`false`
 * `true`:  将色花堂的搜索添加到列表中。点击后, 由于需要解析地址, 所以新开网页会慢一些。
+* 提示: 如果失败的话,则会打开色花堂的搜索界面(此时并没有搜索具体内容), 可以直接粘贴就行, 已经自动复制好番号。
 
 `"jellyfinHost":"http://localhost:8096/",`
 * 本地的jellyfin的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
@@ -420,6 +421,9 @@ list_all":[
 ---
 # 六、更新历史
 
+  > v0.20.1  2022-12-15
+- 优化: 页面存在相同番号, 浏览其中一个, 相同的番号都会变色。
+- 修复: 如果设置中改为点击弹出菜单, 导致每次点击都会触发一次复制的问题, 污染了剪贴板。
 
   > v0.20.0  2022-12-14
 - 增加: 增加色花堂搜索, 需要在设置中开启 `"sehuatang":true,` 
@@ -894,7 +898,7 @@ list_all":[
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
 
-<!-- %%
+<!-- %% 
 # 九、待做
 ## 1. 已知问题
 1. [ ] [k1400 餌食牝 -- 西田結菜 - JavBus](https://www.javbus.com/K1400) 标题中依旧有番号, 原因是内部将番号大写, 所以无法匹配到标题中的小写番号。解决方法: 转为正则
@@ -906,7 +910,7 @@ list_all":[
 ## 3.新添加内容
 1. [ ] 将信息显示的部分用表格展现, 进而点击前面标签可以复制后面的内容
 2. [ ] 显示的信息能够自定义排序,  进而可以自定义显示内容
-3. [ ] 页面多个相同的番号, 浏览过一个番号, 其他相同番号不会变色的问题 [露出勾引/公共使用题材汇总，长期更新，悬赏补充 - JAVLibrary](https://www.javlibrary.com/cn/publictopic.php?id=122596)
+3. [x] 页面多个相同的番号, 浏览过一个番号, 其他相同番号不会变色的问题 [露出勾引/公共使用题材汇总，长期更新，悬赏补充 - JAVLibrary](https://www.javlibrary.com/cn/publictopic.php?id=122596) 2022-12-15 v0.20.1 完成
 4. [ ] setting2 里的内容现在无法删除, 应当在用户删除 setting1 的内容时, 同步删除setting2 的内容。
 5. [ ] 链接后台打开
 %% -->

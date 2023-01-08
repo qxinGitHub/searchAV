@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.20.2
+// @version      0.20.3
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -161,19 +161,19 @@
     // 一般发行番号: 从javbus获取信息
     // var oRegExp = /[a-zA-Z]{2,6}[-\s]?\d{2,5}/gi; 
     //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------|--------------------------------------------------------------普通番号, 不带横杠-------------------------------------------------------------------------------------------------|-------------字母特别的番号-------------------------|---------字母超长的番号----------------------|     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        ||       HEYZO             
-    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s?\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 发表| 發表|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)|HEYZO[_-\s]?(?:hd_)?\d{4}/gi; 
+    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s{0,2}\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 发表| 發表|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)|HEYZO[_-\s]?(?:hd_)?\d{4}/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
-    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
+    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和跟]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
     //                  ;--------- mgstage 字母 + 数字 + 字母 -----------------------|--------- FC2 ----------------|     HEYDOUGA                |      T28       | TMA 5位,6位,3位(没匹配)   |         1000girl   数字 + 字母             |MUGEN Entertainmen: MKD-S  MKBD-S |    素人 | 北池袋盗撮倶楽部            | japornXXX: JPNXXX       | xxx-av                   |    crazyasia               | PEWORLD                   |   10Musume  6位数字_01          |熟女俱乐部
     var oRegExp_wuma = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-|.torrent|年)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)T28-\d{3}|(?<!\w)T-2\d{4,5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w)MK(?:B)?D-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)[01]\d{5}[-_]?_01(?=-10mu)?|Jukujo-Club-\d{3}/gi;
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
-    //                     | 排除非 fx-0xx          | 数字部分全是0     |                                                                               | 一些国家简称 + 两位数字                                 |卡西欧
-    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de)[\s-]\d{2}|(gm|ga)-\d{4})$/i
+    //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字                                 |卡西欧         |细胞相关
+    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de)[\s-]\d{2}|(gm|ga)-\d{4})|cd[\s-]?\d{2,4}$/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|page|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|win|with|width|wikis|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|jt|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mm|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vv|win|with|width|wikis|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
     var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
@@ -663,7 +663,11 @@
 
         // 添加jellyfin按钮
         if(setting.jellyfinHost && setting.jellyfinApiKey){
-            aPattern += "<avdiv class='savlink jellyfin'> Jellyfin </avdiv>"
+            if(setting.emby){
+                aPattern += "<avdiv class='savlink jellyfin'> Emby </avdiv>"
+            }else{
+                aPattern += "<avdiv class='savlink jellyfin'> Jellyfin </avdiv>"
+            }
         }
         // 添加额外按钮
         if(debug){
@@ -709,7 +713,8 @@
     // 点击番号复制
     function savIDClick(e){
         if(!document.querySelector(".sav-menu")){
-            return;
+            e.preventDefault();
+            return false;
         }
 
         var avid = e.target.dataset.av
@@ -863,7 +868,11 @@
         e.target.parentNode.title = "";
         e.target.parentNode.parentNode.title = "";
         settingPostion();  //重置位置
-        getJellyfin(avid);
+        if(setting.emby){
+            getEmby(avid);
+        }else{
+            getJellyfin(avid);
+        }
     }
 
     // 点击事件, 图片放大缩小, debug中复制番号
@@ -2360,9 +2369,64 @@
             }
         });
     }
+
+    function getEmby(avID){
+        if(setting.jellyfinHost && setting.jellyfinApiKey){
+            if(debug){console.log("查询本地 Emby : getEmby");};
+        } else {
+            if(debug){console.log("退出 Emby 函数, 其中host和apiKey: ", setting.jellyfinHost , setting.jellyfinApiKey)}
+            return;
+        }
+
+        GM_xmlhttpRequest({
+            method: 'get',
+            url:setting.jellyfinHost + "emby/Search/Hints?searchTerm=" + avID,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-Emby-Token":setting.jellyfinApiKey
+            },
+            data: "",
+            onload: function (r) {
+                var data = JSON.parse(r.responseText);
+                var div_jellyfin = document.querySelector(".jellyfin");
+                if(!div_jellyfin){return};
+
+                if(data.SearchHints[0]){
+                    if(debug){console.log("Emby中的标题: ", data.SearchHints[0].Name)};
+                    getEmby2(avID,data.SearchHints[0].Id,div_jellyfin)
+                } else {
+                    div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/list/list.html?type=search";
+                    div_jellyfin.classList.add("noJellyfin");
+                }
+            }
+        });
+    }
+    function getEmby2(avID,id,div_jellyfin){
+        GM_xmlhttpRequest({
+            method: 'get',
+            url:setting.jellyfinHost + "emby/Items?SearchTeam=" + avID,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-Emby-Token":setting.jellyfinApiKey
+            },
+            data: "",
+            onload: function (r) {
+                var data = JSON.parse(r.responseText);
+
+                if(data.Items[0]){
+                    div_jellyfin.dataset.url = ` ${setting.jellyfinHost}web/index.html#!/item?id=${id}&serverId=${data.Items[0].ServerId} `;
+                    div_jellyfin.classList.add("yesJellyfin");
+                } else {
+                    div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/list/list.html?type=search";
+                    div_jellyfin.classList.add("noJellyfin");
+                }
+            }
+        });
+    }
+
     // 查看本地 jellyfin 演员
     function getJellyfin_Actor(name,index){
-        if(debug){console.log("jellyfin 演员查询: ", index, name);};
+        if(debug){console.log("jellyfin/emby 演员查询: ", index, name);};
         GM_xmlhttpRequest({
             method: 'get',
             url: setting.jellyfinHost + "Persons?searchTerm=" + name,
@@ -2379,8 +2443,13 @@
                     var div_actor = document.querySelector(".sav-actors-"+ index)
                     if(div_actor){
                         var div_jellyfin = document.createElement("avspan");
-                        var jellyfin_ico =  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="30%" style="stop-color:#AA5CC3;stop-opacity:1" /><stop offset="100%" style="stop-color:#00A4DC;stop-opacity:1" /></linearGradient><path style="fill:url(#grad3)" d="M12 .002C8.826.002-1.398 18.537.16 21.666c1.56 3.129 22.14 3.094 23.682 0C25.384 18.573 15.177 0 12 0zm7.76 18.949c-1.008 2.028-14.493 2.05-15.514 0C3.224 16.9 9.92 4.755 12.003 4.755c2.081 0 8.77 12.166 7.759 14.196zM12 9.198c-1.054 0-4.446 6.15-3.93 7.189.518 1.04 7.348 1.027 7.86 0 .511-1.027-2.874-7.19-3.93-7.19z"/></svg>'
-                        div_jellyfin.innerHTML = "<a class='actor-jellyfin' target='_blank' title='' href= '"+ setting.jellyfinHost + "web/index.html#!/details?id=" + data.Items[0].Id  + "&serverId="+ data.Items[0].ServerId +"'>"+ jellyfin_ico + "</a>";
+                        if(setting.emby){
+                            var jellyfin_ico =  '<svg  role="img" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" ><path d="M469.333333 85.333333L256 298.666667l42.666667 42.666666-213.333334 213.333334 213.333334 213.333333 42.666666-42.666667 213.333334 213.333334 213.333333-213.333334-42.666667-42.666666 213.333334-213.333334-213.333334-213.333333-42.666666 42.666667-213.333334-213.333334m-42.666666 277.333334l256 149.333333-256 149.333333v-298.666666z" fill="#05b010" p-id="1934"></path></svg>'
+                            div_jellyfin.innerHTML = "<a class='actor-jellyfin' target='_blank' title='' href= '"+ setting.jellyfinHost + "web/index.html#!/item?id=" + data.Items[0].Id  + "&serverId="+ data.Items[0].ServerId +"'>"+ jellyfin_ico + "</a>";
+                        }else{
+                            var jellyfin_ico =  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="30%" style="stop-color:#AA5CC3;stop-opacity:1" /><stop offset="100%" style="stop-color:#00A4DC;stop-opacity:1" /></linearGradient><path style="fill:url(#grad3)" d="M12 .002C8.826.002-1.398 18.537.16 21.666c1.56 3.129 22.14 3.094 23.682 0C25.384 18.573 15.177 0 12 0zm7.76 18.949c-1.008 2.028-14.493 2.05-15.514 0C3.224 16.9 9.92 4.755 12.003 4.755c2.081 0 8.77 12.166 7.759 14.196zM12 9.198c-1.054 0-4.446 6.15-3.93 7.189.518 1.04 7.348 1.027 7.86 0 .511-1.027-2.874-7.19-3.93-7.19z"/></svg>'
+                            div_jellyfin.innerHTML = "<a class='actor-jellyfin' target='_blank' title='' href= '"+ setting.jellyfinHost + "web/index.html#!/details?id=" + data.Items[0].Id  + "&serverId="+ data.Items[0].ServerId +"'>"+ jellyfin_ico + "</a>";
+                        }
                         // 插入到演员dom的后面
                         var div_parent = div_actor.parentNode;
                         if(div_parent.lastChild == div_actor){

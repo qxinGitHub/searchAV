@@ -8,7 +8,7 @@
 * 默认没有启用的其他功能, 需要在设置中开启:  
 	* 开启`色花堂` 搜索按钮, 需要在设置中开启 `"sehuatang":true,`
 	* 划词搜索默认处于关闭状态  
-	* 查询本地 jellyfin/EMBY 中是否存在相关番号,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`  
+	* 查询本地 jellyfin/Emby 中是否存在相关番号,需要设置两处: 本地地址 `jellyfinHost` 和ApiKey `jellyfinApiKey`, Emby还需要设置为`emby:true,`  
 
 ![2022-08-17 自带12色.gif (871×654) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-08-17%20%E8%87%AA%E5%B8%A612%E8%89%B2.gif)
 
@@ -48,6 +48,7 @@
 "closeLoadingAnimation":false,  // 关闭信息加载时的动画
 "addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
 "sehuatang":false,  // 添加色花堂的搜索按钮
+"emby":false,   // 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
 "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
 "jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
 "qBitHost":"http://localhost:8080/", //本地 qBittorrent 的地址
@@ -198,6 +199,11 @@
 - 默认:`false`
 * `true`:  将色花堂的搜索添加到列表中。点击后, 由于需要解析地址, 所以新开网页会慢一些。
 * 提示: 如果失败的话,则会打开色花堂的搜索界面(此时并没有搜索具体内容), 可以直接粘贴就行, 已经自动复制好番号。
+
+`"emby":false,`   
+- 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
+- 默认: `false`
+- `true`: 使用本地的 Emby 搜索,  地址和apikey依旧设置在`jellyfinHost`和`jellyfinApiKey` 。
 
 `"jellyfinHost":"http://localhost:8096/",`
 * 本地的jellyfin的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
@@ -421,7 +427,12 @@ list_all":[
 ---
 # 六、更新历史
 
-> v0.20.2  2022-12-16
+> v0.20.3  2023-01-08
+- 修复: `emby` 搜索, 需要在设置中添加 `"emby":true,` 。
+- 修复: 设置中改为点击弹菜单后, 点击链接中的番号会跳转链接, 无法触发菜单的问题。
+- 调整: 无横杠的番号, 中间连续两个空格也可以识别
+
+> v0.20.2  2022-12-16
 - 修复: 色花堂打开失败时, 番号无法复制成功的问题。 该问题自 v.20.0 添加相关功能后出现。
 
 > v0.20.1  2022-12-15
@@ -901,7 +912,6 @@ list_all":[
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
 
-<!-- %% 
 # 九、待做
 ## 1. 已知问题
 1. [ ] [k1400 餌食牝 -- 西田結菜 - JavBus](https://www.javbus.com/K1400) 标题中依旧有番号, 原因是内部将番号大写, 所以无法匹配到标题中的小写番号。解决方法: 转为正则
@@ -910,13 +920,21 @@ list_all":[
 4. [ ] [分享几部霓虹萝莉 - 老司机福利讨论区 - 老司机论坛 (javbus.com)](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=109333&extra=page%3D1) 第一个番号 1PONDO-032214_777 识别错误的问题, 原因是将 1PONDO 也识别成番号的一部分。具体是哪个正则识别到的并未排查。
 ## 2.用户反馈
 1. [ ] 支持下用alist搭建的站点[根据番号快速搜索 - 反馈 (greasyfork.org)](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/discussions/160849)
-## 3.新添加内容
+## 3.新添加内容/优化改进
 1. [ ] 将信息显示的部分用表格展现, 进而点击前面标签可以复制后面的内容
 2. [ ] 显示的信息能够自定义排序,  进而可以自定义显示内容
 3. [x] 页面多个相同的番号, 浏览过一个番号, 其他相同番号不会变色的问题 [露出勾引/公共使用题材汇总，长期更新，悬赏补充 - JAVLibrary](https://www.javlibrary.com/cn/publictopic.php?id=122596) 2022-12-15 v0.20.1 完成
 4. [ ] setting2 里的内容现在无法删除, 应当在用户删除 setting1 的内容时, 同步删除setting2 的内容。
-5. [ ] 链接后台打开
-%% -->
+5. [ ] 设置选项: 链接后台打开
+6. [x] 设置选项:  `jellyfin` 的名字可以更改成`emby` 
+7. [ ] 2023-01-06 设置选项: 增加图标显示
+8. [ ] 2023-01-07 设置选项: 番号后面添加个搜索的图标, 鼠标滑过图标触发, 不直接作用于番号
+
+## 4.已知, 但不认为是问题
+1. 连续省略字母的番号, 后续不识别
+	-   [求几部義父按摩儿媳的片子 - JAVLibrary](https://www.javlibrary.com/cn/publictopic.php?id=162213)
+	-  原因是数字中间有两个空格, 暂时不考虑改进正则。
+
 ---
 # 开源代码许可
 - [findAndReplaceDOMText](https://github.com/padolsey/findAndReplaceDOMText) version:0.4.6 作者:padolsey, 许可协议:[unlicense](https://unlicense.org/)  

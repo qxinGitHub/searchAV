@@ -2588,8 +2588,9 @@
             "closeLoadingAnimation":false,  // 关闭信息加载时的动画
             "addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
             "sehuatang":false,  // 添加色花堂的搜索按钮
-            "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
-            "jellyfinApiKey":"",    // 外部程序需要密钥才能和jellyfin通信。  “设置 - 控制台 - API密钥” 点击加号生成一个
+            "emby":false,   // 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
+            "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin/emby的地址
+            "jellyfinApiKey":"",    // 外部程序需要密钥才能和jellyfin/emby通信。  “设置 - 控制台 - API密钥” 点击加号生成一个
             "qBitHost":"http://localhost:8080/", //本地 qbit 的地址
             "qBitDownload":"",    // 在qbit中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
             "qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载

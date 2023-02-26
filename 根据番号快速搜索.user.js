@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.20.3
+// @version      0.20.4
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -9,7 +9,7 @@
 // @match        *://**/*
 // @require     https://greasyfork.org/scripts/447533.js?version=1108523
 // @require     https://greasyfork.org/scripts/452219.js?version=1099124
-// @require     https://greasyfork.org/scripts/452792.js?version=1120736
+// @require     https://greasyfork.org/scripts/452792.js?version=1154510
 // @exclude	    *://meta.appinn.net/*
 // @exclude	    *://v2ex.com/*
 // @exclude	    *://www.v2ex.com/*
@@ -33,6 +33,7 @@
 // @exclude     *://*.amazon.tld/*
 // @exclude	    *.flightradar24.com/*
 // @exclude	    *.obsidian.md/*
+// @exclude	    *.runoob.com/*
 // @exclude	    https://regex101.com/
 // @exclude	    https://discord.com/*
 // @exclude	    https://web.telegram.org/*
@@ -45,6 +46,9 @@
 // @exclude     *detail*
 // @exclude     *tools*
 // @exclude     *translate*
+// @exclude     */releases
+// @exclude     */releases/*
+// @exclude     *:5244*
 // @exclude     *:8080*
 // @connect     *
 // @connect      javbus.com
@@ -163,7 +167,7 @@
     //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------|--------------------------------------------------------------普通番号, 不带横杠-------------------------------------------------------------------------------------------------|-------------字母特别的番号-------------------------|---------字母超长的番号----------------------|     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        ||       HEYZO             
     var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and)[a-zA-Z]{2,6}\s{0,2}\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 发表| 發表|歳| 歲|分|系列| Min| day| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)|HEYZO[_-\s]?(?:hd_)?\d{4}/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
-    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、和跟]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
+    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,，、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、，和跟]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
     //                  ;--------- mgstage 字母 + 数字 + 字母 -----------------------|--------- FC2 ----------------|     HEYDOUGA                |      T28       | TMA 5位,6位,3位(没匹配)   |         1000girl   数字 + 字母             |MUGEN Entertainmen: MKD-S  MKBD-S |    素人 | 北池袋盗撮倶楽部            | japornXXX: JPNXXX       | xxx-av                   |    crazyasia               | PEWORLD                   |   10Musume  6位数字_01          |熟女俱乐部
     var oRegExp_wuma = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-|.torrent|年)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)T28-\d{3}|(?<!\w)T-2\d{4,5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w)MK(?:B)?D-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)[01]\d{5}[-_]?_01(?=-10mu)?|Jukujo-Club-\d{3}/gi;
@@ -171,86 +175,148 @@
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
     //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字                                 |卡西欧         |细胞相关
-    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|sha-256|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de)[\s-]\d{2}|(gm|ga)-\d{4})|cd[\s-]?\d{2,4}$/i
+    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de)[\s-]\d{2}|(gm|ga)-\d{4})|cd[\s-]?\d{2,4}$/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|jt|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mm|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vv|win|with|width|wikis|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|ccie|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|jt|keccak|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mm|mvp|ms|nature|nc|next|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|sha|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vv|win|with|width|wikis|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|zd|zip)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找. 2022-10-23 v0.19.3注: 可能会被弃用
     var oRegExp_SuRen = /ANAN|ARA|BEAF|BKKJ|BSKC|BSKJ|CCDV|CUTE|DAVC|DCV|DDH|ECSN|ENE|ERKR|EROFC|FKNP|FLC|FTHT|GANA|GESB|GRQR|GRMO|GRMR|HABJ|HHL|HMDN|HMDNC|HMT|HOMEV|IMGN|IND|INSF|INSTC|JAC|JNT|JPNXXX|KING|KNB|LBJ|LOG|LUXU|MAAN|MCHT|MFC|MIUM|MKGF|MONA|NAEN|NMCH|NTK|NTR|OPCYN|OREC|ORECO|PAK|POK|pow|PPZ|PRGO|REIW|RKD|SCOH|SGK|SHE|SHINKI|SIRO|SIROR|SIMM|SQB|SROM|SSDV|SSK|STCV|STH|SUKE|TEN|TKOL|TKPR|WITH|\d{6}|(?:k|n)\d{4}/i
     // 磁力链接
     var oRegExp_Magnet = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}|(?<!\w|\/|\||=)[0-9a-fA-F]{40}(?!\w|-)/ig
-    // 特别的className,在这些class中不识别番号。 /name|auth|user|code/i; pstatus:javbus修改帖子的用户名;
-    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|(?<!_tl_|ql-)editor|time|sav-id|sidebar|menu/gi
+    // 特别的className,在这些class中不识别番号。 /name|auth|user|code/i; pstatus:javbus修改帖子的用户名; TbwUpd:谷歌搜索页面链接
+    window.qxin.RE_Exclude_className = /name|auth|user|(?<!home)code|^pstatus$|(?<!_tl_|ql-)editor|time|sav-id|sidebar|menu|TbwUpd/gi
 
     // 用于预告视频的链接转换 
     if(!setting.dontGetVideo){
         cid = {
             abp: ["118abp"],
+            abw:["118abw"],
             aed: ["aed"],
+            aege:["1aege"],
             akdl: ["1akdl00"],
+            ako: ["ako"],
             anb: ["anb"],
             apaa: ["apaa"],
             apns: ["apns"],
             aran: ["aran"],
+            atid:["atid00"],
+            avop:["h_455avop00"],
             awd: ["awd"],
+            bank: ["h_1495bank"],
             bazx: ["bazx"],
+            bbtu:["bbtu"],
+            bdsr:["57bdsr"],
+            bfd: ["24bfd00"],
+            bfkb: ["h_1285bfkb00"],
+            bjd:["bjd"],
+            bkynb: ["1bkynb00"],
+            blb:["blb"],
+            bskc:["bskc"],
+            clot: ["h_237clot"],
             cmv: ["cmv"],
             dandy: ["1dandy"],
+            davk:["55davk"],
             dldss: ["1dldss"],
+            dori:["h_491dori"],
             drpt: ["1drpt"],
             dtvr: ["24dtvr00"],
             dv: ["53dv"],
             dvaj: ["dvaj00"],
             dvdes: ["1dvdes"],
             ekdv: ["ekdv"],
+            emth:["h_1638emth"],
+            erofc:["erofc"],
+            fbos:["fbos"],
             fera: ["h_086fera00"],
             fgan: ["h_1440fgan00"],
+            fiv:["118fiv"],
+            fneo: ["h_491fneo"],
             fone: ["h_491fone"],
             fsdss: ["1fsdss"],
             fset: ["1fset"],
             fsvr: ["h_955fsvr00"],
             ftht: ["1ftht00"],
             fuga: ["h_086fuga00"],
+            gar: ["1gar00"],
+            gar:["1gar"],
+            gas: ["71gas"],
+            gnab:["118gnab"],
+            gone: ["h_1133gone"],
             gvg: ["13gvg"],
             haru: ["h_687haru"],
+            havd: ["1havd"],
+            hbad:["1hbad"],
+            hez:["59hez"],
             hkd: ["hkd"],
+            hmnf:["h_172hmnf00"],
+            hnd:["hnd00"],
             hoks: ["hoks"],
+            honb:["h_1133honb"],
             hz: ["h_113hz"],
             hzgb: ["h_1100hzgb"],
+            hzgd:["h_1100hzgd00"],
+            instc:["instc"],
+            jbs:["118jbs"],
             jrze: ["h_086jrze00"],
+            jsop:["jsop"],
             jukf: ["h_227jukf"],
+            keed:["h_086keed"],
+            kri:["h_286kri"],
             ktra: ["h_094ktra00"],
             lol: ["12lol00"],
+            macb:["h_687macb"],
+            mas:["118mas"],
+            mct: ["118mct"],
             mdbk: ["mdbk"],
+            mdiv:["midv00"],
             mds: ["84mds"],
             mdtm: ["mdtm"],
             meko: ["h_1160meko00"],
             mesu: ["h_086mesu00"],
+            mist:["1mist"],
             mkmp: ["mkmp"],
             mogi: ["1mogi"],
+            moko: ["h_254moko"],
+            moko: ["h_254moko"],
+            mond:["18mond"],
             mtall: ["1mtall00"],
+            mxgs:["h_068mxgs"],
+            natr:["h_067natr00"],
+            neo:["433neo"],
+            nhdta:["1nhdta00"],
             nhdtb: ["1nhdtb"],
-            nsfs: ["nsfs00"],
             nsfs: ["nsfs"],
+            nsfs: ["nsfs00"],
+            nxgs: ["h_254nxgs"],
+            nyh:["1nyh00"],
             ofku: ["h_254ofku"],
+            omhd: ["omhd"],
+            onez:["h_1674onez"],
             ovg: ["ovg"],
+            pako:["h_1133pako"],
             piyo: ["1piyo"],
+            pppd:["pppd00"],
             ppt: ["118ppt"],
+            pred:["pred00"],
             pydvr: ["h_1321pydvr00"],
             pym: ["h_283pym"],
             rct: ["1rct"],
             rctd: ["1rctd"],
+            rdt:["118rdt"],
             real: ["real"],
             rebd: ["h_346rebd"],
             rvg: ["rvg"],
             saba: ["saba"],
+            sait:["55sait"],
+            san:["h_796san00"],
             scd: ["scd"],
             scop: ["scop"],
             scpx: ["84scpx"],
             sdab: ["1sdab"],
+            sdam:["1sdam"],
             sdde: ["1sdde"],
             sdjs: ["1sdjs"],
             sdmf: ["1sdmf"],
@@ -259,95 +325,54 @@
             sdmua: ["1sdmua"],
             sdnm: ["1sdnm"],
             sdth: ["1sdth"],
+            sga:["118sga"],
             shh: ["1shh00"],
+            shic:["h_839shic"],
             shind: ["h_1560shind00"],
             shn: ["1shn00"],
             silkc: ["1silkc00"],
             sinn: ["sinn"],
             skmj: ["h_1324skmj"],
+            sma:["sma"],
+            sprd:["18sprd"],
             spro: ["h_1594spro00"],
             spz: ["h_254spz"],
             sqis: ["sqis"],
+            ssk:["ssk"],
             star: ["1star"],
-            stars: ["1stars"],
+            stars: ["1stars","1stars00"],
             stcv: ["h_1616stcv00"],
+            stko:["1stko00"],
             sun: ["1sun"],
             svdvd: ["1svdvd"],
+            svmgm:["1svmgm"],
             sw: ["1sw"],
             t28: ["55t28"],
-            udak: ["h_254udak"],
-            umd: ["125umd"],
-            vema: ["vema"],
-            venx: ["venx"],
-            wo: ["1wo"],
-            zex: ["h_720zex"],
-            // 自行添加
-            atid:["atid00"],
-            aczd:["h_019aczd00"],
-            ako: ["ako"],
-            bank: ["h_1495bank"],
-            bbtu:["bbtu"],
-            bfd: ["24bfd00"],
-            bfkb: ["h_1285bfkb00"],
-            bjd:["bjd"],
-            bkynb: ["1bkynb00"],
-            blb:["blb"],
-            bskc:["bskc"],
-            clot: ["h_237clot"],
-            davk:["55davk"],
-            erofc:["erofc"],
-            fbos:["fbos"],
-            fneo: ["h_491fneo"],
-            gar: ["1gar00"],
-            gas: ["71gas"],
-            gone: ["h_1133gone"],
-            havd: ["1havd00"],
-            jsop:["jsop"],
-            mct: ["118mct"],
-            moko: ["h_254moko"],
-            mxgs:["h_068mxgs"],
-            neo:["433neo"],
-            omhd: ["omhd"],
-            pako:["h_1133pako"],
-            shic:["h_839shic"],
-            sma:["sma"],
             tkol:["tkol"],
             tmhp: ["h_452tmhp"],
             tmvi: ["h_452tmvi00"],
             tppn:["tppn"],
+            udak: ["h_254udak"],
+            umd: ["125umd"],
+            urkk:["urkk00"],
             vagu: ["vagu"],
+            vema: ["vema"],
             venu: ["venu"],
+            venx: ["venx"],
+            vrtm:["h_910vrtm"],
+            wo: ["1wo"],
+            wps:["118wps"],
+            xrw:["84xrw"],
+            xrw:["84xrw"],
             xvsr:["xvsr"],
             ymdd:["ymdd"],
             zeaa: ["h_086zeaa00"],
-            keed:["h_086keed"],
-            svmgm:["1svmgm"],
-            xrw:["84xrw"],
-            ssk:["ssk"],
-            natr:["h_067natr00"],
-            gar:["1gar"],
-            mas:["118mas"],
-            mist:["1mist"],
-            instc:["instc"],
-            xrw:["84xrw"],
-            nxgs: ["h_254nxgs"],
-            sdam:["1sdam"],
-            urkk:["urkk00"],
-            nyh:["1nyh00"],
-            abw:["118abw"],
-            hbad:["1hbad"],
-            sga:["118sga"],
-            gnab:["118gnab"],
-            hnd:["hnd00"],
-            pppd:["pppd00"],
-            hez:["59hez"],
-            vrtm:["h_910vrtm"],
-            sprd:["18sprd"],
-            emth:["h_1638emth"],
+            zex: ["h_720zex"],
+            //  填零
+            // aczd:["h_019aczd","h_019aczd00"],
+            aczd:["h_019aczd"],
+            docp:["118docp","118docp00"],
             // 未验证
-            moko: ["h_254moko"],
-            dbzc: ["dbzc"],
-            ddhg: ["h_175ddhg00"],
             // 多个
             // h_139doks571   36doks00567
             doks:["h_139doks","36doks00"],
@@ -390,6 +415,11 @@
     // 滑词搜索 
     if(setting.selectLength && setting.selectLength>0){
         document.onmouseup = selectSearch
+    }
+
+    // 切换页面 暂停预览视频播放
+    if(setting.dontClearMenu){
+        document.addEventListener("visibilitychange",visibilitychangeFun);  // 切换页面 暂停预览视频播放
     }
 
     // 
@@ -597,7 +627,7 @@
         if(setting.clickToMenu){
             odiv.addEventListener("click",savIDMouseEnter);    // 点击鼠标 开启菜单
         }else{
-            odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标进入 开启菜单
+            odiv.addEventListener("mouseenter",savIDMouseEnter);    // 鼠标滑过 开启菜单
         }
         odiv.addEventListener("mouseleave",savIDMouseLeave);    // 鼠标离开 关闭菜单
 
@@ -627,18 +657,22 @@
     // 创建搜索基本菜单(搜索按钮)
     function createPattenr(id,id_wuma){
         let aPattern = `<avdivbutton>`
-        // 添加特定按钮
+        // 添加 相关页面 按钮
+        if(!setting.close_Related_Page){
+            aPattern +=  `<avdiv class='savlink relatedPage RPdisabled'><a href='' target='_blank' referrerpolicy='same-origin'>JavBus 页面</a></avdiv>`;
+        }
+        // 添加特定搜索
         if(id.match(/fc2/i)){
             var basiceSearch = `https://fc2hub.com/search?kw=${id_wuma}`;
-            aPattern +=  `<avdiv class='savlink basiceSearch'><a href='${basiceSearch}' target='_blank' referrerpolicy='same-origin'>fc2hub 搜索</a></avdiv><avdiv class='savlink'><a href='${javDBLink}search?q=${id_wuma}&f=all' target='_blank' referrerpolicy='same-origin'>JavDB 搜索</a></avdiv>`;
+            aPattern +=  `<avdiv class='savlink'><a href='${basiceSearch}' target='_blank' referrerpolicy='same-origin'>fc2hub 搜索</a></avdiv><avdiv class='savlink'><a href='${javDBLink}search?q=${id_wuma}&f=all' target='_blank' referrerpolicy='same-origin'>JavDB 搜索</a></avdiv>`;
             var savList = setting.list_wuma;
         }else if(id_wuma){
             var basiceSearch = `${javDBLink}search?q=${id_wuma}&f=all`;
-             aPattern +=  `<avdiv class='savlink basiceSearch'><a href='${basiceSearch}' target='_blank' referrerpolicy='same-origin'>JavDB 搜索</a></avdiv>` ;
+             aPattern +=  `<avdiv class='savlink'><a href='${basiceSearch}' target='_blank' referrerpolicy='same-origin'>JavDB 搜索</a></avdiv>` ;
             var savList = setting.list_wuma;
         } else{
             var basiceSearch = javbusLink + "search/" + id;
-             aPattern +=  "<avdiv class='savlink basiceSearch'>" + "<a href='" + basiceSearch +"' target='_blank' referrerpolicy='same-origin'>JavBus 搜索</a>" +"</avdiv>" ;
+             aPattern +=  "<avdiv class='savlink'>" + "<a href='" + basiceSearch +"' target='_blank' referrerpolicy='same-origin'>JavBus 搜索</a>" +"</avdiv>" ;
             var savList = setting.list;
         }
         if(savList){
@@ -1080,9 +1114,9 @@
                         }, 300);
                         // 重新获取信息
                         getInfo(avID.replace("-","-0"),true);
-                        var basicLink = document.querySelector(".basiceSearch a");
-                        if(basicLink){
-                            basicLink.href = basicLink.href.replace("-","-0");
+                        let relatedPage = document.querySelector(".relatedPage a");
+                        if(relatedPage){
+                            relatedPage.href = relatedPage.href.replace("-","-0");
                         }
                     } else if(avID.match(oRegExp_SuRen) || (setting.getInfoFailToJavDB??true) ){
                         getInfo_wuma_javdb1(avID);
@@ -1127,7 +1161,7 @@
                 // 封面
                 var image = htmlDoc.querySelector(".bigImage img");
                 if(image){ 
-                    changeBasiceSearch(javbusLink + avID, "JavBus 页面");
+                    changeRelatedPage(javbusLink + avID, "JavBus 页面");
 
                     var imgSrc = image.src;
                     if(imgSrc.search("dmm.co.jp")<0){
@@ -1309,7 +1343,7 @@
                 let image = document.createElement("img");
                 image.src = imgSrc;
                 
-                changeBasiceSearch(link, "fc2hub 页面");
+                changeRelatedPage(link, "fc2hub 页面");
 
                 getInfo_end(avID,data,image);
             }
@@ -1403,7 +1437,7 @@
                 var avLink = searchResult[0].querySelector("a").href;
                 avLink = javDBLink.slice(0,-1) + avLink.slice(avLink.search(/\/v\//i));
 
-                changeBasiceSearch(avLink, "JavDB 页面")
+                changeRelatedPage(avLink, "JavDB 页面")
 
                 getInfo_wuma_javdb2(avID,avLink)
             }
@@ -1468,6 +1502,7 @@
                     let videoURL = htmlDoc.querySelector("video source")?.src;
                     if(videoURL?.includes("mp4")){
                         avInfo.video = videoURL;
+                        javdbVideoTest(videoURL,avID);
                     }
                 }
                 
@@ -1475,6 +1510,26 @@
             }
         });
     }
+    // javdb网页中自带的视频链接判断是否有效
+    async function javdbVideoTest(link,avID){
+        await GetMess(link)
+            .then((res) =>{
+                if(res.status == 200){
+                    if(debug)console.log("javdb中的链接正常")
+                    return link;
+                }else{
+                    if(debug)console.error("javdb中的链接有误 X")
+                    let videoButton = document.querySelector(".avimg-preview-button");
+                    if(videoButton){
+                        videoButton.parentNode.removeChild(videoButton);
+                        localInfo[avID].video = false;
+                        GM_setValue("avInfo2",localInfo);
+                    }
+                    return false
+                }
+            })
+    }
+
     // 将获取到的信息进行展示和保存
     function getInfo_end(avID,data,image){
         // removeLoading()
@@ -1634,11 +1689,11 @@
         // 浏览过的番号,从本地加载链接。 信息只获取一次, 避免被网站拉黑IP
         if(localInfo[avID].link){
             if(localInfo[avID].link.indexOf("javdb")>-1){
-                changeBasiceSearch(localInfo[avID].link,"JavDB 页面",avID);
+                changeRelatedPage(localInfo[avID].link,"JavDB 页面",avID);
             }else if(localInfo[avID].link.indexOf("javbus")>-1){
-                changeBasiceSearch(localInfo[avID].link,"JavBus 页面",avID);
+                changeRelatedPage(localInfo[avID].link,"JavBus 页面",avID);
             }else if(localInfo[avID].link.indexOf("fc2hub")>-1){
-                changeBasiceSearch(localInfo[avID].link,"fc2Hub 页面",avID);
+                changeRelatedPage(localInfo[avID].link,"fc2Hub 页面",avID);
             }
         }
 
@@ -1682,15 +1737,17 @@
         }
     }
 
-    function changeBasiceSearch(link,txt,avID){
-        if(avInfo.correctID || localInfo[avID]?.correctID){
-            return;
+    function changeRelatedPage(link,txt,avID){
+        // if(avInfo.correctID || localInfo[avID]?.correctID){
+        //     return;
+        // }
+        let relatedPageButton = document.querySelector(".relatedPage");
+        let relatedPage = relatedPageButton?.querySelector("a");
+        if(relatedPage){
+            relatedPage.href = link;
+            relatedPage.innerHTML = txt;
         }
-        let basicLink = document.querySelector(".basiceSearch a");
-        if(basicLink){
-            basicLink.href = link;
-            basicLink.innerHTML = txt;
-        }
+        relatedPageButton?.classList.remove("RPdisabled")
     }
 
     // 重新获取信息, 通常是在本地信息不完整的情况下会调用该函数。例:noInfo为true, 或者缺少图片
@@ -1796,7 +1853,7 @@
 
     // 格式化番号, 添加中间的横杠
     function formatAVID(otext){
-        otext = otext.replace(/-c|_c|-4k/i,"").replace(/\s+/g,"")
+        otext = otext.replace(/\s+|-c|_c|-4k|carib[-_]|1pondo[-_]|-1pon|-paco|-carib|hd_/ig,"");
         if(otext.match((/^[a-z|A-Z]{2,8}\d{2,5}$/i))){
             var oindex = otext.search(/\d/);
             if(oindex>0){
@@ -2068,7 +2125,7 @@
             let videoButton = document.createElement("savdiv");
             videoButton.classList.add("avimg-preview-button");
             avimg.parentNode.insertBefore(videoButton,avimg);
-            videoButton.addEventListener("click",addVideoDiv(videoURL));
+            videoButton.addEventListener("click",addVideoDiv(videoURL, avID));
         }
 
         return videoURL;
@@ -2117,18 +2174,31 @@
             if (res.ok) {
                 if(debug) console.log("视频加载: 第 1 次测试链接: " + videoURL);
                 return videoURL;
+            }else{
+                if(debug){"第一次测试链接失败"};
+                throw Error
             }
+            // if(res.status == 404){
+            //     throw Error
+            // }
         })
         .catch((e) => {
             if(debug) console.log("视频加载: 报错",videoURL);
 
-            if (cid[corp] && cid[corp][2]) {
+            if (cid[corp] && cid[corp][1]) {
                 if(debug) console.log("视频加载: 默认URL规则,第二种")
                 urlPart = cid[corp][1] + idNum;
             }else{
-                // todo: 可以用 includes()判断是否有 00 , 有就删除, 没有就添加。
-                urlPart = urlPart.replace("00","");
+                if(urlPart.includes("00")){
+                    if(debug) console.log("视频加载: 默认URL规则,第二种:存在00")
+                    urlPart = urlPart.replace("00","");
+                } else {
+                    if(debug) console.log("视频加载: 默认URL规则,第二种:不存在00")
+                    let oindex = urlPart.search(/[a-z]\d/i) +1;
+                    urlPart = urlPart.slice(0,oindex) + "00" + urlPart.slice(oindex)
+                }
             }
+
             let videoURL2 = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
             return fetch(videoURL2)
             .then((res) => {
@@ -2142,10 +2212,13 @@
                   GM_setValue("_setting2",setting2);
 
                   return videoURL2;
+                }else{
+                if(debug){"第二次测试链接失败"};
+                throw Error
                 }
             })
             .catch((e) => {
-                if(debug) console.log("视频加载: 链接还是错误");
+                if(debug) console.log("视频加载: 链接还是错误",videoURL2);
                 let setting2 = GM_getValue("_setting2");
                 setting2.cid_user = setting2.cid_user ?? {};
                 setting2.cid_user[corp] = [urlPart.slice(0,-idNum.length),avID,false];
@@ -2220,11 +2293,11 @@
     }
 
     // 添加视频
-    function addVideoDiv(videoURL){
+    function addVideoDiv(videoURL, avID){
         return function(){
             let videoDiv = document.createElement("avdivVideo");
             videoDiv.innerHTML = `
-                <video class="avVideo" controls autoplay loop >
+                <video class="avVideo" poster="${localInfo[avID].image}" controls autoplay loop >
                     <source src="${videoURL}" type="video/mp4">
                 </video>
                 <avidv class="savVideoClose"> X </avdiv>
@@ -2264,6 +2337,16 @@
             let imgDiv = document.querySelector("avdivimg");
 
             imgDiv.appendChild(videoDiv)
+        }
+    }
+    //  切换页面 暂停预览视频播放
+    function visibilitychangeFun(e){
+        if(e.target.hidden){
+            document.querySelector("avdiv .avVideo")?.pause();
+            document.querySelector(".main-video")?.pause(); // FC2
+        }else{
+            document.querySelector("avdiv .avVideo")?.play(); 
+            // document.querySelector(".main-video")?.play();  // FC2 仅自动暂停, 不会自动播放
         }
     }
 
@@ -2586,6 +2669,7 @@
             "infoReload": false,    // 浏览过的番号将不会重复获取信息, 避免IP地址被网站拉黑。
             "closeJavdbLimit":false,    // 禁止在短时间内多次访问javdb。 设为 true 可以关闭限制, 容易封IP
             "closeLoadingAnimation":false,  // 关闭信息加载时的动画
+            "close_Related_Page":false, // 关闭相关页面的按钮(第一个按钮)
             "addOtherButton":false, // 添加3个额外的按钮: 1,设置按钮; 2,番号按钮,点击复制; 3,关闭按钮
             "sehuatang":false,  // 添加色花堂的搜索按钮
             "emby":false,   // 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
@@ -2636,6 +2720,7 @@
     // 清空设置
     function clearSetting(){
         GM_deleteValue("_setting");
+        GM_deleteValue("_setting2");
         localInfo = {};
         savBoxClose();
         location.reload();
@@ -2739,15 +2824,16 @@
                 cursor: pointer;
                 user-select: none;
             }
-            .savlink:hover{
+            .savlink:not(.RPdisabled):hover{
                 background: aliceblue;
                 box-shadow: -2px -2px 6px rgb(255 255 255 / 50%), 1px 1px 2px rgb(70 70 70 / 50%), inset -2px -2px 6px rgb(255 255 255 / 50%),inset 2px 2px 6px rgb(100 100 100 / 50%);
             }
             .sav-menu .savlink a{
                 color:#459df5;
                 text-decoration:none;
+                transition:0.4s;
             }
-            .sav-menu .savlink:hover a {
+            .sav-menu .savlink:not(.RPdisabled):hover a {
                 color: #039cff;
                 text-shadow: 0 0 #7cfb80;
             }
@@ -2759,6 +2845,16 @@
             }
             avdivsinfo a:hover{
                 color: #850000; 
+            }
+            /* 相关页面按钮 */
+            .relatedPage.RPdisabled{
+                cursor:default;
+            }
+            .relatedPage.RPdisabled a{
+                cursor:default;
+                pointer-events:none;
+                text-decoration:line-through;
+                color:#333;
             }
 
             avdivsinfo{
@@ -2969,6 +3065,7 @@
                 object-fit: contain;
                 background: #fff9;
                 backdrop-filter: blur(5px);
+                border-radius:4px;
             }
             .savVideoClose {
                 position: absolute;
@@ -3010,6 +3107,14 @@
                     opacity: 0;
                     transform:scale(0);
                 }
+            }
+
+            /* 对其他网站的一些更改 */
+            .fc2-embed-video-player.opt_logo .fc2-video-player .fc2-video-metadata{
+                display:none !important;
+            }
+            .fc2-video-player-logo{
+                display:none !important;
             }
             `;
         styleText += styleAVID;

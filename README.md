@@ -298,7 +298,8 @@ list_all":[
 * 开启需要设置`jellyfinHost` 和`jellyfinApiKey` 
 * 理论上emby也可以使用, 因为相关API就是从emby中查询的。 
 * 查询结果仅供参考, 存在结果不对的情况, 尤其是jellyfin中存在两个相同番号的时候。
-* 使用的版本:  [jellyfin 10.8.3](https://github.com/jellyfin/jellyfin/releases/)
+* 如果的本地的影视库是用`MDCx.exe`进行刮削的, 建议把软件的`设置 - 翻译 -演员` 中演员语言调整为日语, 并且把下方翻译方式的`使用演员映射表翻译演员`给取消掉。这么做的原因是: 脚本主要是用 javbus 来获取信息, 在获取演员名字时, 使用的是日语, 和本地影视库对比时, 如果是中文, 则不识别。就出现一个问题, 明明我本地有这个演员, 为什么演员名字后面没有跳转链接。例如番号MIDE-924,  脚本获取的演员名字是`水卜さくら` , 但是如果用`MDCx.exe`软件默认刮削的时候, 本地存储的演员名字会变成`水卜樱`, 此时脚本再去浏览`水卜さくら`相关的影片时, 会无法查询到该演员。
+* 使用过的版本:  [jellyfin 10.8.3、10.8.8](https://github.com/jellyfin/jellyfin/releases/) 
 * 下图是效果图, 设置正确后, 会增加一个 `jellyfin` 的按钮,点击跳转至本地jellyfin; 如果jellyfin存在相关演员, 演员后面也会加一个按钮, 点击跳转至jellyfin的演员相关页面。
 * ![2022-09-26_08-14-57 jellyfin.jpg (642×591) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-26_08-14-57%20jellyfin.jpg)
 
@@ -421,7 +422,8 @@ list_all":[
 ### 5. 预览视频的相关情况
 * 普通番号没有预览视频: 
 	* 一些老番不显示预览视频正常, 尤其是14年之前的。官方有, 但是我这没有
-	* 新番也存在官方没有预览视频的情况
+	* 新番也存在官方没有预览视频的情况,例如`NMK、CEN` 整个系列都没有预览视频。
+	* 一些vr类视频没有预览, 例如 WANZVR 发行的`WAVR`系列、IP-VR 发行的而`IPVR`系列 
 * 预览视频的获取都是从售卖网站或者官方网站取得, 必须售卖网站或者官网目前还存在视频才可以播放
 * 对于素人、无码的预览视频, 看运气
 
@@ -431,7 +433,7 @@ list_all":[
 
 ---
 # 六、更新历史
-见 [[更新日志]] 
+见 [[更新日志]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)  
 
 ---
 # 七、相关资料
@@ -452,7 +454,7 @@ list_all":[
 
 
 # 九、待做
-见 [[待做事项]] 
+见 [[待做事项]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)   
 
 ---
 # 开源代码许可

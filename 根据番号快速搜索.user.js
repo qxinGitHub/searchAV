@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.20.4
+// @version      0.20.5
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -368,6 +368,7 @@
             ymdd:["ymdd"],
             zeaa: ["h_086zeaa00"],
             zex: ["h_720zex"],
+            fir:["118fir"],
             //  填零
             // aczd:["h_019aczd","h_019aczd00"],
             aczd:["h_019aczd"],
@@ -391,13 +392,35 @@
     var observerTarget = document.querySelector('body');    // 选择目标节点
     var observerConfig = {childList: true, characterData: true ,subtree:true,}; // 配置观察选项
     var observer = new window.MutationObserver(function(mutations) {    // 创建观察者对象  
-        mutations.forEach(function(mutation) { 
-            // if(debug){console.log("节点发生变化");console.log(mutation.target)}
-            allHTML = mutation.target
-            if(mutation.target.nodeType==1 && mutation.target.querySelector("savdiv")) return;
-            if(checkParentClass(mutation.target))return;
-            findAVID()
-        }); 
+        mutations.forEach(function(mutation) {
+            if(mutation.target.innerText.length<5){
+                // console.log(mutation.target.innerText);
+                if(debug)console.log("内容为空");
+            }
+            else if(checkParentClass(mutation.target)){
+                if(debug){console.log("存在不合适的父元素")}
+            }else{
+                observer.disconnect();  // 关闭对 dom 的监听
+                // if(debug){console.log("开始判断正则")}
+                if(mutation.target.innerText?.search(oRegExp)>-1){
+                    // console.log("普通番号");
+                    findAndReplaceDOMTextFun(mutation.target)
+                }
+                if(mutation.target.innerText.search(oRegExp2)>-1){
+                    // console.log("连续番号");
+                    findAndReplaceDOMTextFun2(mutation.target)
+                }
+                if(mutation.target.innerText.search(oRegExp_wuma)>-1){
+                    // console.log("无码番号");
+                    findAndReplaceDOMTextFun_Wuma(mutation.target)
+                }
+                if(mutation.target.innerText.search(oRegExp_wuma2)>-1){
+                    // console.log("连续无码番号");
+                    findAndReplaceDOMTextFun_Wuma2(mutation.target)
+                }
+                observer.observe(observerTarget, observerConfig);   // 开启对 dom 的监听
+            } 
+        })
     }); 
     
     addStyle()
@@ -426,10 +449,10 @@
     function findAVID(){
         if(debug){console.time("正则查询用时");}
         observer.disconnect();  // 关闭对 dom 的监听
-        findAndReplaceDOMTextFun_Wuma2();    //// 查找连续的 fc2 番号。 例: fc2-123456 567890
-        findAndReplaceDOMTextFun_Wuma();  // 查找fc2、素人、无码等番号 (无菜单,点击后会跳转到javdb进行搜索)
-        findAndReplaceDOMTextFun2();    // 省略字母, 连续数字的番号 例: abc-001、002、003
-        findAndReplaceDOMTextFun();     // 查找普通番号  (与上面的顺序不能变,否则会导致 2函数 失效)
+        findAndReplaceDOMTextFun_Wuma2(allHTML);    //// 查找连续的 fc2 番号。 例: fc2-123456 567890
+        findAndReplaceDOMTextFun_Wuma(allHTML);  // 查找fc2、素人、无码等番号 (无菜单,点击后会跳转到javdb进行搜索)
+        findAndReplaceDOMTextFun2(allHTML);    // 省略字母, 连续数字的番号 例: abc-001、002、003
+        findAndReplaceDOMTextFun(allHTML);     // 查找普通番号  (与上面的顺序不能变,否则会导致 2函数 失效)
         observer.observe(observerTarget, observerConfig);   // 开启对 dom 的监听
         if(debug) {console.timeEnd("正则查询用时"); console.log("本页面通过正则匹配的有: " + searchTimes + " . 实际的番号数量: " + avIDTimes);}
         if(!(setting.dontMagnetDiscern || setting.dontCopyMagnet )){    // 磁链
@@ -438,9 +461,8 @@
     }
 
     // 查找番号, 匹配最基础的番号
-    function findAndReplaceDOMTextFun(){
-        // console.log(allHTML);
-        findAndReplaceDOMText(allHTML, {
+    function findAndReplaceDOMTextFun(element){
+        findAndReplaceDOMText(element, {
             find:oRegExp,
             preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
             forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
@@ -469,15 +491,15 @@
                 
                 var odiv = addEventAndStyle(localInfo[avID],avID)   // 添加事件和样式
                 if(debug){avIDTimes++; console.log(avIDTimes + "番号: " + avID,otext);otext = "["+avIDTimes +"]" + otext;}
-                // odiv.dataset.av = avID;       
+
                 odiv.innerHTML = otext;
                 return odiv;
             }
         });
     }
     // 省略字母, 连续数字的番号 例: abc-001、002、003
-    function findAndReplaceDOMTextFun2(){
-        findAndReplaceDOMText(allHTML,{
+    function findAndReplaceDOMTextFun2(element){
+        findAndReplaceDOMText(element,{
             find: oRegExp2,
             preset: "prose",
             forceContext:findAndReplaceDOMText.NON_INLINE_PROSE, 
@@ -502,8 +524,8 @@
     // 查找番号, 匹配fc2、MGSTAGE(259LUXU等)、一本道、东京热、HEYZO等
         // 只有一个功能就是跳转到 javdb 进行搜索, 没有菜单, 也没有其他任何功能
         // 关于heyzo, 如果是后面跟横杠会触发上面的基础查找, 只有中间没有横杠或者有下划线的情况才会匹配这个。
-    function findAndReplaceDOMTextFun_Wuma(){
-        findAndReplaceDOMText(allHTML, {
+    function findAndReplaceDOMTextFun_Wuma(element){
+        findAndReplaceDOMText(element, {
             find:oRegExp_wuma,
             preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
             forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
@@ -536,8 +558,8 @@
         });
     }
     // 查找番号, 连续的 fc2 番号。 例: fc2-123456 567890
-    function findAndReplaceDOMTextFun_Wuma2(){
-        findAndReplaceDOMText(allHTML, {
+    function findAndReplaceDOMTextFun_Wuma2(element){
+        findAndReplaceDOMText(element, {
             find:oRegExp_wuma2,
             preset: 'prose', // 仅搜索文本元素(不搜索样式、脚本、对象等),开启会会默认启用下面(NON_INLINE_PROSE)的这个功能, 强制隔断上下文。
             forceContext: findAndReplaceDOMText.NON_INLINE_PROSE,    //调用内置的元素判断, 强制隔断上下文
@@ -652,6 +674,14 @@
         odiv.dataset.av = avID;    
 
         return odiv;
+    }
+    // 番号后面添加图标, 不作用于番号 // 可以整合到上面的函数中去
+    function addSearchButton(odiv,text){
+        let odiv2 = document.createElement("savdiv");
+        odiv2.innerHTML = text;
+        odiv.innerHTML = "✈"; //🔗
+        odiv2.appendChild(odiv);
+        return odiv2
     }
 
     // 创建搜索基本菜单(搜索按钮)
@@ -2189,7 +2219,7 @@
                 if(debug) console.log("视频加载: 默认URL规则,第二种")
                 urlPart = cid[corp][1] + idNum;
             }else{
-                if(urlPart.includes("00")){
+                if(urlPart.search(/00\d{3,4}/)>0){
                     if(debug) console.log("视频加载: 默认URL规则,第二种:存在00")
                     urlPart = urlPart.replace("00","");
                 } else {
@@ -2917,7 +2947,7 @@
             savdiv.sav-id{
                 transition: 0.5s;
             }
-            savdiv,
+            savdiv.sav-id,
             savmagnet {
                 cursor: pointer;
             }

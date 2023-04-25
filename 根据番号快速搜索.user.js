@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.20.6
+// @version      0.20.7
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -180,9 +180,9 @@
     //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字 sr是黑鸟侦察机               |卡西欧         |细胞相关        |csgo皮肤
     var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de|sr)[\s-]\d{2}|(gm|ga)-\d{4})|cd[\s-]?\d{2,4}|seed[\s-]?\d{3}$/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|cc|ccie|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|jt|keccak|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mm|mvp|ms|nas|nature|nc|next|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|sha|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|xfx)$/i
+    var oRegExp_Exclude_en = /^(?:about|aes|again|all|ak|akko|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|bzk|cc|ccie|cctv|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|fc|file|flyme|fps|for|fork|fuck|fx|gbx|get|gnz|gp|gt|gts|gtx|guest|hao|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|jukujo|joy|jp|jsr|jt|keccak|kv[bd]|Kirin|lancet|linux|lolrng|lpl|lumia|lg|macos|md|mh|miui|mipc|mm|mvp|ms|nas|nature|nc|next|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|row|rtx|rush|rx|sale|scp|sdm|sha|shp|sql|sn|snh|Socket|ssd|status|su|tcp|the|to|top|than|thread|ts|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|xfx)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|vip|zd|zip)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|crc|exynos|dp|gb|girl|jd|has|hc|hours|iq|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ver|vip|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 可能是素人、无码番号, 如果在javbus获取不到信息, 会继续从javdb中查找. 2022-10-23 v0.19.3注: 可能会被弃用
@@ -1105,10 +1105,11 @@
             odiv.style.position = "fixed";
             odiv.style.top = winHeight-oHeight + 2*loadingContainerHeight - 16 +"px";
             var posBottom =oHeight - (document.documentElement.clientHeight-divTarget.getBoundingClientRect().y) +30;
+            console.log(posBottom);
             if(posBottom<5){
                 posBottom = 5
             }
-            odiv.style.transformOrigin = odiv.style.transformOrigin.replace(" 5px"," "+posBottom+"px")
+            odiv.style.transformOrigin = odiv.style.transformOrigin.replace(/\s.+px/,` ${posBottom}px`)
         }
         if(oClient.x<0){   //左边
             odiv.style.position = "fixed";
@@ -2404,14 +2405,14 @@
     function sehuatang_getFormHash(){
         let setting2 = GM_getValue("_setting2");
         let sehuatang_getTime = setting2.sehuatang_getTime;
-
         let nowTime = new Date().getTime();
-        
+        let sehuatangURL = setting.sehuatangURL?setting.sehuatangURL.replace(/\/$/,""):"https://www.sehuatang.org";
+
         // 不确定这个值会不会变动, 12小时获取一次
         if(!sehuatang_getTime || nowTime-sehuatang_getTime > 43200000){
             GM_xmlhttpRequest({
             method:"get",
-            url:"https://www.sehuatang.org",
+            url:sehuatangURL,
             onload:function(data){
                 // console.log(data);
                 var parser=new DOMParser();
@@ -2431,7 +2432,6 @@
         }else{
             if(debug){console.log(`没有重新获取色花堂的formhash`)}
         }
-        
     }
     // 色花堂搜索
     function sehuatang(){
@@ -2439,15 +2439,17 @@
         let avID= divTarget.dataset.av;
         let formhash = GM_getValue("_setting2").sehuatang_formhash;
 
+        let sehuatangURL = setting.sehuatangURL?setting.sehuatangURL.replace(/\/$/,""):"https://www.sehuatang.org";
+
         if(formhash){
             GM_xmlhttpRequest({
                 method: "post",
-                url: "https://www.sehuatang.org/search.php?mod=forum",
+                url: sehuatangURL+"/search.php?mod=forum",
                 data: `formhash=${formhash}&srchtxt=${avID}&searchsubmit=yes`,
                 headers:  {
                     "Content-Type": "application/x-www-form-urlencoded",
-                    "Origin":`https://www.sehuatang.org`,
-                    "Referer":`https://www.sehuatang.org`
+                    "Origin":sehuatangURL,
+                    "Referer":sehuatangURL
                 },
                 onload: function(data){
                     // console.log(data);
@@ -2456,7 +2458,7 @@
                         window.open(data.finalUrl);
                     }else{
                         GM_setClipboard(avID)
-                        window.open(`https://www.sehuatang.org/search.php`);
+                        window.open(`${sehuatangURL}/search.php`);
                     }
                 },
                 onerror : function(err){
@@ -2466,7 +2468,7 @@
             });
         }else{
             GM_setClipboard(avID)
-            window.open(`https://www.sehuatang.org/search.php`);
+            window.open(`${sehuatangURL}/search.php`);
         }
     }
 
@@ -2700,6 +2702,7 @@
                                 // 设置更大的数字,例如16,可以应对一些超长的番号。实际使用中颇多的问题。
             "javbus":"https://www.javbus.com/", // 自定义javbus网站地址 "https://www.javsee.bid/"
             "javdb":"https://javdb.com/",    // 自定义javdb网站地址 "https://javdb004.com/"
+            "sehuatangURL":"https://www.sehuatang.net", // 自定义色花堂网址
             "clickToMenu":false,    // 鼠标点击番号才会出现菜单
             "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
             "includeIDinLinks":true,    // 番号本身是个链接的情况下是否识别

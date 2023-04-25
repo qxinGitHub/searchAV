@@ -27,6 +27,7 @@
 "selectLength":0,  // 选中搜索的字符长度。超过该长度的会忽略掉, 设置0可以关闭划词搜索。 
 "javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
 "javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
+"sehuatangURL":"https://www.sehuatang.net", // 自定义色花堂网址
 "clickToMenu":false,    // 鼠标点击番号才会出现菜单
 "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
 "includeIDinLinks":true,    // 番号本身是个链接的情况下是否识别
@@ -34,7 +35,7 @@
 "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
 "dontGetInfoFc2":false, // 获取fc2的相关信息(从fc2hub获取)
 "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
-"getInfoFailToJavDB":false,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
+"getInfoFailToJavDB":true,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
 "dontCopyMagnet":false, // 旧, 弃用
 "dontMagnetDiscern":false,   // 将磁链转为链接
 "magnetCopy":false,     // 磁链不转化链接,点击磁链复制到剪贴板 
@@ -96,6 +97,10 @@
 * 自定义javdb网址, 必须是正确的javdb, 否则脚本会错误
 * 默认:https://javdb.com/
 
+`"sehuatangURL":"https://www.sehuatang.net",`
+- 自定义色花堂网址, 必须是正确的色花堂网址, 否则脚本会错误
+- 默认: https://www.sehuatang.org
+
 `"clickToMenu":false,`    
 * 菜单触发的方式, 默认鼠标滑过, 可改为点击
 * 默认 `false` :鼠标滑过番号出现菜单
@@ -131,7 +136,7 @@
 * 默认: `false`:获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期
 * `true`: 关闭从javdb中获取素人等相关信息, 且本地不会保存番号信息
 
-`"getInfoFailToJavDB":false,`   
+`"getInfoFailToJavDB":true,`   
 * 从javbus获取不到信息时, 是否从javdb中尝试获取。这样几乎所有的番号都能获取到信息, 但是有被javDB封IP的风险; 如果你在浏览网页中使用本脚本的频率并不是很高, 只是偶尔浏览一下番号, 可以开启该选项, 获得更好的体验; 开启后会占用javdb搜索的次数。
 * 默认: `true`:当从javbus中查不到相关番号信息, 会尝试从javdb中获取信息。
 *  `false` :  仅仅从javbus中获取信息, 失败后会提示找不到相关番号的信息。 
@@ -285,8 +290,8 @@ list_all":[
 ---
 # 三、注意事项
 ### 1. 关于 javbus
-* 有时会遭到javbus的拒绝访问, 具体情况不明。本人的网络环境就无法访问 `STARS-145`相关信息, 在一些老番号上尤为明显。
-* 如果番号发生重复,  脚本会无法从javbus这获取信息, 例如 `NTRD-047`, 有两个视频都用此番号。
+* 有时会遭到javbus的拒绝访问, 具体原因不明。本人的网络环境就无法访问 `STARS-145`相关信息, 在一些老番号上尤为明显。
+* 如果番号发生重复, 一个番号对应多个视频,  脚本通常会无法从javbus获取正确信息, 例如 `NTRD-047`, 有两个视频都用此番号。
 * ~~通过javbus搜索界面进去的帖子, 无法触发菜单,具体原因也不知道。~~
 
 ### 2. 关于 javdb
@@ -294,13 +299,13 @@ list_all":[
 * 如果你是频繁的浏览素人的番号, 会受到脚本的限制, 不排除依旧就封IP的风险。由于脚本只是记录了从脚本中获取信息的访问时间, 如果在此之外, 还通过浏览器搜索过javdb,  就加大了封IP的风险。如果未使用其他有关javdb的脚本或者没有单独的搜索过javdb, 脚本自带的限制足以应付javdb的封锁策略。
 * 如果你本身是直连用户, 那你可以用路由器重新拨号,  就能重新获得IP进行访问。
 
-### 3. 关于 jellyfin 查询
-* 开启需要设置`jellyfinHost` 和`jellyfinApiKey` 
-* 理论上emby也可以使用, 因为相关API就是从emby中查询的。 
-* 查询结果仅供参考, 存在结果不对的情况, 尤其是jellyfin中存在两个相同番号的时候。
+### 3. 关于 jellyfin / Emby 查询
+* 开启需要设置`jellyfinHost` 和`jellyfinApiKey`  (Emby也需要设置这两项)
+* 查询结果仅供参考, 存在结果不对的情况, 尤其是 jellyfin/emby 中存在两个相同番号的时候。
 * 如果的本地的影视库是用`MDCx.exe`进行刮削的, 建议把软件的`设置 - 翻译 -演员` 中演员语言调整为日语, 并且把下方翻译方式的`使用演员映射表翻译演员`给取消掉。这么做的原因是: 脚本主要是用 javbus 来获取信息, 在获取演员名字时, 使用的是日语, 和本地影视库对比时, 如果是中文, 则不识别。就出现一个问题, 明明我本地有这个演员, 为什么演员名字后面没有跳转链接。例如番号MIDE-924,  脚本获取的演员名字是`水卜さくら` , 但是如果用`MDCx.exe`软件默认刮削的时候, 本地存储的演员名字会变成`水卜樱`, 此时脚本再去浏览`水卜さくら`相关的影片时, 会无法查询到该演员。
 * 使用过的版本:  [jellyfin 10.8.3、10.8.8](https://github.com/jellyfin/jellyfin/releases/) 
-* 下图是效果图, 设置正确后, 会增加一个 `jellyfin` 的按钮,点击跳转至本地jellyfin; 如果jellyfin存在相关演员, 演员后面也会加一个按钮, 点击跳转至jellyfin的演员相关页面。
+* 如果使用的是`emby`,还需要设置`emby:true,`  
+* 下图是效果图, 设置正确后, 会增加一个 `jellyfin`或`Emby` 的按钮,点击跳转至本地 jellyfin/emby ; 如果 jellyfin/emby 存在相关演员, 演员后面也会加一个按钮, 点击跳转至 jellyfin/emby 的演员相关页面。
 * ![2022-09-26_08-14-57 jellyfin.jpg (642×591) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-26_08-14-57%20jellyfin.jpg)
 
 ### 4. 关于使用 qBittorrent 下载
@@ -426,6 +431,13 @@ list_all":[
 	* 一些vr类视频没有预览, 例如 WANZVR 发行的`WAVR`系列、IP-VR 发行的而`IPVR`系列 
 * 预览视频的获取都是从售卖网站或者官方网站取得, 必须售卖网站或者官网目前还存在视频才可以播放
 * 对于素人、无码的预览视频, 看运气
+### 6. 同个番号有多个视频的情况
+一些番号会对应多个视频, 此时脚本只会返回javbus中的一个,如果明显感觉返回结果不对, 请自行点击菜单上方的按钮进行搜索。
+例如`ID-036`对应了四个视频:
+1. [ID-036 コスプレ美少女乱交BEST2 4时间 - JavBus](https://www.javbus.com/ID-036_2020-10-23)
+2. [ID-036 异世界転生したらヒロイン全员エルフでした。PREMIUM BEST 2枚组8时间 - JavBus](https://www.javbus.com/ID-036)
+3. [ID-036 愛しのデリヘル嬢（処女）AVデビュー 34歳 OL 片岡さち デリ嬢呼んだらびっくり！この歳まで男に触れられた事がない 舐められるのも責められるのも挿れられるのもそもそも生でイチモツを見るのも触るのも初めてだった件 正確に言いますと… 30歳の時にバイブオナニーで自ら… | JavDB 成人影片數據庫](https://javdb.com/v/nEvwM)
+4. [ID-036 巨乳人妻温泉レ●プ4時間 | JavDB 成人影片數據庫](https://javdb.com/v/aRDzW)
 
 ### 其他: 
 * 更新完 v0.14.0 2022-09-18, 短时间内不会加功能了,会偶尔上来看看有没有致命bug需要修, 要忙着去糊口  

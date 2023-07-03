@@ -473,9 +473,16 @@ list_all":[
 # 八、感谢
 感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
 
+---
 
 # 九、待做
 见 [[待做事项]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)   
+
+---
+
+如果您认可并喜欢这个脚本，可以考虑通过打赏来继续支持我的工作。
+![donate.jpg (1189×736) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/donate.jpg)
+不管怎样, 感谢对该脚本的支持，如果有任何问题、建议, 可以进行反馈，期待这个脚本能够让我们在浏览网站中有更好的体验！
 
 ---
 # 开源代码许可

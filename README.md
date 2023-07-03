@@ -28,6 +28,8 @@
 "javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
 "javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
 "sehuatangURL":"https://www.sehuatang.net", // 自定义色花堂网址
+"addSearchButton":false,    // 在番号后面添加一个图标, 鼠标滑过作用于图标, 而不是番号
+"searchButtonIcon":"✈",    // 番号后面的图标样式
 "clickToMenu":false,    // 鼠标点击番号才会出现菜单
 "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
 "includeIDinLinks":true,    // 番号本身是个链接的情况下是否识别
@@ -100,6 +102,13 @@
 `"sehuatangURL":"https://www.sehuatang.net",`
 - 自定义色花堂网址, 必须是正确的色花堂网址, 否则脚本会错误
 - 默认: https://www.sehuatang.org
+`"addSearchButton":false,`
+-  在番号后面添加一个图标, 鼠标滑过作用于图标, 而不是番号
+- 默认`false`: 不增加图标
+- `true`: 开启, 在网页番号的后面增加一个图标, 鼠标滑过(或点击)图标来激活菜单
+`"searchButtonIcon":"✈",`
+- 开启番号后面的图标样式,开启 `"addSearchButton"`后, 后面的图标样式。不是图片,是以个字符, 可以用 [emoji](https://emoji6.com/emojiall/) 或者输入法中能打出的各种字符。
+- 默认:✈
 
 `"clickToMenu":false,`    
 * 菜单触发的方式, 默认鼠标滑过, 可改为点击
@@ -208,7 +217,7 @@
 `"sehuatang":false,`  
 - 添加色花堂的搜索按钮
 - 默认:`false`
-* `true`:  将色花堂的搜索添加到列表中。点击后, 由于需要解析地址, 所以新打开的色花堂搜索页面会慢一些, 不要重复点击。
+* `true`:  将色花堂的搜索添加到列表中。点击后, 会在色花堂进行搜索, 但是由于需要解析地址, 所以新打开的色花堂搜索页面会慢一些, 不要重复点击, 存在无法打开的情况, 尤其是网络不好的情况下。
 * 提示: 如果失败的话,则会打开色花堂的搜索界面(此时并没有搜索具体内容), 可以直接粘贴就行, 已经自动复制好番号。
 
 `"emby":false,`   

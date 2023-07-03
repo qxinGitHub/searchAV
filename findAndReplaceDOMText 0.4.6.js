@@ -182,9 +182,10 @@
 				}
 
 				// td是由于图书馆论坛界面的用户名在td中。 位于td内, 且没有横杠的, 排除
-				if(el.nodeName.toUpperCase() == "TD"){
+				if(window.qxin.javlibrary && el.nodeName.toUpperCase() == "TD"){
 					if(el.innerHTML.search(/^[a-z|A-Z]{2,6}\d{2,5}$/i)>-1){
 					// if(el.innerHTML.indexOf("-")<0){
+						// console.log("位于td内, 排除掉: " + el.innerHTML);
 						return false
 					}
 				}
@@ -196,7 +197,7 @@
 					&& el.className.match(window.qxin.RE_Exclude_className) 
 					&& el.innerText.match(/(?<!\w)[a-z|A-Z]{2,6}[-\s]?\d{2,5}(?!\w)/i) 
 					&& el.innerHTML.search("magnet:?")<0){
-						// console.log("------------------ 特殊class内没有横杠: ",el.className)
+						// console.log("------------------ 特殊class内没有横杠: ",el.className,el)
 						// console.log(el.innerText)
 						return false
 

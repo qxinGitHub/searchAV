@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.21.2
+// @version      0.22.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -28,7 +28,7 @@
 // @exclude	    *.live.com/*
 // @exclude	    *.mi.com/*
 // @exclude	    *docs.google.com/*
-// @exclude	    *baike.baidu.com//*
+// @exclude	    *baike.baidu.com/*
 // @exclude	    *.wikipedia.org/*
 // @exclude     *://*.amazon.tld/*
 // @exclude	    *.flightradar24.com/*
@@ -103,6 +103,7 @@
     var divTarget;  // 鼠标当前经过的番号节点
     var imgErrorSVG = "data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1024 1024' xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M304.128 456.192c48.64 0 88.064-39.424 88.064-88.064s-39.424-88.064-88.064-88.064-88.064 39.424-88.064 88.064 39.424 88.064 88.064 88.064zm0-116.224c15.36 0 28.16 12.288 28.16 28.16s-12.288 28.16-28.16 28.16-28.16-12.288-28.16-28.16 12.288-28.16 28.16-28.16z' fill='%23999'/%3E%3Cpath d='M887.296 159.744H136.704C96.768 159.744 64 192 64 232.448v559.104c0 39.936 32.256 72.704 72.704 72.704h198.144L500.224 688.64l-36.352-222.72 162.304-130.56-61.44 143.872 92.672 214.016-105.472 171.008h335.36C927.232 864.256 960 832 960 791.552V232.448c0-39.936-32.256-72.704-72.704-72.704zm-138.752 71.68v.512H857.6c16.384 0 30.208 13.312 30.208 30.208v399.872L673.28 408.064l75.264-176.64zM304.64 792.064H165.888c-16.384 0-30.208-13.312-30.208-30.208v-9.728l138.752-164.352 104.96 124.416-74.752 79.872zm81.92-355.84l37.376 228.864-.512.512-142.848-169.984c-3.072-3.584-9.216-3.584-12.288 0L135.68 652.8V262.144c0-16.384 13.312-30.208 30.208-30.208h474.624L386.56 436.224zm501.248 325.632c0 16.896-13.312 30.208-29.696 30.208H680.96l57.344-93.184-87.552-202.24 7.168-7.68 229.888 272.896z' fill='%23999'/%3E%3C/svg%3E";
     var cid = {};  // 用于预告视频的链接转换 
+    var localVideoList = [];    // 获取本地 jellyfin/emby 中所有的视频名称
 
     var allHTML = document.querySelector("body");   // 获取网页
     
@@ -187,12 +188,12 @@
     // 省略写的fc2番号 例: fc2-123456 567890
     var oRegExp_wuma2 = /(?<=(FC2[^\d]{0,5})(?:[\s,、-]?\d{6,7})+[\s,、]?)\d{6,7}/gmi
     // 排除在此的番号, 与下面的 Exclude 不同的是: 这个还会判断后面跟的数字, 能够精确排除。
-    //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字 sr是黑鸟侦察机               |卡西欧         |细胞相关        |csgo皮肤        |致钛硬盘              | 瑞昱芯片      | soc        |
-    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de|sr)[\s-]\d{2}|(gm|ga)-\d{4}|cd[\s-]?\d{2,4}|seed[\s-]?\d{3}$|pc005|moc-\d{5}|wd-40|rtd[\s-]?\d{4}|cm\d{4}|rk\d{4})/i
+    //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字 sr是黑鸟侦察机               |卡西欧         |细胞相关        |csgo皮肤        |致钛硬盘              | 瑞昱芯片      | soc          | ns530刀片
+    var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de|sr)[\s-]\d{2}|(gm|ga)-\d{4}|cd[\s-]?\d{2,4}|seed[\s-]?\d{3}$|pc005|moc-\d{5}|wd-40|rtd[\s-]?\d{4}|cm\d{4}|rk\d{4})|ns[\s-]?\d{3,4}/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|actg|aes|again|all|ak|akko|apex|aptx|au|ax|avhd|avx|bej|chrome|bd|build|(?:fc|p)?[blp]ga|by|bzk|cc|ccie|cctv|cea|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|er|ecma|eia|emui|eof|ep|error|ez|fc|file|flash|flyme|fps|for|fork|from|fuck|fx|gbx|get|gnz|gp|groupr|gt|gts|gtx|guest|hao|hd|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|joy|jp|jr|jsr|jt|jukujo|keccak|kv[bd]|Kirin|lancet|line|linux|lk|lolrng|lpl|lt|lumia|lg|macos|md|mh|miui|mipc|mnvr|mm|mnvr|mv|mvp|ms|nas|nature|nc|next|ngff|note|number|ok|only|os|osx|pa|page|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|rog|row|rtx|rush|rx|sale|scp|scte|sdm|sdr|server|sha|shp|spent|sql|sn|snh|Socket|ssd|status|steam|su|swipe|tcp|the|to|top|than|thread|ts|type|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|wta|xdr|xfx|xiaomi)$/i
+    var oRegExp_Exclude_en = /^(?:about|ac|actg|aes|again|agm|ah|aim|all|ak|akko|apex|aptx|au|ax|avhd|avx|bej|bgm|chrome|bd|bm|build|(?:fc|p)?[blp]ga|by|bzk|cc|ccie|cctv|cea|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|ea|er|ecma|eia|emui|eof|ep|error|ez|fc|file|flash|flyme|fps|for|fork|from|fuck|fx|gbx|get|gnz|gp|groupr|gt|gts|gtx|guest|hao|hd|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|inteli|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|joy|jp|jr|jsr|jt|jukujo|kc|keccak|kv[bd]|Kirin|lancet|line|linux|lk|lolrng|lpl|lt|lumia|lg|macos|md|mh|miui|mipc|mnvr|mm|mnvr|model|mv|mvp|ms|nas|nature|nc|next|ngff|note|number|ok|only|os|osx|pa|page|pch|phl|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|rog|row|rtx|rush|rx|sale|scp|scte|sdm|sdr|server|sha|shp|spent|sql|sn|snh|Socket|ssd|status|steam|su|swipe|tcp|the|to|top|than|thread|ts|type|uh|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|wta|xdr|xfx|xiaomi|yah)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
-    var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|crc|exynos|dl|dp|dq|gb|girl|jd|ha|has|hc|hours|iq|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ty|ver|vip|zd|zip)$/i
+    var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|cp|crc|exynos|dl|dp|dq|gb|girl|jd|ha|has|hc|hours|iq|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ty|ver|vip|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
     var oRegExp_Special_num = /^(?:007|101|110|115|123|128|256|360|365|370|404|512|520|911|996|\d{1,2}00|19[789]\d|20[012]\d|720|1080|1024|2048|[056789]\d{3}|(\d)\1{2,3})$/
     // 排除符合条件的无码番号
@@ -442,6 +443,8 @@
     var observerTarget = document.querySelector('body');    // 选择目标节点
     var observerConfig = {childList: true, characterData: true ,subtree:true,}; // 配置观察选项
     var observer = new window.MutationObserver(function(mutations) {    // 创建观察者对象  
+        // console.log("观察者数量");
+        // console.log(mutations.length);
         mutations.forEach(function(mutation) {
             if(mutation.target.innerText.length<5){
                 // console.log(mutation.target.innerText);
@@ -474,6 +477,11 @@
     }); 
     
     addStyle()
+
+    // 比对本地 jellyfin/emby 视频, 
+    if(setting.jellyfinHost && setting.jellyfinApiKey && setting.LocalVideoSearch){
+        localVideo_search();
+    }
 
     // 延时执行, 解决javbus论坛通过搜索进入的帖子无发弹出工具栏的问题
     setTimeout(findAVID,300);
@@ -1285,7 +1293,7 @@
                 
                 getInfo_end(avID,data,image);
             },
-            // 2023-12-20左右, javbus无法访问
+            // 2023-12-20左右, javbus无法访问, 临时使用javdb
             ontimeout(data){
                 if(setting.getInfoFailToJavDB??true){
                     getInfo_wuma_javdb1(avID);
@@ -1757,12 +1765,15 @@
         }
 
     }
-    function getInfo_end_error(errorText){
+    function getInfo_end_error(errorText,avID){
         if(debug){console.log("getInfo_end_error : ", errorText);}
         let errorInfo = document.createElement('avdivError');
         errorInfo.innerHTML = errorText ;
         document.querySelector(".sav-menu").appendChild(errorInfo);
         removeLoading();
+        // 如果获取错误, 会不进入end函数; 错误会导致重新获取, 获取不到会继续保持错误, 然后不断循环
+        localInfo[avID].getInfo_Time = new Date().getTime();
+        GM_setValue("avInfo2",localInfo);
     }
 
     // 从本地加载信息
@@ -1786,9 +1797,9 @@
 
         // 浏览过的番号,从本地加载链接。 信息只获取一次, 避免被网站拉黑IP
         if(localInfo[avID].link){
-            if(localInfo[avID].link.indexOf("javdb")>-1){
+            if(localInfo[avID].link.indexOf(javDBLink)>-1){
                 changeRelatedPage(localInfo[avID].link,"JavDB 页面",avID);
-            }else if(localInfo[avID].link.indexOf("javbus")>-1){
+            }else if(localInfo[avID].link.indexOf(javbusLink)>-1){
                 changeRelatedPage(localInfo[avID].link,"JavBus 页面",avID);
             }else if(localInfo[avID].link.indexOf("fc2hub")>-1){
                 changeRelatedPage(localInfo[avID].link,"fc2Hub 页面",avID);
@@ -2538,10 +2549,18 @@
                 "X-Emby-Token":setting.jellyfinApiKey
             },
             data: "",
+            timeout: 1000, 
             onload: function (r) {
-                var data = JSON.parse(r.responseText);
                 var div_jellyfin = document.querySelector(".jellyfin");
                 if(!div_jellyfin){return};
+
+                // ApiKey输入错误的情况下, 会出现401错误, 身份验证错误
+                if(r.status == 401){
+                    console.log("jellyfin: 身份验证错误, 请检查设置中的 ApiKey 是否设置正确");
+                    div_jellyfin.classList.add("errJellyfin")
+                    return;
+                }
+                var data = JSON.parse(r.responseText);
                 if(data.SearchHints[0]){
                     if(debug){console.log("jellyfin中的标题: ", data.SearchHints[0].Name)};
                     div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/details?id=" + data.SearchHints[0].Id;
@@ -2551,6 +2570,11 @@
                     div_jellyfin.dataset.avid = avID;
                     div_jellyfin.classList.add("noJellyfin");
                 }
+            },
+            ontimeout(data){
+                console.log("jellyfin访问超时")
+                console.log(data)
+                document.querySelector(".jellyfin")?.classList.add("errJellyfin")
             }
         });
     }
@@ -2564,43 +2588,20 @@
         }
 
         GM_xmlhttpRequest({
-            method: 'get',
-            url:setting.jellyfinHost + "emby/Search/Hints?searchTerm=" + avID,
+            method: "GET",
+            url:
+                setting.jellyfinHost+"emby/Users/"+setting.jellyfinApiKey+"/Items?api_key="+setting.jellyfinApiKey+
+                "&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
+            // url: setting.jellyfinHost+"emby/Items?api_key="+setting.jellyfinApiKey+"&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "X-Emby-Token":setting.jellyfinApiKey
+              accept: "application/json",
             },
-            data: "",
             onload: function (r) {
                 var data = JSON.parse(r.responseText);
                 var div_jellyfin = document.querySelector(".jellyfin");
                 if(!div_jellyfin){return};
-
-                if(data.SearchHints[0]){
-                    if(debug){console.log("Emby中的标题: ", data.SearchHints[0].Name)};
-                    getEmby2(avID,data.SearchHints[0].Id,div_jellyfin)
-                } else {
-                    div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/list/list.html?type=search";
-                    div_jellyfin.dataset.avid = avID;
-                    div_jellyfin.classList.add("noJellyfin");
-                }
-            }
-        });
-    }
-    function getEmby2(avID,id,div_jellyfin){
-        GM_xmlhttpRequest({
-            method: 'get',
-            url:setting.jellyfinHost + "emby/Items?SearchTeam=" + avID,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "X-Emby-Token":setting.jellyfinApiKey
-            },
-            data: "",
-            onload: function (r) {
-                var data = JSON.parse(r.responseText);
-
                 if(data.Items[0]){
-                    div_jellyfin.dataset.url = ` ${setting.jellyfinHost}web/index.html#!/item?id=${id}&serverId=${data.Items[0].ServerId} `;
+                    div_jellyfin.dataset.url = ` ${setting.jellyfinHost}web/index.html#!/item?id=${data.Items[0].Id}&serverId=${data.Items[0].ServerId} `;
                     div_jellyfin.classList.add("yesJellyfin");
                 } else {
                     div_jellyfin.dataset.url = setting.jellyfinHost + "web/index.html#!/list/list.html?type=search";
@@ -2623,7 +2624,7 @@
             },
             data: '',
             onload: function (r) {
-                if(!r){return};
+                if(!r || r?.status != 200){return};
                 var data = JSON.parse(r.responseText);
                 // TotalRecordCount 查询到的数量
                 if(data.TotalRecordCount){
@@ -2650,6 +2651,79 @@
                 }
             }
         });
+    }
+
+    // 搜索本地 jellyf/emby 视频, 返回所有所有的 movie 分类视频的名称列表
+    function localVideo_search(){
+        // console.log("localVideo_search")
+        let url;
+        if(setting.emby){
+            url = setting.jellyfinHost+"emby/Items?Recursive=true&IsMovie=true&IsFolder=false&api_key=" + setting.jellyfinApiKey;
+        }else{
+            url = setting.jellyfinHost + "Items?recursive=true&filters=IsNotFolder&includeItemTypes=Movie&api_key=" + setting.jellyfinApiKey;
+        }
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: url,
+            headers: {
+              accept: "application/json"
+            },
+            onload: (r) => {
+                // console.log(r)
+                var data = JSON.parse(r.responseText);
+                // console.log(data);
+                if(r.status == 200 && data.Items?.length>0){
+                    localVideoList = data.Items;
+                    localVideo_addStyle();
+                }
+            },
+          });
+    }
+    function localVideo_comparison(avID){
+        let reg = new RegExp(avID,"i")
+        return localVideoList.find(value=>{
+            return value.Name?.search(reg)>-1
+        })
+    }
+    // 对本地视频(jellyfin/emby)已有的番号添加额外样式
+    function localVideo_addStyle(){
+        let avdivs = document.querySelectorAll('.sav-id');
+        for(let i=0;i<avdivs.length;i++){
+            // 判断本地有没有相关视频
+            let localVideoExist = localVideo_comparison(avdivs[i].dataset.av);
+            if(localVideoExist){
+                if(setting.LocalVideoSearchExtraButton){
+                    let exDiv = document.createElement("savdiv");
+                    let url;
+                    if(setting.emby){
+                        exDiv.innerHTML =  '<svg  role="img" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" ><path d="M469.333333 85.333333L256 298.666667l42.666667 42.666666-213.333334 213.333334 213.333334 213.333333 42.666666-42.666667 213.333334 213.333334 213.333333-213.333334-42.666667-42.666666 213.333334-213.333334-213.333334-213.333333-42.666666 42.666667-213.333334-213.333334m-42.666666 277.333334l256 149.333333-256 149.333333v-298.666666z" fill="#05b010" p-id="1934"></path></svg>'
+                        url = ` ${setting.jellyfinHost}web/index.html#!/item?id=${localVideoExist.Id}&serverId=${localVideoExist.ServerId} `
+                    }else{
+                        exDiv.innerHTML =  '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="30%" style="stop-color:#AA5CC3;stop-opacity:1" /><stop offset="100%" style="stop-color:#00A4DC;stop-opacity:1" /></linearGradient><path style="fill:url(#grad3)" d="M12 .002C8.826.002-1.398 18.537.16 21.666c1.56 3.129 22.14 3.094 23.682 0C25.384 18.573 15.177 0 12 0zm7.76 18.949c-1.008 2.028-14.493 2.05-15.514 0C3.224 16.9 9.92 4.755 12.003 4.755c2.081 0 8.77 12.166 7.759 14.196zM12 9.198c-1.054 0-4.446 6.15-3.93 7.189.518 1.04 7.348 1.027 7.86 0 .511-1.027-2.874-7.19-3.93-7.19z"/></svg>'
+                        url = setting.jellyfinHost + "web/index.html#!/details?id=" + localVideoExist.Id;;
+                    }
+                    exDiv.classList.add("jellyfin_openPage");
+                    exDiv.addEventListener("click",function(e){
+                        GM_openInTab(url,{active: true, insert: true,setParent:true});
+                        return;
+                    })
+                    appendChild_Afterend(exDiv,avdivs[i]);
+                }
+                // 番号上添加相关标识
+                avdivs[i].classList.remove("infoFirst","infoExistent","infoNonExistent");
+                avdivs[i].classList.add("infoLocalVideoExistent");   
+            }
+            avdivs[i].classList.add("infoLocalVideoSearched");
+        }
+    }
+
+    // 插入到给定元素的后面
+    function appendChild_Afterend(obj,oTarget){
+        if (oTarget.nextSibling) {
+           oTarget.parentNode.insertBefore(obj, oTarget.nextSibling);
+        } else {
+            oTarget.parentNode.appendChild(obj);
+        };
     }
 
     // 调用qbit下载
@@ -2782,6 +2856,8 @@
             "emby":false,   // 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
             "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin/emby的地址
             "jellyfinApiKey":"",    // 外部程序需要密钥才能和jellyfin/emby通信。  “设置 - 控制台 - API密钥” 点击加号生成一个
+            "LocalVideoSearch":false,    // 如果在本地有相关视频, 显示样式为 “infoLocalVideoStyle”, 该样式的优先级最高
+            "LocalVideoSearchExtraButton": false,   // 如果在本地有相关视频, 会直接在番号后面显示跳转按钮
             "qBitHost":"http://localhost:8080/", //本地 qbit 的地址
             "qBitDownload":"",    // 在qbit中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
             "qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载
@@ -2802,6 +2878,10 @@
             "noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号
                 "color":"red",    // 颜色
                 "text-decoration":"underline dotted red",   // 下划线
+            },
+            "infoLocalVideoStyle":{ //本地视频(jellyfin/emby)已有的番号
+                "color":"#598987",    // 颜色
+                "text-decoration":"underline dotted #598987",   // 下划线
             },
             "list":[],  // 普通番号的搜索列表, 建议直接将搜索加在 "list_all"
             "list_wuma":[], // 素人番号的搜索列表, 建议直接将搜索加在 "list_all"
@@ -2870,6 +2950,15 @@
             styleAVID += "}"
         }else {
             styleAVID += ".infoNonExistent{text-decoration:underline dotted red;}"
+        }
+        if(setting.infoLocalVideoStyle){
+            styleAVID += ".infoLocalVideoExistent{"
+            for(let key in setting.infoLocalVideoStyle){
+                styleAVID += key + ":" + setting.infoLocalVideoStyle[key] + ";"
+            }
+            styleAVID += "}"
+        }else {
+            styleAVID += ".infoLocalVideoExistent{text-decoration:underline dotted #598987;}"
         }
 
         styleText = `
@@ -3028,6 +3117,12 @@
             savmagnet {
                 cursor: pointer;
             }
+            .jellyfin_openPage svg{
+                cursor:pointer;
+                width:1em;
+                scale:0.9;
+                vertical-align:text-bottom;
+            }
             u:has(savdiv){
                 text-decoration: none;
             }
@@ -3036,6 +3131,12 @@
             }
             .noJellyfin{
                 text-decoration:line-through;
+            }
+            .errJellyfin{
+                cursor:default;
+                pointer-events:none;
+                text-decoration:line-through;
+                color:#333;
             }
             avspan svg {
                 height: 14px;

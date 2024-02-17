@@ -55,6 +55,8 @@
 "emby":false,   // 将 Jellyfin 替换成 Emby, 如果使用 emby, 必须改为true
 "jellyfinHost":"http://localhost:8096/",    // 本地的jellyfin的地址
 "jellyfinApiKey":"",    // jellyfin中的API密钥  “设置 - 控制台 - API密钥” 点击加号生成一个
+"LocalVideoSearch":false,    // 如果在本地有相关视频, 显示额外的样式
+"LocalVideoSearchExtraButton": false,   // 如果在本地有相关视频, 会直接在番号后面显示跳转按钮
 "qBitHost":"http://localhost:8080/", //本地 qBittorrent 的地址
 "qBitDownload":"",     // 在qBittorrent中才下载地址,注意双斜杠: D:\\_下载\\qBittorrent
 "qBitNoPopup":false,   // qbit 弹窗询问是否调用qbit下载
@@ -75,6 +77,10 @@
 "noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号
 	"color":"chocolate",    // 颜色
 	"text-decoration":"underline dotted red",   // 下划线
+},
+"infoLocalVideoStyle":{ //本地视频(jellyfin/emby)已有的番号
+    "color":"#598987",    // 颜色
+    "text-decoration":"underline dotted #598987",   // 下划线
 },
 "list":[],  // 普通番号的搜索列表
 "list_wuma":[], // 素人番号的搜索列表
@@ -230,8 +236,20 @@
 * 默认:`http://localhost:8096/`
 
 ` "jellyfinApiKey":"",`
-* 外部程序需要密钥才能和jellyfin通信。需要在你的jellyfin中的  `“设置 - 控制台 - API密钥”` 点击加号生成一个
+* 外部程序需要密钥才能和jellyfin通信。需要在你的jellyfin/emby中的  `“设置 - 控制台 - API密钥”` 点击加号生成一个
 * 设置完`jellyfinHost` 和本选项`jellyfinApiKey`后, 菜单中会自动添加 `jellyfin` 按钮, 查询本地是否存在该番号, 如果有删除线, 说明本地并没有该番号相关的信息。同时也会查询jellyfin中是否存在相关女优, 如果存在, 会在演员后面添加jellyfin的图标, 用来跳转到jellyfin中女优相关页面。
+
+`"LocalVideoSearch":false,` 
+- 如果在本地有相关视频, 单独显示一种样式
+- 默认: `false`
+- `true`: 根据本地`Jellyfin/Emby` 返回的movie列表搜索番号, 不一定准确。显示样式为设置中`infoLocalVideoStyle`相关css代码, 该样式的优先级最高。
+- 注意: 由于使用的是`Jellyfin/Emby`的数据需要事先设置`jellyfinHost`和`jellyfinApiKey` 
+
+- `"LocalVideoSearchExtraButton": false, ` 
+- 如果在本地有相关视频, 会直接在番号后面显示跳转按钮
+- 默认: `false`
+- `true`: 将`Jellyfin/Emby` 的跳转链接直接放在番号后面, 从而不需要激活菜单也可以直接跳转至本地库中查看影片,如果库中存在多个相同番号的视频, 会跳转至排序靠前的影片。
+- 注意: 需要先设置`"LocalVideoSearch"` 
 
 `"qBitHost":"http://localhost:8080/",`
 * 本地 qBittorrent 的地址, 需要修改成你自己的地址, 如果是在nas中, 就修改成nas的地址
@@ -253,8 +271,8 @@
 * 百度翻译的 密钥  [百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop)
 * 设置完`baiduAppid` 和本选项`baiduKey`后, 翻译会更改为百度翻译。
 
-设置页面中番号的相关颜色
-* 可以设置的项目不限于下面的举例, 所有选项都是可选的, 还可以设置`border`, `background`等可以设置的css选项。
+设置页面中番号的相关颜色  
+* 可以设置的项目不限于下面的举例, 所有选项都是可选的, 还可以设置`border`, `background`等可以设置的css选项。 
 ```
 "linkStyle":{   // 没浏览的番号  
 	"color":"green",  // 颜色  名称:green  十六进制:#00FF00  RGB:rgb(0,255,0)  
@@ -267,7 +285,11 @@
 },  
 "noExistStyle":{  // 已经浏览过, 但是没有获取到信息的番号  
 	"color":"red",    // 颜色  
-},  
+}, 
+"infoLocalVideoStyle":{ //本地视频(jellyfin/emby)已有的番号
+    "color":"#598987",    // 颜色
+    "text-decoration":"underline dotted #598987",   // 下划线
+},
 ```
 
 自定义搜索列表
@@ -277,7 +299,7 @@
 * 搜索列表两边用中括号, 第一项是搜索名称, 第二项是搜索链接。如果放在列表的最后, 后面不要加逗号, 如果是插入到列表中间, 最后需要加逗号。此处的列表顺序就是按钮的显示顺序。
 * 关于如何获得搜索链接: 可以查看这篇文章:[奔跑中的奶酪 ](https://www.runningcheese.com/browser-search)中: `一、关键字搜索 1、添加关键字` 这节的相关介绍。
 * 可以删掉所有搜索,仅仅保留`"list": [],`,  此时脚本会保留自带的javbus搜索。 `list_wuma` 会保留javdb搜索
-* 搜索词用`%s`替代, 下面的例子是百度搜索的写法  , 会将`百度`搜索加在 `list`和 `list_wuma` 列表后面
+* 搜索词用`%s`替代, 下面的例子是百度搜索的写法  , 会将`百度`搜索加在 `list`和 `list_wuma` 列表后面  
 ```
 list_all":[
 	[

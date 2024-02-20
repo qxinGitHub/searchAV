@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.22.0
+// @version      0.23.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -97,6 +97,7 @@
     var timerMouseLeaveMenu;    // 鼠标离开菜单
     // var timerImgLoading;    // 图片加载后 重新定位的定时器。 加载成功后, 清除该定时器
     var avInfo = {};    // 临时存储相关信息
+    var avInfoID = "";    // 临时存储avID
     var localInfo = {}; // 从本地获取到的番号信息, 只在判断是否本地存在和存储信息时使用
     var Imgscall = 1.0; // 图片默认放大倍数, 在图片上滚动鼠标滚轮使用。
     var javdbTime = []; // 记录访问javdb的时间, 如果短时间内多次访问就限制访问, 默认是5分钟内限制为10次访问。
@@ -230,57 +231,57 @@
         cid = {
             abp: ["118abp"],
             abw:["118abw"],
+            aczd:["h_019aczd"],
             aed: ["aed"],
             aege:["1aege"],
-            akdl: ["1akdl00"],
+            akdl: ["1akdl"],
             ako: ["ako"],
+            ambi:["h_237ambi"],
             anb: ["anb"],
             apaa: ["apaa"],
             apns: ["apns"],
             aran: ["aran"],
-            atid:["atid00"],
-            avop:["h_455avop00"],
+            atid:["atid"],
+            avop:["avop","h_455avop00"],
             awd: ["awd"],
             bank: ["h_1495bank"],
-            bazx: ["bazx"],
-            bbtu:["bbtu"],
             bdsr:["57bdsr"],
             bfd: ["24bfd00"],
-            bfkb: ["h_1285bfkb00"],
-            bjd:["bjd"],
-            bkynb: ["1bkynb00"],
-            blb:["blb"],
-            bskc:["bskc"],
+            bfkb: ["h_1285bfkb"],
+            bkynb: ["1bkynb"],
             clot: ["h_237clot"],
-            cmv: ["cmv"],
             dandy: ["1dandy"],
             davk:["55davk"],
             dldss: ["1dldss"],
+            docp:["118docp"],
             dori:["h_491dori"],
             drpt: ["1drpt"],
-            dtvr: ["24dtvr00"],
+            dtvr: ["24dtvr"],
             dv: ["53dv"],
-            dvaj: ["dvaj00"],
+            dvaj: ["53dvaj"],
             dvdes: ["1dvdes"],
             ekdv: ["ekdv"],
             emth:["h_1638emth"],
             erofc:["erofc"],
             fbos:["fbos"],
-            fera: ["h_086fera00"],
-            fgan: ["h_1440fgan00"],
-            fiv:["118fiv"],
+            fera: ["h_086fera"],
+            fgan: ["h_1440fgan"],
+            fir:["118fir"],
             fneo: ["h_491fneo"],
             fone: ["h_491fone"],
             fsdss: ["1fsdss"],
             fset: ["1fset"],
-            fsvr: ["h_955fsvr00"],
-            ftht: ["1ftht00"],
-            fuga: ["h_086fuga00"],
-            gar: ["1gar00"],
+            fsre:["h_491fsre"],
+            fsvr: ["h_955fsvr"],
+            ftht: ["1ftht"],
+            fuga: ["h_086fuga"],
             gar:["1gar"],
             gas: ["71gas"],
+            gets:["118gets"],
             gnab:["118gnab"],
+            gnax:["gnax","h_1345gnax"],
             gone: ["h_1133gone"],
+            gs:["140gs"],
             gvg: ["13gvg"],
             haru: ["h_687haru"],
             havd: ["1havd"],
@@ -288,70 +289,61 @@
             hez:["59hez"],
             hgot:["84hgot"],
             hkd: ["hkd"],
-            hmnf:["h_172hmnf00"],
+            hmnf:["h_172hmnf"],
             hnd:["hnd00"],
             hoks: ["hoks"],
             honb:["h_1133honb"],
             hz: ["h_113hz"],
             hzgb: ["h_1100hzgb"],
-            hzgd:["h_1100hzgd00"],
+            hzgd:["h_1100hzgd"],
+            ienf:["1ienf"],
             instc:["instc"],
             jbs:["118jbs"],
-            jrze: ["h_086jrze00"],
+            jrze: ["h_086jrze"],
             jsop:["jsop"],
             jukf: ["h_227jukf"],
             keed:["h_086keed"],
+            kmhr:["1kmhr"],
+            kmhrs:["1kmhrs"],
             kri:["h_286kri"],
-            ktra: ["h_094ktra00"],
-            lol: ["12lol00"],
+            ktra: ["h_094ktra"],
+            lbdd:["n_1515lbdd"],
+            lol: ["12lol"],
             macb:["h_687macb"],
             mas:["118mas"],
             mct: ["118mct"],
-            mdbk: ["mdbk"],
-            mdiv:["midv00"],
             mds: ["84mds"],
-            mdtm: ["mdtm"],
-            meko: ["h_1160meko00"],
-            mesu: ["h_086mesu00"],
+            meko: ["h_1160meko"],
+            mesu: ["h_086mesu"],
             mist:["1mist"],
-            mkmp: ["mkmp"],
             mogi: ["1mogi"],
             moko: ["h_254moko"],
-            moko: ["h_254moko"],
             mond:["18mond"],
-            mtall: ["1mtall00"],
+            mtall: ["1mtall"],
             mxgs:["h_068mxgs"],
             natr:["h_067natr00"],
             neo:["433neo"],
-            nhdta:["1nhdta00"],
+            nhdta:["1nhdta"],
             nhdtb: ["1nhdtb"],
-            nsfs: ["nsfs"],
-            nsfs: ["nsfs00"],
+            npv:["118npv"],
             nxgs: ["h_254nxgs"],
-            nyh:["1nyh00"],
+            nyh:["1nyh"],
             ofku: ["h_254ofku"],
             omhd: ["omhd"],
             onez:["h_1674onez"],
-            ovg: ["ovg"],
             pako:["h_1133pako"],
             piyo: ["1piyo"],
-            pppd:["pppd00"],
             ppt: ["118ppt"],
-            pred:["pred00"],
             pydvr: ["h_1321pydvr00"],
             pym: ["h_283pym"],
             rct: ["1rct"],
             rctd: ["1rctd"],
             rdt:["118rdt"],
-            real: ["real"],
             rebd: ["h_346rebd"],
-            rvg: ["rvg"],
-            saba: ["saba"],
             sait:["55sait"],
             san:["h_796san00"],
-            scd: ["scd"],
-            scop: ["scop"],
             scpx: ["84scpx"],
+            scr:["12scr"],
             sdab: ["1sdab"],
             sdam:["1sdam"],
             sdde: ["1sdde"],
@@ -361,73 +353,42 @@
             sdmu: ["1sdmu"],
             sdmua: ["1sdmua"],
             sdnm: ["1sdnm"],
+            sdnt:["1sdnt"],
             sdth: ["1sdth"],
             sga:["118sga"],
-            shh: ["1shh00"],
+            shh: ["1shh"],
             shic:["h_839shic"],
-            shind: ["h_1560shind00"],
-            shn: ["1shn00"],
-            silkc: ["1silkc00"],
-            sinn: ["sinn"],
+            shind: ["h_1560shind"],
+            shn: ["1shn"],
+            silkc: ["1silkc"],
             skmj: ["h_1324skmj"],
-            sma:["sma"],
             sprd:["18sprd"],
-            spro: ["h_1594spro00"],
+            spro: ["h_1594spro"],
             spz: ["h_254spz"],
-            sqis: ["sqis"],
-            ssk:["ssk"],
             star: ["1star"],
-            stars: ["1stars","1stars00"],
-            stcv: ["h_1616stcv00"],
-            stko:["1stko00"],
+            stars: ["1stars"],
+            stcv: ["h_1616stcv"],
+            stko:["1stko"],
             sun: ["1sun"],
             svdvd: ["1svdvd"],
             svmgm:["1svmgm"],
             sw: ["1sw"],
             t28: ["55t28"],
-            tkol:["tkol"],
             tmhp: ["h_452tmhp"],
-            tmvi: ["h_452tmvi00"],
-            tppn:["tppn"],
+            tmvi: ["h_452tmvi"],
             udak: ["h_254udak"],
             umd: ["125umd"],
-            urkk:["urkk00"],
-            vagu: ["vagu"],
-            vema: ["vema"],
-            venu: ["venu"],
-            venx: ["venx"],
             vrtm:["h_910vrtm"],
             wo: ["1wo"],
             wps:["118wps"],
             xrw:["84xrw"],
-            xrw:["84xrw"],
-            xvsr:["xvsr"],
-            ymdd:["ymdd"],
-            zeaa: ["h_086zeaa00"],
+            yst:["540yst"],
+            zeaa: ["h_086zeaa"],
             zex: ["h_720zex"],
-            fir:["118fir"],
-            gs:["140gs"],
-            //2023-04-22补充
-            ienf:["1ienf"],
-            yst:["540yst00"],
-            fsre:["h_491fsre"],
-            scr:["12scr"],
-            ambi:["h_237ambi"],
-            gets:["118gets"],
-            gnax:["gnax","h_1345gnax"],
-            kmhrs:["1kmhrs"],
-            kmhr:["1kmhr"],
-            npv:["118npv"],
-            sdnt:["1sdnt"],
-            lbdd:["n_1515lbdd"],
-            //  填零
-            // aczd:["h_019aczd","h_019aczd00"],
-            aczd:["h_019aczd"],
-            docp:["118docp","118docp00"],
             // 未验证
             // 多个
             // h_139doks571   36doks00567
-            doks:["h_139doks","36doks00"],
+            doks:["h_139doks","36doks"],
             arso: ["h_1378arso","1arso"],
             // gvh-476, gvh-017
             gvh:["gvh","13gvh"],
@@ -874,6 +835,7 @@
         observer.observe(observerTarget, observerConfig);    
         timerMouseLeave = setTimeout(function(){
             avInfo = {};
+            avInfoID = "";
             savMenuMouseLeave();
             removeLoading();
             clearTimeout(timerGetInfo);
@@ -906,6 +868,7 @@
                 divTarget = null;
             }
             avInfo = {};
+            avInfoID = "";
             clearTimeout(timerGetInfo);
             // clearInterval(timerImgLoading); // 重置位置的定时器
             observer.observe(observerTarget, observerConfig);     
@@ -957,7 +920,7 @@
 
         if(localInfo[avid]){
             avInfo = localInfo[avid];
-            // avInfo.id = avid;
+            avInfoID = avid;
             timerGetInfo = setTimeout(() => {  
                 if(wuma){
                     if(setting.infoReload){
@@ -1013,6 +976,7 @@
 
             Imgscall = 1.0;
             avInfo = {};
+            avInfoID = "";
             divTarget = null;
             clearTimeout(timerGetInfo);
             return;
@@ -1116,6 +1080,7 @@
         if(localInfo[avid]){
             avInfo = {};
             avInfo = localInfo[avid];
+            avInfoID = avid;
             timerGetInfo = setTimeout(() => {
                 if(setting.infoReload){
                     getInfo(avid);
@@ -1171,7 +1136,7 @@
     function getInfo(avID,oFirstBrowse){
         if(debug){console.log("从javbus获取信息中 getInfo: " + avID);}
         if(setting.dontGetInfo){
-            getInfo_end_error(`<avdiv>已经设置为禁止获取番号信息</avdiv>`);
+            getInfo_end_error(`<avdiv>已经设置为禁止获取番号信息</avdiv>`,avID);
             return;
         };
 
@@ -1197,8 +1162,6 @@
                     // javbus 对于番号中002简写成02的会识别错误, 只认准确的番号。 一些网友分享的番号会简写, 此处做个判断。不能全部补全, 因为以前的番号确实有两位数字的, 补全后javbus不识别。
                     if( avID.length - avID.indexOf("-") ==3){
                         // 将错误番号存储到本地
-                        // localInfo[avID] = {};   
-                        // avInfo.id = avID
                         localInfo[avID] = {};   
                         localInfo[avID].title = "番号可能存在问题";
                         localInfo[avID].noInfo = true;
@@ -1224,8 +1187,6 @@
                 var parser=new DOMParser();
                 var htmlDoc=parser.parseFromString(data.responseText, "text/html");
 
-                // 番号
-                // avInfo.id = avID;
                 // 标题
                 avInfo.title = htmlDoc.title.replace(avID,"").replace(" - JavBus","");
                 // 获取演员名字
@@ -1271,13 +1232,18 @@
 
                 // 视频链接部分
                 let avIDsplit = avID.toLowerCase().split("-");
+                if(debug){
+                    console.log(avIDsplit)
+                    console.log(cid[avIDsplit[0]])
+                }
                 if(!setting.dontGetVideo && !cid[avIDsplit[0]]){
                     let videoURL = htmlDoc.querySelector("#sample-waterfall a")?.href;
                     if(videoURL?.includes("dmm.co.jp")){
                         videoURL = videoURL.match(/(?<=.*video\/).*?(?=\/)/)
                         // 1bkynb00008
                         let corp_finish = videoURL[0].slice(0,-avIDsplit[1].length);
-                        if(corp_finish.replace("00","").length != avIDsplit[0].length){
+                        corp_finish = corp_finish.replace("00","");
+                        if(corp_finish.length != avIDsplit[0].length){
                             // 只作用2015年以后的番号, 防止污染cid
                             if(avInfo.date && new Date(avInfo.date)>new Date("1/1/2015")){
                                 let setting2 = GM_getValue("_setting2");
@@ -1309,7 +1275,7 @@
         if(debug){console.log("从网络获取信息中 getInfo_wuma: " + avID);}
         if(avID.match(/fc2/i)){
             if(setting.dontGetInfoFc2){
-                getInfo_end_error(`<avdiv>已经设置为禁止获取 FC2 信息</avdiv>`);
+                getInfo_end_error(`<avdiv>已经设置为禁止获取 FC2 信息</avdiv>`,avID);
                 return
             };
             getInfo_fc2(avID);
@@ -1419,8 +1385,6 @@
                 avInfo.fc2Video = iframe.dataset.src
                 // return
 
-                // 番号
-                // avInfo.id = avID;
                  // 番号的链接
                 avInfo.link = link.match(/http.*id\d{5,7}/)[0];
                 // 标题
@@ -1460,7 +1424,7 @@
         if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb1: " + avID);}
 
         if(setting.dontGetInfoWuma){
-            getInfo_end_error(`<avdiv>已经设置为禁止从 JavDB 获取信息</avdiv><avdiv>提示: 如果该选项自动出现, 说明IP地址已被禁止访问。(存在误触发的可能) </avdiv><avdiv>javdb会在两个星期内禁止你的访问,在此期间不要开启自动获取无码信息</avdiv>`);
+            getInfo_end_error(`<avdiv>已经设置为禁止从 JavDB 获取信息</avdiv><avdiv>提示: 如果该选项自动出现, 说明IP地址已被禁止访问。(存在误触发的可能) </avdiv><avdiv>javdb会在两个星期内禁止你的访问,在此期间不要开启自动获取无码信息</avdiv>`,avID);
             return
         };
 
@@ -1483,7 +1447,7 @@
                     GM_setValue("_setting2",setting2);
                 } else {
                     if(debug){console.log("触发保护机制, 停止获取信息")};
-                    getInfo_end_error(`<avdiv>提示: <br>由于短时间内过多访问 JavDB, 触发了脚本的自动保护机制 <br>目前已经限制脚本从 JavDB 获取信息, 稍后会自动恢复<br>该消息仅供参考,依旧有被封IP的风险</avdiv>`);
+                    getInfo_end_error(`<avdiv>提示: <br>由于短时间内过多访问 JavDB, 触发了脚本的自动保护机制 <br>目前已经限制脚本从 JavDB 获取信息, 稍后会自动恢复<br>该消息仅供参考,依旧有被封IP的风险</avdiv>`,avID);
                     return;
                 }
             }
@@ -1504,9 +1468,6 @@
                 // console.log("data.status:");
                 var searchResult = htmlDoc.querySelectorAll(".movie-list .item")
 
-                // 番号
-                // avInfo.id = avID;
-
                 var REavID = new RegExp(avID.replace(/-|_/,"[_-]"),"i")
 
                 // 没有搜索结果
@@ -1517,11 +1478,11 @@
                         console.log("ip被ban")
                         
                         if(htmlDoc.body.innerText.indexOf("copyright")>-1){
-                            getInfo_end_error(`疑似使用的是日本代理,导致javdb拒绝了您的访问。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`);
+                            getInfo_end_error(`疑似使用的是日本代理,导致javdb拒绝了您的访问。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`,avID);
                         }else{
                             setting.dontGetInfoWuma = true;
                             GM_setValue("_setting",setting);
-                            getInfo_end_error(`疑似IP地址被封。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`);
+                            getInfo_end_error(`疑似IP地址被封。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`,avID);
                         }
                         return;
                     }
@@ -1649,7 +1610,7 @@
         if(data.status==403){
             avInfo.title = "403错误, javBus 拒绝了您的访问!";
         }else if(data.status==404){
-                getInfo_end_error(`脚本没有匹配到 ${avID} 相关页面, 请使用上方搜索进行查找`)
+                getInfo_end_error(`脚本没有匹配到 ${avID} 相关页面, 请使用上方搜索进行查找`,avID)
                 avInfo.noInfo = true;
 
                 if(divTarget){
@@ -1713,10 +1674,7 @@
         localInfo[avID].getInfo_Time = new Date().getTime();
 
         if(debug) console.log("保存相关信息: localInfo[avID] : ", localInfo[avID]);
-        // 第一次浏览番号,将信息保存到本地
-        // if(oFirstBrowse){
-            GM_setValue("avInfo2",localInfo);
-        // }
+        GM_setValue("avInfo2",localInfo);
 
         if(!document.querySelector(".sav-menu")){return};
         // 判断是否重复加载图片
@@ -1763,7 +1721,6 @@
         }else{
             getVideo(avID);
         }
-
     }
     function getInfo_end_error(errorText,avID){
         if(debug){console.log("getInfo_end_error : ", errorText);}
@@ -2217,16 +2174,17 @@
         
         let videoURL;
         if(!localInfo[avID].video){
-            // if(avID.search(/^[A-Z]{2,7}-\d{2,6}$/i)<0) return;
-            // videoURL = await queryDMMVideoURL(avID);
             videoURL = await queryVideoURL(avID);
-            if(!videoURL){
-                return;
-            }else{
-                if(debug)console.log("最终url: ", videoURL);
+            
+            if(debug)console.log("最终url: ", videoURL);
+
+            if(videoURL){
                 localInfo = GM_getValue("avInfo2")
                 localInfo[avID].video = videoURL;
                 GM_setValue("avInfo2",localInfo);
+            }else{
+                if(debug)console.log("未获取到视频链接: ", videoURL);
+                return;
             }
         }else{
             videoURL = localInfo[avID].video;
@@ -2252,10 +2210,18 @@
         //see https://bit.ly/3wXLj6T
         let infix = "litevideo/freepv";
         //1500kbps = _dmb_w || 3000kbps = _mhb_w || vrlite
-        let postfix = "_dmb_w";
-        // if (movieInfo.isVR) {
+        // 1080p:hhb 720p:hmb  576p:mhb
+        let quality ={
+            "p1080":"hhb",
+            "p720":"hmb",
+            "p576":"mhb",
+            "old720":"_dmb_w",
+        }
+        // vr 影片
+        // if (avID.search("VR-")) {
         //   postfix = "vrlite";
         //   infix = "vrsample";
+        //   url =  `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPartAdd00}/${urlPartAdd00}${postfix}.mp4`
         // }
     
         // 提取番号中的英文和数字
@@ -2265,82 +2231,107 @@
         let urlPart;
     
         let cid_user = GM_getValue("_setting2").cid_user ?? {};
+        var urls = [];
 
         // 是否需要特殊处理
         if (cid[corp]) {
             if(debug) console.log("视频加载: 在默认URL规则中: ",cid[corp])
+            if (cid[corp].length>1){
+                console.log("多个")
+                // 此处只会处理第2个及之后的, 第一个依旧会判断是否含0, 请求两遍
+                for(let i=1;i<=cid_user.length;i++){
+                    urlPart = cid[corp][i] + idNum;
+                    urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.p576}.mp4`);
+                    urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.old720}.mp4`);
+                }
+            }
             urlPart = cid[corp][0] + idNum;
+            // corp = cid[corp][0]
         } else if (cid_user[corp]){
-            if(debug) console.log("视频加载: 在用户学习URL规则中: ",cid_user[corp])
+            if(debug) console.log("视频加载: 在用户学习URL规则中: ",cid_user[corp]);
             urlPart = cid_user[corp][0] + idNum;
+            // corp = cid_user[corp][0]
         } else {
             if(debug) console.log("视频加载: URL规则,默认添加00");
             urlPart = corp + "00" + idNum;
         }
 
-        //  https:// cc3001.dmm.co.jp / litevideo/freepv /  s         / ssn                    / ssni00378       / ssni00378       _dmb_w    .mp4    
-        //  https:// ${host}          / ${infix}         / ${corp[0]} / ${corp.substring(0,3)} / ${corp}${idNum} / ${corp}${idNum} ${postfix}.mp4`;
-        let videoURL = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
+        //  https:// cc3001.dmm.co.jp / litevideo/freepv /  s            / ssn                       / ssni00378       / ssni00378       _dmb_w    .mp4    
+        // `https:// ${host}          / ${infix}         / ${urlPart[0]} / ${urlPart.substring(0,3)} / ${urlPart}      / ${urlPart}      ${postfix}.mp4`;
+        // var videoURL = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
 
-        return await fetch(videoURL)
-          .then((res) => {
-            if (res.ok) {
-                if(debug) console.log("视频加载: 第 1 次测试链接: " + videoURL);
-                return videoURL;
-            }else{
-                if(debug){"第一次测试链接失败"};
-                throw Error
-            }
-            // if(res.status == 404){
-            //     throw Error
-            // }
-        })
-        .catch((e) => {
-            if(debug) console.log("视频加载: 报错",videoURL);
+        let urlPartAdd00 = replace00(urlPart);
+        // 根据番号发布时间 访问不同的网址
+        // if(avInfo.date && new Date(avInfo.date)>new Date("1/1/2024")){
+            // urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.p576}.mp4`);
+            // urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPartAdd00}/${urlPartAdd00}${quality.p576}.mp4`);
+        // }else 
+        if(avInfo.date && new Date(avInfo.date)>new Date("8/29/2023")){
+            urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.p576}.mp4`);
+            urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPartAdd00}/${urlPartAdd00}${quality.p576}.mp4`);
+            // urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.old720}.mp4`);
+            // urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPartAdd00}/${urlPartAdd00}${quality.old720}.mp4`);
+        }else{
+            urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.old720}.mp4`);
+            urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPartAdd00}/${urlPartAdd00}${quality.old720}.mp4`);
+        }
 
-            if (cid[corp] && cid[corp][1]) {
-                if(debug) console.log("视频加载: 默认URL规则,第二种")
-                urlPart = cid[corp][1] + idNum;
-            }else{
-                if(urlPart.search(/00\d{3,4}/)>0){
-                    if(debug) console.log("视频加载: 默认URL规则,第二种:存在00")
-                    urlPart = urlPart.replace("00","");
-                } else {
-                    if(debug) console.log("视频加载: 默认URL规则,第二种:不存在00")
-                    let oindex = urlPart.search(/[a-z]\d/i) +1;
-                    urlPart = urlPart.slice(0,oindex) + "00" + urlPart.slice(oindex)
-                }
-            }
+        var urlListGetMess = [];
+        for(let i=0;i<urls.length;i++){
+            let p = GetMess(urls[i])
+            urlListGetMess.push(p)
+        }
 
-            let videoURL2 = `https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${postfix}.mp4`;
-            return fetch(videoURL2)
-            .then((res) => {
-              if (res.ok) {
-                  if(debug) console.log("视频加载: 第 2 次测试链接: " + videoURL2);
-
-                  let setting2 = GM_getValue("_setting2");
-                  setting2.cid_user = setting2.cid_user ?? {};
-                  setting2.cid_user[corp] = [urlPart.slice(0,-idNum.length),avID];
-                  // cid_user[bkynb] = 1bkynb00
-                  GM_setValue("_setting2",setting2);
-
-                  return videoURL2;
-                }else{
-                if(debug){"第二次测试链接失败"};
-                throw Error
-                }
+        return Promise.any(urlListGetMess)
+            .then(res=>{
+                if(debug)console.log(res);
+                return res.finalUrl;
             })
-            .catch((e) => {
-                if(debug) console.log("视频加载: 链接还是错误",videoURL2);
-                let setting2 = GM_getValue("_setting2");
-                setting2.cid_user = setting2.cid_user ?? {};
-                setting2.cid_user[corp] = [urlPart.slice(0,-idNum.length),avID,false];
-                // cid_user[bkynb] = 1bkynb00
-                GM_setValue("_setting2",setting2);
-                return false
-            });
-        });
+            .catch(e=>{
+                if(debug)console.log(e);
+                return queryJavSpylVideoURL(avID)
+                            .then(res=>{
+                                let resJSON = JSON.parse(res.response)
+                                if(resJSON?.info?.url){
+                                    return "https://" + resJSON.info.url
+                                }
+                                return false
+                            })
+                            .catch(()=>{return false})
+            })
     }
+
+    async function queryJavSpylVideoURL(avID) {
+        if(debug)console.log("通过javspyl获取链接中:");
+        let javspylURL = "https://api.javspyl.eu.org/api/";
+        return new Promise((resolve, reject) => {
+            GM_xmlhttpRequest({
+                url:javspylURL,
+                method :"POST",
+                headers: {
+                    origin: "https://api.javspyl.eu.org",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data: `ID=${avID}`,
+                onload:function(xhr){
+                    resolve(xhr);
+                },
+                onerror:function(xhr){
+                    resolve(xhr);
+                }
+            });
+        })}
+
+    // 用来替换番号中的 00 , 预览视频使用
+    function replace00(urlPart){
+        if(urlPart.search(/00\d{3,4}/)>0){
+            return urlPart.replace("00","");
+        } else {
+            let oindex = urlPart.search(/[a-z]\d/i) +1;
+            return urlPart.slice(0,oindex) + "00" + urlPart.slice(oindex)
+        }
+    }
+
     // 其他番号的播放地址
     async function queryVideoURL(avID){
         let link = "";
@@ -2384,6 +2375,7 @@
     }
 
     function GetMess(link){
+        if(debug)console.log("GetMess请求: ", link);
         return new Promise((resolve, reject) => {
             GM_xmlhttpRequest({
                 url:link,
@@ -2392,13 +2384,13 @@
                 },
                 fetch:link,
                 onload:function(xhr){
-                    console.log("加载完成")
-                    console.log(xhr);
-                    resolve(xhr);
+                    if(xhr.status ==200){
+                        resolve(xhr);
+                    } else{
+                        reject(xhr)
+                    }
                 },
                 onerror:function(xhr){
-                    console.log("出错");
-                    console.log(xhr)
                     resolve(xhr);
                 }
             });

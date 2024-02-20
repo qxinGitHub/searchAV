@@ -161,7 +161,7 @@
 
 `"dontMagnetDiscern":false,`
 * 识别网页中的文本磁链
-* 默认: `false`: 将网页中的文本磁链转为链接, 网页存在的 hash 也会被转为链接
+* 默认: `false`: 将网页中的文本磁链转为链接, 网页中存在的 hash 也会被转为链接
 * `true`: 关闭磁链识别功能
 
 `"magnetCopy":false,`     
@@ -257,12 +257,12 @@
 
 `"qBitDownload":"",`
 * 在qBittorrent中的下载地址,注意地址中要使用双斜杠: `D:\\_下载\\qBittorrent`
-* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontMagnetDiscern`为默认值`false`, `magnetCopy`改为 `true`, 在页面中点击磁链会直接下载, 弹窗返回的数据是qBittorrent的返回数据, 正常返回是 `OK`。如果长时间不返回,例如超过1秒, 通常是出现了错误。
+* 设置完`qBitHost` 和本选项`qBitDownload`后,  且`dontMagnetDiscern`为默认值`false`, `magnetCopy`改为 `true`, 在页面中点击磁链会调用上方host中的qbit下载, 弹窗返回的数据是qBittorrent的返回数据, 正常返回是 `OK`。如果长时间不返回,例如超过1秒, 通常是出现了错误。
 
 `"qBitNoPopup":false,`
-* 点击磁链后会弹窗询问是否调用qBittorrent下载,  并将qBittorrent的返回结果再次弹窗提醒, 共有两次弹窗。
+* 点击磁链后会弹窗询问是否调用qBittorrent下载,  并将qBittorrent的返回结果再次弹窗提醒, 默认会有两次弹窗。
 * 默认: `false` 
-* `true`: 关闭弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
+* `true`: 关闭第一个弹窗询问, 直接调用qBittorrent下载。 如果qBittorrent的返回结果是 `OK` ,则第二个弹窗也会关闭。
 
 `"baiduAppid":"",`
 *  百度翻译的 APP ID [百度翻译开放平台](http://api.fanyi.baidu.com/api/trans/product/desktop)
@@ -313,7 +313,7 @@ list_all":[
 ---
 
 # 二、排除网站
-* 脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。可以以在评论区[反馈](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/feedback)。
+* 脚本默认是所有网站中运行, 如果你经常访问的网站明知不会有番号, 并且还把网页中的一些字母数字识别成番号, 可以参照下图进行排除。也可以以在评论区[反馈](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/feedback)。
 ![2022-09-18_20-45-28 排除-step.png (417×275) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/2022-09-18_20-45-28%20%E6%8E%92%E9%99%A4-step.png)
 
 * 如果有些番号没有被识别, 或者曾经可以识别, 突然不识别了, 也可以进行[反馈](https://greasyfork.org/zh-CN/scripts/423350-%E6%A0%B9%E6%8D%AE%E7%95%AA%E5%8F%B7%E5%BF%AB%E9%80%9F%E6%90%9C%E7%B4%A2/feedback)。
@@ -352,7 +352,7 @@ list_all":[
 * 经常会遇到500错误, 尤其是在晚上(也可能是我网络的问题)
 * 获取的FC2发行时间仅供参考, 并不是准确时间
 * 视频相关
-	* FC2的视频音量无法控制, 各位播放FC2预览视频的时候注意点。
+	* FC2的视频音量无法控制, 各位司机注意音量。
 	* 无法判断视频是否已经被官方删除, 所以视频可能无法播放, 但是依旧有播放按钮
 	* 2022-10-20注: 目前还不知道fc2视频链接的有效期是多久。10.19加入, 10.23测试还有效
 
@@ -393,6 +393,7 @@ list_all":[
 	* 一本道: 从[トップページ | 一本道 (1pondo.tv)](https://www.1pondo.tv/) 获取视频, 规则 `/[01]\d{5}\_(?:1)?\d{2,3}/i`
 	* HEYZO: 从[HEYZO](https://en.heyzo.com) 获取视频
 	* 东京热: 从[Tokyo-Hot　東京熱　無修正オリジナル徹底凌辱動画](https://my.tokyo-hot.com/)获取视频
+	* 当所有的本地规则都无法成功获取时,会从 [JAV视频预览 (javspyl.eu.org)](https://javspyl.eu.org/) 尝试获取。
 
 ---
 # 五、其他说明
@@ -400,7 +401,7 @@ list_all":[
 - 针对一些网友手误打错番号的情况, 比如这个[分享](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=106356),前三个番号错了两个。
 - 使用javdb搜索才会触发模糊搜索,  javbus只有在开启 `getInfoFailToJavDB`后, javbus搜索不到相关信息, javdb中也没有相关信息时, 才会触发。
 - 就是用的的javdb返回的第一个结果, 与你搜索的结果做比较, 如果字母部分大差不差, 就用网站返回的番号相关信息。
--  举例: `ASW-242` 这个番号javbus中没有收录, javdb中也没有收录, 所有当浏览这个番号的时候, 脚本会给你番号 `ABW-242` 的相关信息, 因为javdb返回的第一个结果就是它, 并且和搜索的番号只有一个英文字母的差别。(javlibary中有收录该番号)
+-  举例: `ASW-242` 这个番号javbus中没有收录, javdb中也没有收录, 所有当浏览这个番号的时候, 脚本会给你番号 `ABW-242` 的相关信息, 因为javdb返回的第一个结果就是它, 并且和搜索的番号只有一个英文字母的差别。(javlibary中有收录该[ASW-242番号](https://www.javlibrary.com/cn/?v=javli6de2y))
 
 ### 2. 关于翻译
 * 默认谷歌翻译,需要科学上网; 如果设置 `baiduAppid` 和 `baiduKey` , 则改为调用百度翻译。
@@ -451,17 +452,18 @@ list_all":[
 	* 番号是个链接, 且链接内容是磁链地址, 不会识别。通常是一些网站的种子列表
 	* 番号是个链接, 链接内的文本仅仅是番号的情况,不会识别, 例:  `<a href="">ssni-618</a>`不识别; 如果番号前后有其他汉字等可以识别: `<a href="">ssni-618 搜索</a>`  
 	* 如果该页面的网址中含有 `shop、mall、store、buy、product、detail、tools`等关键字的, 该页面将不会识别。
-	* 和番号重名的常用搭配不会识别,例如 `top-10` , 并且整个 `top` 番号都不会识别
+	* 和常用简写重名的不会识别,例如 `top-10` , 并且整个 `top` 番号都不会识别
 * 缺少 `-` 不识别的情况
-	* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会比较多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。  后期可能把关键字的选项放到设置中去, 让用户自定义。(此处仅举例, v0.14.1 已经不在将 `618` 设置为关键字)
+	* 中间不带横杠的番号 `SSNI618` 相较于完整的 `SSNI-618` , 限制会更多,导致有些明明是番号但是不识别。比如 `ssni618` , 由于 `618` 已被设置为特殊数字, 导致没有横杠的  `ssni618` 不会被识别成番号。 (此处仅举例, v0.14.1 已经不在将 `618` 设置为关键字)
 	* 如果番号所在dom的class名字中含有 `/name|auth|user|code/` 且无横杠,将不会识别
 ### 5. 预览视频的相关情况
 * 普通番号没有预览视频: 
-	* 一些老番不显示预览视频正常, 尤其是14年之前的。官方有, 但是我这没有
+	* ~~一些老番不显示预览视频正常, 尤其是14年之前的。官方有, 但是我这没有~~
 	* 新番也存在官方没有预览视频的情况,例如`NMK、CEN`等 整个系列都没有预览视频。
-	* 一些vr类视频没有预览, 例如 WANZVR 发行的`WAVR`系列、IP-VR 发行的而`IPVR`系列 
+	* ~~一些vr类视频没有预览, 例如 WANZVR 发行的`WAVR`系列、IP-VR 发行的而`IPVR`系列~~ 
 * 预览视频的获取都是从售卖网站或者官方网站取得, 必须售卖网站或者官网目前还存在视频才可以播放
 * 对于素人、无码的预览视频, 看运气
+* 2024-02-20: 当本地尝试获取链接后失败的情况下, 会通过[Javspyl ](https://sleazyfork.org/zh-CN/users/954203-javspyl)作者的脚本进行获取, 基本能够实现全覆盖。
 ### 6. 同个番号有多个视频的情况
 一些番号会对应多个视频, 此时脚本只会返回javbus中的一个,如果明显感觉返回结果不对, 请自行点击菜单上方的按钮进行搜索。
 例如`ID-036`对应了四个视频:
@@ -487,18 +489,19 @@ list_all":[
 * 日语词典: 翻译为英语 [英辞郎 on the WEB (alc.co.jp)](https://eow.alc.co.jp/)  
 * 视频预览相关: [番号黑科技，在线看预览【教程】 – Telegraph](https://telegra.ph/%E7%95%AA%E5%8F%B7%E9%BB%91%E7%A7%91%E6%8A%80%E5%9C%A8%E7%BA%BF%E7%9C%8B%E9%A2%84%E8%A7%88%E6%95%99%E7%A8%8B-04-21)  
 * 视频预览相关: [抛砖引玉，关于AV预览视频的获取方法。 - 老司機福利討論區 - 老司機論壇 (javbus.com)](https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374)  
-* [[油猴脚本开发指南]包装异步代码为同步代码 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/427913027)  
+* [油猴脚本开发指南包装异步代码为同步代码 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/427913027)  
 * [切换页面暂停播放](https://github.com/imba97/js/blob/master/code/js-46.js) 作者: [imba97 (imba久期) (github.com)](https://github.com/imba97)   
+* [第 153 题：实现一个批量请求函数 multiRequest(urls, maxNum) · Issue #378 · Advanced-Frontend/Daily-Interview-Question · GitHub](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/378) 
 
 ---
 
 # 八、感谢
-感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)等每一个使用脚本用户的支持
+感谢 greasyFork 评论区 [jywyf (greasyfork.org)](https://greasyfork.org/zh-CN/users/51119-jywyf)、[五讲四美三热爱 (greasyfork.org)](https://greasyfork.org/zh-CN/users/891814-%E4%BA%94%E8%AE%B2%E5%9B%9B%E7%BE%8E%E4%B8%89%E7%83%AD%E7%88%B1)、[blank7 (greasyfork.org)](https://greasyfork.org/zh-CN/users/663121-blank7)、[tommyxps (sleazyfork.org)](https://sleazyfork.org/zh-CN/users/245337-tommyxps) 等,每一位使用脚本用户的支持
 
 ---
 
 # 九、待做
-见 [[待做事项]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)   
+见 [[待做事项|待做事项(Obsidian)]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)   
 
 ---
 
@@ -515,4 +518,5 @@ list_all":[
 - 加载动画 [Loading line](https://codepen.io/gsound/pen/yVPVGQ) 
 - 番号中的特征(tag)分类 来源[javsdt (github.com)](https://github.com/javsdt), 作者已经跑路
 - [JAVBUS影片预告 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/450740) version:0.5, 作者: bigwolf99, 许可协议[MIT](https://opensource.org/licenses/mit-license.php)  
+- [jav视频预览 (sleazyfork.org)](https://sleazyfork.org/zh-CN/scripts/460572-jav%E8%A7%86%E9%A2%91%E9%A2%84%E8%A7%88) 作者: [Javspyl ](https://sleazyfork.org/zh-CN/users/954203-javspyl), version:2.5
 - 还有各种搜索后随手复制的

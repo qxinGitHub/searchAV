@@ -1,6 +1,7 @@
 脚本出现的原因:  在一些论坛上经常有好心人分享番号, 但是需要复制、新开页面、粘贴、搜索太复杂, 所有有了这个脚本来简化这个步骤。  
 在线安装 [Greasy Fork](https://greasyfork.org/zh-CN/scripts/423350)
 ### 功能
+- 查看番号的信息,图片和预览视频
 * 标记网页所有番号, 未浏览过的显示绿色下划线, 浏览过的显示蓝色虚线,浏览过且没找到相关信息的显示红色虚线。颜色可以在设置中更改
 * 鼠标滑过可以激活搜索菜单, 激活方式和搜索选项可以在设置中更改
 * 标记网页中的磁链文本, 改为链接, 可以在设置中关闭
@@ -113,7 +114,7 @@
 - 默认`false`: 不增加图标
 - `true`: 开启, 在网页番号的后面增加一个图标, 鼠标滑过(或点击)图标来激活菜单
 `"searchButtonIcon":"✈",`
-- 开启番号后面的图标样式,开启 `"addSearchButton"`后, 后面的图标样式。不是图片,是以个字符, 可以用 [emoji](https://emoji6.com/emojiall/) 或者输入法中能打出的各种字符。
+- 开启番号后面的图标样式,开启 `"addSearchButton"`后, 后面的图标样式。不是图片,是一个字符, 可以用 [emoji](https://emoji6.com/emojiall/) 或者输入法中能打出的各种字符。
 - 默认:✈
 
 `"clickToMenu":false,`    
@@ -463,7 +464,7 @@ list_all":[
 	* ~~一些vr类视频没有预览, 例如 WANZVR 发行的`WAVR`系列、IP-VR 发行的而`IPVR`系列~~ 
 * 预览视频的获取都是从售卖网站或者官方网站取得, 必须售卖网站或者官网目前还存在视频才可以播放
 * 对于素人、无码的预览视频, 看运气
-* 2024-02-20: 当本地尝试获取链接后失败的情况下, 会通过[Javspyl ](https://sleazyfork.org/zh-CN/users/954203-javspyl)作者的脚本进行获取, 基本能够实现全覆盖。
+* ~~2024-02-20: 当本地尝试获取链接后失败的情况下, 会通过[Javspyl ](https://sleazyfork.org/zh-CN/users/954203-javspyl)作者的脚本进行获取, 基本能够实现全覆盖。~~  
 ### 6. 同个番号有多个视频的情况
 一些番号会对应多个视频, 此时脚本只会返回javbus中的一个,如果明显感觉返回结果不对, 请自行点击菜单上方的按钮进行搜索。
 例如`ID-036`对应了四个视频:
@@ -502,13 +503,6 @@ list_all":[
 
 # 九、待做
 见 [[待做事项|待做事项(Obsidian)]]     [searchAV/待做事项.md (GitHub)](https://github.com/qxinGitHub/searchAV/blob/main/%E5%BE%85%E5%81%9A%E4%BA%8B%E9%A1%B9.md)   
-
----
-
-如果您认可并喜欢这个脚本，可以考虑通过打赏来继续支持我的工作。
-![donate.jpg (1189×736) (raw.githubusercontent.com)](https://raw.githubusercontent.com/qxinGitHub/searchAV/main/img/donate.jpg)
-
-不管怎样, 感谢对该脚本的支持，如果有任何问题、建议, 可以进行反馈，期待这个脚本能够让我们在浏览网站中有更好的体验！
 
 ---
 # 开源代码许可

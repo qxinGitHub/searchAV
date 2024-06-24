@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.23.1
+// @version      0.23.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -34,6 +34,10 @@
 // @exclude	    *.flightradar24.com/*
 // @exclude	    *.obsidian.md/*
 // @exclude	    *.runoob.com/*
+// @exclude	    https://www.baidu.com/s?wd=*
+// @exclude	    https://www.google.com/search*
+// @exclude	    https://www.bing.com/search*
+// @exclude	    https://www.so.com/s*
 // @exclude	    https://regex101.com/
 // @exclude	    https://discord.com/*
 // @exclude	    https://web.telegram.org/*
@@ -1228,8 +1232,10 @@
                         imgSrc = imgSrc.slice(imgSrc.search(/(imgs|pics)/i));
                         image.src = javbusLink + imgSrc;
                     }
+                    // console.log(image.src)
                     image.removeAttribute("title");     //鼠标经过的时候会触发离开事件,所以删掉
                 }
+                // console.log(image);
                 // 链接
                 avInfo.link = javbusLink + avID;
 
@@ -1695,7 +1701,7 @@
         if(image){
             let imageDiv = document.createElement('avdivimg');
             image.classList.add("avimg");
-            image.setAttribute("referrerpolicy","no-referrer");
+            image.setAttribute("referrerpolicy","same-origin");
             imageDiv.appendChild(image)
             otherInfo.appendChild(imageDiv);
             image.onload = function(){
@@ -1772,7 +1778,7 @@
             // 2022-10-12 0.18.0 之后将只保存网址, 之前的版本是保存的img节点
             image.src = localInfo[avID].image.match(/https.*\.(jpg|jpeg|gif|png)/)[0];
             image.classList.add("avimg");
-            image.setAttribute("referrerpolicy","no-referrer");
+            image.setAttribute("referrerpolicy","same-origin");
             imgDiv.appendChild(image);
         } else {
             // image.innerHTML = "没有在本地找到图片信息"
@@ -2584,15 +2590,16 @@
 
         GM_xmlhttpRequest({
             method: "GET",
-            url:
-                setting.jellyfinHost+"emby/Users/"+setting.jellyfinApiKey+"/Items?api_key="+setting.jellyfinApiKey+
-                "&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
-            // url: setting.jellyfinHost+"emby/Items?api_key="+setting.jellyfinApiKey+"&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
+            // url:
+                // setting.jellyfinHost+"emby/Users/"+setting.jellyfinApiKey+"/Items?api_key="+setting.jellyfinApiKey+
+                // "&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
+            url: setting.jellyfinHost+"emby/Items?api_key="+setting.jellyfinApiKey+"&Recursive=true&IncludeItemTypes=Movie&SearchTerm="+avID,
             headers: {
               accept: "application/json",
             },
             onload: function (r) {
                 var data = JSON.parse(r.responseText);
+                // console.log(data)
                 var div_jellyfin = document.querySelector(".jellyfin");
                 if(!div_jellyfin){return};
                 if(data.Items[0]){
@@ -2650,6 +2657,7 @@
 
     // 搜索本地 jellyf/emby 视频, 返回所有所有的 movie 分类视频的名称列表
     function localVideo_search(){
+        // actor_search()
         // console.log("localVideo_search")
         let url;
         if(setting.emby){
@@ -2680,6 +2688,63 @@
             return value.Name?.search(reg)>-1
         })
     }
+
+    function actor_search(){
+        // const fetch = require('node-fetch');
+
+        // Jellyfin API端点和身份验证令牌
+        const baseUrl = setting.jellyfinHost + 'api/';
+        const apiKey = setting.jellyfinApiKey;
+
+        // // 构建API请求
+        // const endpoint = baseUrl + 'Persons';
+        // const headers = {
+        // 'X-Emby-Token': apiKey,
+        // };
+        var url = setting.jellyfinHost + "api/Persons&api_key=" + setting.jellyfinApiKey;
+        url = "http://192.168.31.6:8096/Persons?IsMovie=true&api_key=e4c35ab15f9347a0916fe049de870e61"
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: url,
+            headers: {
+              accept: "application/json"
+            },
+            onload: (r) => {
+                // console.log(r)
+                var data = JSON.parse(r.responseText);
+                // console.log(data);
+                if(r.status == 200 && data.Items?.length>0){
+                    // localVideoList = data.Items;
+                    // localVideo_addStyle();
+                    console.log(data)
+                    data.Items.forEach(actor=>{
+                        console.log(actor.Name)
+                    })
+                }
+            },
+          });
+
+        // 发起API请求
+        // fetch(endpoint, { headers })
+        // .then(response => {
+        //     if (response.ok) {
+        //     return response.json();
+        //     } else {
+        //     throw new Error('Failed to fetch actors. Status code: ' + response.status);
+        //     }
+        // })
+        // .then(actors => {
+        //     // 打印演员信息
+        //     actors.forEach(actor => {
+        //     console.log(actor.Name);
+        //     });
+        // })
+        // .catch(error => {
+        //     console.error('Error:', error.message);
+        // });
+
+    }
+
     // 对本地视频(jellyfin/emby)已有的番号添加额外样式
     function localVideo_addStyle(){
         let avdivs = document.querySelectorAll('.sav-id');

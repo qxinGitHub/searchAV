@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.23.2
+// @version      0.24.0
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -34,7 +34,7 @@
 // @exclude	    *.flightradar24.com/*
 // @exclude	    *.obsidian.md/*
 // @exclude	    *.runoob.com/*
-// @exclude	    https://www.baidu.com/s?wd=*
+// @exclude	    https://www.baidu.com/s?*
 // @exclude	    https://www.google.com/search*
 // @exclude	    https://www.bing.com/search*
 // @exclude	    https://www.so.com/s*
@@ -230,7 +230,7 @@
 
     }
 
-    // 用于预告视频的链接转换 
+    // 用于预告视频的链接转换, 预览图片的获取 
     if(!setting.dontGetVideo){
         cid = {
             abp: ["118abp"],
@@ -402,6 +402,41 @@
             // 末尾截断
             // n_1445thni088
             thnib:["n_1445thni"],
+            // 2024-07-09
+            elo:["767elo"],
+            mcsr:["57mcsr"],
+            nacr:["h_237nacr"],
+            senn:["1senn"],
+            btha:["5433btha"],
+            tem:["118tem"],
+            kbi:["118kbi"],
+            har:["118har"],
+            fadss:["1fadss"],
+            beaf:["h_1615beaf"],
+            giro:["118giro"],
+            hodv:["41hodv"],
+            nhvr:["1nhvr"],
+            msfh:["1msfh"],
+            kire:["1msfh"],
+            okax:["84okax"],
+            gesu:["49gesu"],
+            ntr:["1ntr"],
+            stsk:["h_1605stsk"],
+            csct:["55csct"],
+            bgn:["118bgn"],
+            enki:["84enki"],
+            kirm:["h_1540kirm"],
+            aidv:["41aidv"],
+            good:["118good"],
+            sply:["1sply"],
+            ysn:["h_127ysn"],
+            abf:["118abf"],
+            mdtm:["h_585mdtm"],
+            mane:["1mane"],
+            start:["1start"],
+            brk:["143brk"],
+            seven:["1seven"],
+            ypaa:["h_086ypaa"],
         };
     }
 
@@ -1265,6 +1300,13 @@
                         }
                     }
                 }
+
+                // 如果不是从javbus访问, 则调用dmm的图片
+                if (window.location.href.indexOf(javbusLink)>-1){
+                    if(debug)console.log("从javbus访问, 默认用javbus的图片");
+                }else{
+                    image.src = getPic_dmm(avID)
+                }
                 
                 getInfo_end(avID,data,image);
             },
@@ -1277,6 +1319,44 @@
                 }
             }
         });
+    }
+
+    // 通过 dmm 获取图片
+    function getPic_dmm(avID){
+        // https://pics.dmm.co.jp/mono/movie/adult/1start036/1start036pl.jpg 
+        let imgSrc_dmm = "https://pics.dmm.co.jp/mono/movie/adult/"
+        let cid_user = GM_getValue("_setting2").cid_user ?? {};
+
+        // 提取番号中的英文和数字
+        const movieIdSplit = avID.toLowerCase().split("-");
+        const corp = movieIdSplit[0];  // 番号中的英文
+        const idNum = movieIdSplit[1];    // 返回中的数字
+        let urlPart = "";
+        // 是否需要特殊处理
+        if (cid[corp]) {
+            if(debug) console.log("图片加载: 在默认URL规则中: ",cid[corp])
+            // if (cid[corp].length>1){
+                // console.log("多个")
+                // 此处只会处理第2个及之后的, 第一个依旧会判断是否含0, 请求两遍
+                // for(let i=0;i<=cid_user.length;i++){
+                //     urlPart = cid[corp][i] + idNum;
+                //     urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.p576}.mp4`);
+                //     urls.push(`https://${host}/${infix}/${urlPart[0]}/${urlPart.substring(0,3)}/${urlPart}/${urlPart}${quality.old720}.mp4`);
+                // }
+            // }
+            urlPart = cid[corp][0] + idNum;
+
+        } else if (cid_user[corp]){
+            if(debug) console.log("图片加载: 在用户学习URL规则中: ",cid_user[corp]);
+            urlPart = cid_user[corp][0].replace("00","") + idNum;
+            // corp = cid_user[corp][0]
+        } else {
+            if(debug) console.log("图片加载: URL规则,默认");
+            urlPart = corp + idNum;
+        }
+        imgSrc_dmm +=  urlPart + "/" + urlPart + "pl.jpg"
+
+        return imgSrc_dmm
     }
 
     // 无码信息获取
@@ -3212,7 +3292,8 @@
                 opacity:1;
             }
             avdiv.sav-menu .avimg.savImgError{
-                height:200px;
+                height: 400px;
+                width: 600px;
             }
             /* 动画: 横线加载时的动画 */
             @keyframes sav-loading-animation {

@@ -29,6 +29,7 @@
 "javbus":"https://www.javbus.com/", // 自定义javbus网址 "https://www.javsee.bid/"
 "javdb":"https://javdb.com/",    // 自定义javdb网址 "https://javdb004.com/"
 "sehuatangURL":"https://www.sehuatang.net", // 自定义色花堂网址
+"actorsSearchURL":"https://www.javbus.com/searchstar/%s",  // 自定义演员搜索地址, 搜索词用 %s 代替
 "addSearchButton":false,    // 在番号后面添加一个图标, 鼠标滑过作用于图标, 而不是番号
 "searchButtonIcon":"✈",    // 番号后面的图标样式
 "clickToMenu":false,    // 鼠标点击番号才会出现菜单
@@ -109,6 +110,11 @@
 `"sehuatangURL":"https://www.sehuatang.net",`
 - 自定义色花堂网址, 必须是正确的色花堂网址, 否则脚本会错误
 - 默认: https://www.sehuatang.org
+
+`"actorsSearchURL":"https://www.javbus.com/searchstar/%s",`
+- 自定义演员搜索地址, 搜索词用 `%s` 代替。 例如改为必应搜索演员名称的话, 则将此处的地址改为`https://www.bing.com/search?q=%s&mkt=zh-CN` 
+- 默认: https://www.javbus.com/searchstar/%s
+
 `"addSearchButton":false,`
 -  在番号后面添加一个图标, 鼠标滑过作用于图标, 而不是番号
 - 默认`false`: 不增加图标

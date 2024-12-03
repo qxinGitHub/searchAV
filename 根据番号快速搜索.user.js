@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         根据番号快速搜索
 // @namespace    https://github.com/qxinGitHub/searchAV
-// @version      0.24.1
+// @version      0.24.2
 // @description  标记网页上的所有番号, 在相关网站快速方便的进行搜索
 // @author       iqxin
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAABLdJREFUWEftmG2IVGUUx3//O6MZapIftJTeKAqDiqiPGllZSdqHXsw3KmNnpm1LzYqgAleoMAJLw2xmdtsKqS3BkIy0QDSS6FNIkAgRilhUkPjGprtzTzx3d2fv3L0z986upB+6X+855/6e5znnf55zZWYTOY8fOUBJJ85HxoDtf8BRHM2odtAM0cF0fC6oMnicpoUjEjYKrqpr04DWxTjOsNQ8Chg3AWNiQHoR++RTZCybtYx/RgqbGtA6mej3sVziRaCZqj9h0O79xga109csaCpAK3KDiW7g+mY/ELL/WcZCFfipmRiJgFZinsFHwMXNBK5je1SwSHl2po3VENBKzDWjG3FRQkCXY8chsBvX0NY4LrFQeb5KA1kX0Dq5zip8DVweE8gHDkis5Qxb1cbJQRvbyASyLDHxPHBNLIRxQD53qpUjSZCxgE4+/BKfSDwSE+CU4FlydDSSEmsn61/KCok1wPhoHIP3vRwtSXIUD1jkbhNbYwIPy6FgMWWeE8wyY3emwFthGHuP+SY2x6TJUXnMVwt7G+3iMED3QSuzBXgw4tgjn6V6MgAfEtIOJpvPLgg0cZ887lALf9fYlGkzC8BrNNOgnMmTbw6wzFVuJ6K5V+9ILA1g/ZQ5pF5mqY3D9SCH72CRxSY+BLJD28RxwX0q8N2wXEoB6HysyEyDLyNHfXpAdj5PDVgp8aYIKjD8/KBe7gpXa7Vq0wLW2g2t3ViTKdCeGtAv8xnGwzU5BB9k8iwLLgdF5iGuGHzve1won2cQl2EcNo93PJ+e0O4fosB2V61+iS+AeTWxjY2ZAk+nByyxA7gnArg+k2elFbnaFFTd1CT9Cr2vFk6lxNuCFRHfnV6ee88OYH8BuTycdhYBt3t55qcGrJToEjxe4yC2eDkWBMnewWQqNX15UqBzMAPYL2MpcKzqn+HooOz4DU4nPWCRdonVEYdYfRsETtLBwG4jl9gY9gDXhmML2pTn3dSAFt9FegQLlGf7iGWmzKNmdNbIF5yS8YAKQc+PfYbr4CamWCYQandk4We3xjA3ejtOJdT9EuMgbonE3K8Kt6uVP1MDOsNKkdckXoo4+WZs8PKsCjf4GkDjR8FsFYZycODisU5iOeBFJOb1TIGXGxVc/GWhzAwzvgGmR5x7DVZ7OdbWQJaZis8EQgUR5F1/i3tV4oWY2eWgKsxWKwebBgx2scQawSvRVQPuLrhNWQp6gr/qHs0mplsmyLk5MTH6XLdSnvVJclX/wtrFOOvlU+D+OkF6gV2CbjJ8Tx99ZMnSxywTi4GZdSa+wXB7VGFBo/zrP4UGfxbMFYzHDsTNSSsd4ftEyOShqZNp5rMN49YRQiS5NYRMBAy22c3EleCWk4vJpyQA994NVa4YnEjXVPKAc13IVICDBFbmRrMgsW9LCeoK6lsZrfzOL/401rnO0QxkU4BV0E1M8bM8Jp9FiCuBSQMfdUDHMA66mcar0BWe3IJBqknIEQGmOdP6nSHQxljhjjvu/xwwJOB1IcPD1DkBTAG5VyeZo1X0nDPARpAmPs7kWJIo1KPJtbS+A/36DYmVQedxF44KD+kpfj0vAKvK4P7pjGW8cvxRe+MZaHVpV3wu7P4FjSUI5qMsu14AAAAASUVORK5CYII=
@@ -184,9 +184,9 @@
     // 一般发行番号: 从javbus获取信息
     // var oRegExp = /[a-zA-Z]{2,6}[-\s]?\d{2,5}/gi; 
     //             ; --------------------------------------------------------普通番号,带横杠-----------------------------------------------------------------  |--------------------------------------------------------------普通番号, 不带横杠-------------------------------------------------------------------------------------------------                       |-------------字母特别的番号-------------------------|---------字母超长的番号----------------------       |     东京热 n k                |加勒比(-)、一本道(_)、 MuraMura(_):   月日年        |       带前缀 carib|1pondo 的加勒比, 一本道        |       带后缀的 -1pon|-carib|-paco 加勒比 一本道 paco    |Mesubuta メス豚 (也可能是一本道的变种)        ||       HEYZO             
-    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib|vps)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and|vps|dvd)[a-zA-Z]{2,6}\s{0,2}\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 发表| 發表|歳| 歲|小时|分|系列| Min| day|ml| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI|MGSSLND)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)|HEYZO[_-\s]?(?:hd_)?\d{4}/gi; 
+    var oRegExp = /(?<!\w|\/|www\.|=|col-|\d-|>|Jukujo-)(?!heyzo|SHINKI|JPNXXX|carib|vps)[a-zA-Z]{2,6}-\d{2,5}(?:-c|_c|-4k)?(?!\d|[A-Za-z]{2,}|-\d|\.com|\.\d)|(?<!\w|\/|\\|\.|【|-|#|@|=|www\.)(?!heyzo|SHINKI|JPNXXX|carib|and|vps|dvd)[a-zA-Z]{2,6}\s{0,2}\d{3,4}(?:-c|_c)?(?!\w|-|\.|\/|×|％|%|@|\s?天| 于| 发表| 發表|歳| 歲|小时|分|系列| Min| day|ml| time|cm| ppi|\.com)|(?<!\w)(?:PARATHD|3DSVR|STARSBD)[-\s]?\d{3,4}(?!\w)|(?<!\w)(?:HIMEMIX|CASMANI|MGSSLND)[-\s]?\d{3}(?!\w)|(?<!\w)(?:k|n)[01]\d{3}(?!\w|-)|(?<!\w|\d-|\/)[01]\d{5}[-_](?:1)?\d{2,3}(?!\w|-\d)|(?<!\w)(?:carib|1pondo)[-_]\d{6}[-_]\d{2,3}(?!\w)|(?<!\w|\d-)\d{6}[-_]\d{2,3}(?:-1pon|-carib|-paco)(?!\w)|(?<!\w|\d-)\d{6}_(?:1)?\d{3}_0[12](?!\w|-\d)|HEYZO[_-\s]?(?:hd_)?\d{4}/gi; 
     // 省略字母, 连续数字的番号 例: abc-001、002、003
-    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,，、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、，和跟]?)\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
+    var oRegExp2 = /(?<=(?<!\w|\d-)([a-zA-Z]{2,6})(?:[\s,，、-]?(?!2022|2021|2020|2019)\d{3,4})+(?!\d)[\s,、，和跟]{0,2})\d{3,4}(?!\w|％|%|人|年|歳|万|の|発)/gmi
     // 一些素人、无码番号: 从javdb获取信息
     //                  ;--------- mgstage 字母 + 数字 + 字母 -----------------------|--------- FC2 ----------------|     HEYDOUGA                |      T28       | TMA 5位,6位,3位(没匹配)   |         1000girl   数字 + 字母             |MUGEN Entertainmen: MKD-S  MKBD-S |    素人 | 北池袋盗撮倶楽部            | japornXXX: JPNXXX       | xxx-av                   |    crazyasia               | PEWORLD                   |   10Musume  6位数字_01          |熟女俱乐部
     var oRegExp_wuma = /(?<!\w|-|\/)\d{3}[a-zA-Z]{2,5}[-\s]?\d{3,4}(?!\w|-|.torrent|年)|(?<!\w|\/)FC2[^\d]{0,5}\d{6,7}|HEYDOUGA[_-\s]?\d{4}-\d{3,5}|(?<!\w)T28-\d{3}|(?<!\w)T-2\d{4,5}(?!\w|-)|(?<!\w|-|\/)[01]\d{5}-[a-zA-Z]{2,7}(?!\w|-)|(?<!\w)MK(?:B)?D-S\d{2,3}(?!\w|-)|(?:SHINKI|KITAIKE)[-\s]?\d{3}(?!\w|-)|JPNXXX[-\s]?\d{5}(?!\w|-)|xxx-av[-\s]\d{4,5}(?!\w|-)|(?<!\w)crazyasia\d{5}(?!\w|-)|(?<!\w)PEWORLD\d{5}(?!\w|-)|(?<!\w)[01]\d{5}[-_]?_01(?=-10mu)?|Jukujo-Club-\d{3}/gi;
@@ -196,7 +196,7 @@
     //                         | 排除非 fx-0xx          | 数字部分全是0     |                                                                          | 一些国家简称 + 两位数字 sr是黑鸟侦察机               |卡西欧         |细胞相关        |csgo皮肤        |致钛硬盘              | 瑞昱芯片      | soc          | ns530刀片
     var oRegExp_Exclude_ID = /^(?:fx-?([^0]\d{2}|\d{4})|[a-zA-Z]+-?0{2,6}$|pg-13|crc-32|ea211|fs[\s-]?140|trc-20|erc-20|rs[\s-]?(232|422|485)|(sg|ae|kr|tw|ph|vn|kh|ru|uk|ua|tr|th|fr|in|de|sr)[\s-]\d{2}|(gm|ga)-\d{4}|cd[\s-]?\d{2,4}|seed[\s-]?\d{3}$|pc005|moc-\d{5}|wd-40|rtd[\s-]?\d{4}|cm\d{4}|rk\d{4})|ns[\s-]?\d{3,4}/i
     // 排除在此的关键词。 个别与番号同名的也被排除, 例如 Top-10 这种
-    var oRegExp_Exclude_en = /^(?:about|ac|actg|aes|again|agm|ah|aim|all|ak|akko|apex|aptx|au|ax|avhd|avx|bej|bgm|chrome|bd|bm|build|(?:fc|p)?[blp]ga|by|bzk|cc|ccie|cctv|cea|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|ea|er|ecma|eia|emui|eof|ep|error|ez|fc|file|flash|flyme|fps|for|fork|from|fuck|fx|gbx|get|glm|gnz|gp|groupr|gt|gts|gtx|guest|hao|hd|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|inteli|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|joy|jp|jr|jsr|jt|jukujo|kc|keccak|kv[bd]|Kirin|lancet|line|linux|lk|lolrng|lpl|lt|lumia|lg|macos|md|mh|miui|mipc|mnvr|mm|mnvr|model|mv|mvp|ms|nas|nature|nc|next|ngff|note|number|ok|only|os|osx|pa|page|pch|phl|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|rog|row|rtx|rush|rx|sale|scp|scte|sdm|sdr|server|sha|shp|spent|sql|sn|snh|Socket|ssd|status|steam|su|swipe|tcp|the|to|top|than|thread|ts|type|uh|uhd|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|wta|xdr|xfx|xiaomi|yah)$/i
+    var oRegExp_Exclude_en = /^(?:about|ac|actg|aes|again|agm|ah|aim|all|ak|akko|apex|aptx|au|ax|avhd|avx|bej|bgm|chrome|bd|bm|build|(?:fc|p)?[blp]ga|by|bzk|cc|ccie|cctv|cea|ckg|class|cny|covid|cpu|code|debian|df|ds|dw|dx|ea|er|ecma|eia|emui|eof|ep|error|ez|fc|file|flash|flyme|fps|for|fork|from|fuck|fx|gbx|get|github|glm|gnz|gp|groupr|gt|gts|gtx|guest|hao|hd|her|hk|https?|hp|IEEE|il|ilc|ilce|imx|index|intel|inteli|ip|ipad|is|ISBN|iso|issue|issues|it|jav|javdb|joy|jp|jr|jsr|jt|jukujo|just|kc|keccak|kv[bd]|Kirin|lancet|line|linux|lk|lolrng|lpl|lt|lumia|lg|macos|md|mh|miui|mipc|mnvr|mm|mnvr|model|mv|mvp|ms|nas|nature|nc|next|ngff|note|number|ok|only|os|osx|pa|page|pch|phl|ppv|pmw|png|qbz|qsz|raid|rfc|ripemd|rmb|rng|rog|row|rtx|rush|rx|sale|scp|scte|sdm|sdr|server|sha|shp|spent|sql|sn|snh|Socket|ssd|status|steam|su|swipe|tcp|the|to|top|than|thread|ts|type|uh|uhd|under|us|usa|usc|utf|utc|via|video|vkffsc|vol|vr|vs|vv|win|with|width|wikis|wta|xdr|xfx|xiaomi|yah)$/i
     // 在没有横杠的情况下, 会排除在此的关键词 例: 识别 tv-001  但是会排除 tv001
     var oRegExp_Special_en = /^(?:ace|akb|api|am|anime|at|be|best|bt|bl|cp|crc|exynos|dl|dp|dq|gb|girl|jd|ha|has|hc|hours|iq|in|mk|mini|mhz|mx|no|open|of|over|part|pd|pdd|porn|pt|sb|sex|tv|tb|ty|ver|vip|zd|zip)$/i
     // 在没有横杠的情况下, 会排除在此的数字 
@@ -389,7 +389,6 @@
             yst:["540yst"],
             zeaa: ["h_086zeaa"],
             zex: ["h_720zex"],
-            // 未验证
             // 多个
             // h_139doks571   36doks00567
             doks:["h_139doks","36doks"],
@@ -437,6 +436,9 @@
             seven:["1seven"],
             ypaa:["h_086ypaa"],
         };
+        // cid_pic ={
+        //     brk:["7brk"],
+        // }
     }
 
     // 对动态添加的dom进行检测
@@ -446,7 +448,7 @@
         // console.log("观察者数量");
         // console.log(mutations.length);
         mutations.forEach(function(mutation) {
-            if(mutation.target.innerText.length<5){
+            if(mutation.target.innerText?.length<5){
                 // console.log(mutation.target.innerText);
                 if(debug)console.log("内容为空");
             }
@@ -824,9 +826,9 @@
         }
         odiv.addEventListener("mouseenter",savMenuMouseEnter)
         odiv.addEventListener("mouseleave",savMenuMouseLeave)
+        odiv.addEventListener("click",savMenuClick)
         // 鼠标在图片上点击和滚轮放大缩小图片
         if(!setting.dontImgBig){ 
-            odiv.addEventListener("click",savMenuClick)
             odiv.addEventListener("wheel",savImgWheel)
         };
         odiv.dataset.av = id; 
@@ -1051,23 +1053,26 @@
 
 
         // 图片放大缩小
-        if(e.target.tagName == "IMG"){
-            if( e.target.classList.contains("imageBig")){    
-                e.target.classList.remove("imageBig");
-                Imgscall = 1.0
-                e.target.style = "";
+        if(!setting.dontImgBig){
+            // odiv.addEventListener("click",savMenuClick)
+            if(e.target.tagName == "IMG"){
+                if( e.target.classList.contains("imageBig")){    
+                    e.target.classList.remove("imageBig");
+                    Imgscall = 1.0
+                    e.target.style = "";
+                } else {
+                    Imgscall = 1.3  // 重置大小
+                    e.target.classList.add("imageBig");
+                }
             } else {
-                Imgscall = 1.3  // 重置大小
-                e.target.classList.add("imageBig");
-            }
-        } else {
-            var oImg = document.querySelector(".sav-menu").querySelector("img");
-            if(oImg){
-                oImg.classList.remove("imageBig");
-                Imgscall = 1.0
-                oImg.style = "";
-            }
-        } 
+                var oImg = document.querySelector(".sav-menu").querySelector("img");
+                if(oImg){
+                    oImg.classList.remove("imageBig");
+                    Imgscall = 1.0
+                    oImg.style = "";
+                }
+            } 
+        };
     }
     // 滚动图片放大缩小
     function savImgWheel(e){
@@ -1176,6 +1181,12 @@
     // 获取番号相关的信息, 添加图片,调用其他函数添加信息
     function getInfo(avID,oFirstBrowse){
         if(debug){console.log("从javbus获取信息中 getInfo: " + avID);}
+        if(setting.getInfoFromJavDB){
+            console.log("直接从javdb获取信息")
+            getInfo_wuma_javdb1(avID);
+            return;
+        }
+        console.log("javbus获取信息");
         if(setting.dontGetInfo){
             getInfo_end_error(`<avdiv>已经设置为禁止获取番号信息</avdiv>`,avID);
             return;
@@ -1507,12 +1518,12 @@
             }
         });
     }
-    // 无码信息获取 - 获取链接
+    // 从javdb获取信息 - 1.获取链接
     function getInfo_wuma_javdb1(avID){
         if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb1: " + avID);}
 
         if(setting.dontGetInfoWuma){
-            getInfo_end_error(`<avdiv>已经设置为禁止从 JavDB 获取信息</avdiv><avdiv>提示: 如果该选项自动出现, 说明IP地址已被禁止访问。(存在误触发的可能) </avdiv><avdiv>javdb会在两个星期内禁止你的访问,在此期间不要开启自动获取无码信息</avdiv>`,avID);
+            getInfo_end_error(`<avdiv>已经设置为禁止从 JavDB 获取信息</avdiv>`,avID);
             return
         };
 
@@ -1568,7 +1579,7 @@
                         if(htmlDoc.body.innerText.indexOf("copyright")>-1){
                             getInfo_end_error(`疑似使用的是日本代理,导致javdb拒绝了您的访问。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`,avID);
                         }else{
-                            setting.dontGetInfoWuma = true;
+                            // setting.dontGetInfoWuma = true;
                             GM_setValue("_setting",setting);
                             getInfo_end_error(`疑似IP地址被封。 网站返回信息:</br></br> ${htmlDoc.querySelector("body").innerHTML}`,avID);
                         }
@@ -1598,7 +1609,7 @@
             }
         });
     }
-    // 无码信息获取 - 具体内容
+    // 从javdb获取信息 - 2.具体内容
     function getInfo_wuma_javdb2(avID,link){
         if(debug){console.log("从javdb获取信息中 getInfo_wuma_javdb2: " + avID);}
         javdbloading()
@@ -1823,7 +1834,10 @@
         document.querySelector(".sav-menu").appendChild(errorInfo);
         removeLoading();
         // 如果获取错误, 会不进入end函数; 错误会导致重新获取, 获取不到会继续保持错误, 然后不断循环
-        localInfo[avID].getInfo_Time = new Date().getTime();
+        // 存在一种情况一个新浏览的番号, 没有获取到任何信息, 直接来到这里, 会导致localInfo[avID]是 undefined
+        if(localInfo[avID]){
+            localInfo[avID].getInfo_Time = new Date().getTime();
+        }
         GM_setValue("avInfo2",localInfo);
     }
 
@@ -1837,7 +1851,7 @@
         noReferrer();
 
         if(localInfo[avID].noInfo){
-            getInfo_end_error(`脚本没有匹配到 ${avID} 相关页面, 请使用上方搜索进行查找`)
+            getInfo_end_error(`脚本没有匹配到 ${avID} 相关页面, 请使用上方搜索进行查找`,avID)
             localInfo[avID].visited = localInfo[avID].visited? localInfo[avID].visited+1:1;
             GM_setValue("avInfo2",localInfo);
             
@@ -1938,8 +1952,10 @@
             str += "<avdiv class='sav-title' id='searchAVMenuTitle'>标题: " + avInfo.title + "</avdiv>"
         }
         if(avInfo.starName && avInfo.starName.length>0){
+            // let actorsSearchURL = "https://www.javbus.com/searchstar/%s"
+            let actorsSearchURL = setting.actorsSearchURL?setting.actorsSearchURL:"https://www.javbus.com/searchstar/%s"; 
             for(var i=0;i<avInfo.starName.length;i++){
-                actors += "<a class='sav-actors-"+ i + "' target='_blank' title='' href='https://db.msin.jp/jp.search/actress?str=" + avInfo.starName[i] + "'>"+ avInfo.starName[i] + "</a>, ";
+                actors += "<a class='sav-actors-"+ i + "' target='_blank' title='' href='" + actorsSearchURL.replace("%s",avInfo.starName[i]) + "'>"+ avInfo.starName[i] + "</a>, ";
                 getJellyfin_Actor(avInfo.starName[i],i)
             }
             actors = actors.slice(0,actors.length-2);
@@ -2189,6 +2205,7 @@
             onload: function (r) {
                 setTimeout(function () {
                     // 如果返回结果不对
+                    console.log(r.responseText)
                     if(r.responseText.indexOf("sentences")<0){
                         console.log("谷歌翻译失败: ",r.responseText);
                         return;
@@ -2282,7 +2299,11 @@
                 return;
             }
         }else{
-            videoURL = localInfo[avID].video;
+            // videoURL = localInfo[avID].video;
+            // 大概从 2024-12-03 左右, dmm.co.jp 域名的预览视频, 非日本IP会出现 403 拒绝访问的问题
+            videoURL = localInfo[avID].video.replace("dmm.co.jp", "dmm.com");
+            localInfo[avID].video = videoURL;
+            GM_setValue("avInfo2",localInfo);
             if(debug)console.log("本地存在视频链接: ", videoURL)
         }
         
@@ -2298,7 +2319,7 @@
     }
 
     // 获取播放地址
-    async function queryDMMVideoURL(avID, host = "cc3001.dmm.co.jp") {
+    async function queryDMMVideoURL(avID, host = "cc3001.dmm.com") {
         // if (movieInfo.isUncensored)
         //   return Promise.reject("DMM server not support uncensored movie.");
         //see https://www.javbus.com/forum/forum.php?mod=viewthread&tid=63374
@@ -2760,6 +2781,11 @@
             },
             onload: (r) => {
                 // console.log(r)
+                if(r.status != 200){
+                    console.log("搜索本地jellyf视频有误, 返回结果: ");
+                    console.log(r);
+                    return;
+                }
                 var data = JSON.parse(r.responseText);
                 // console.log(data);
                 if(r.status == 200 && data.Items?.length>0){
@@ -2977,13 +3003,15 @@
             "javbus":"https://www.javbus.com/", // 自定义javbus网站地址 "https://www.javsee.bid/"
             "javdb":"https://javdb.com/",    // 自定义javdb网站地址 "https://javdb004.com/"
             "sehuatangURL":"https://www.sehuatang.net", // 自定义色花堂网址
+            "actorsSearchURL":"https://www.javbus.com/searchstar/%s",  // 自定义演员搜索地址, 搜索词用 %s 代替
             "addSearchButton":false,    // 在番号后面添加一个图标, 鼠标滑过作用于图标, 而不是番号
             "searchButtonIcon":"✈",    // 番号后面的图标样式
             "clickToMenu":false,    // 鼠标点击番号才会出现菜单
             "dontClearMenu": false, // 鼠标移出后,菜单不会消失(测试时找问题使用, 开启会影响脚本使用)
             "includeIDinLinks":true,    // 番号本身是个链接的情况下是否识别
             "dontImgBig": false,    // 图片点击放大, 包括滚动放大
-            "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取)
+            "dontGetInfo":false,    // 获取番号的相关信息(从javbus获取),
+            "getInfoFromJavDB":false, // 直接从 JavDB 获取信息, 不使用Javbus
             "dontGetInfoFc2":false, // 获取fc2的相关信息(从javmenu获取)
             "dontGetInfoWuma":false,    // 获取无码番号的信息, 大量访问会导致javdb禁止你的ip访问一到两个星期。
             "getInfoFailToJavDB":true,    // 从javbus获取不到信息时, 会从javdb尝试获取。有被javDB封IP的风险
@@ -3028,8 +3056,8 @@
                 "text-decoration":"underline dotted red",   // 下划线
             },
             "infoLocalVideoStyle":{ //本地视频(jellyfin/emby)已有的番号
-                "color":"#598987",    // 颜色
-                "text-decoration":"underline dotted #598987",   // 下划线
+                "color":"#00ADB0",    // 颜色
+                "text-decoration":"underline dotted #00ADB0",   // 下划线
             },
             "list":[],  // 普通番号的搜索列表, 建议直接将搜索加在 "list_all"
             "list_wuma":[], // 素人番号的搜索列表, 建议直接将搜索加在 "list_all"
